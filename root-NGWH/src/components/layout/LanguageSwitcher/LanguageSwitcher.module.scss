@@ -1,0 +1,53 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.switcher {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.button {
+  background: transparent;
+  border: none;
+  color: $color-neutral-0;
+  font-family: $font-family-base;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  padding: $space-1 $space-2;
+  cursor: pointer;
+  border-radius: $border-radius-sm;
+  transition: background-color $transition-fast;
+  opacity: 0.8;
+
+  &:hover:not(:disabled) {
+    background-color: $overlay-on-primary-hover;
+    opacity: 1;
+  }
+
+  &:focus-visible {
+    // Override default focus ring with accent yellow because this is on primary red
+    @include focus-ring($color-brand-accent);
+  }
+
+  &.active {
+    opacity: 1;
+    background-color: $color-neutral-0;
+    color: $color-brand-primary;
+    
+    &:focus-visible {
+      // Active state is white, so default primary red focus ring is fine here
+      @include focus-ring($color-brand-primary);
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.divider {
+  color: rgba($color-neutral-0, 0.5);
+  font-size: $font-size-sm;
+  user-select: none;
+}

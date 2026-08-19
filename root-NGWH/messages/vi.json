@@ -1,0 +1,185 @@
+{
+  "nav": {
+    "home": "Trang chủ",
+    "about": "Giới thiệu",
+    "tournaments": "Các giải đấu",
+    "gallery": "Hành trình vinh quang",
+    "clubs": "Cơ sở dữ liệu CLB",
+    "clubRegistration": "Đăng ký CLB",
+    "news": "Tin tức",
+    "contact": "Liên hệ",
+    "openMenu": "Mở menu điều hướng",
+    "closeMenu": "Đóng menu điều hướng"
+  },
+  "common": {
+    "skipToContent": "Bỏ qua đến nội dung chính",
+    "languageSwitcherLabel": "Ngôn ngữ",
+    "placeholderNotice": "Đây là trang giữ chỗ nền tảng của Sprint 0. Nội dung cho mục này sẽ được bổ sung ở Sprint sau."
+  },
+  "pages": {
+    "home": { "title": "Trang chủ" },
+    "about": { "title": "Giới thiệu" },
+    "tournaments": { "title": "Các giải đấu" },
+    "gallery": { "title": "Hành trình vinh quang" },
+    "clubs": { "title": "Cơ sở dữ liệu CLB" },
+    "clubRegistration": { "title": "Đăng ký CLB" },
+    "news": { "title": "Tin tức" },
+    "contact": { "title": "Liên hệ" }
+  },
+  "home": {
+    "hero": {
+      "imageAlt": "Ảnh hành động giải đấu",
+      "cta": "Khám phá các giải đấu",
+      "previousSlide": "Slide trước",
+      "nextSlide": "Slide tiếp theo",
+      "goToSlide": "Đến slide {number}"
+    },
+    "mission": {
+      "heading": "Sứ mệnh của chúng tôi",
+      "paragraph1": "NextGen Women Hoops là nền tảng bóng rổ nữ U20 hướng đến việc phát hiện, phát triển và đưa những tài năng trẻ đến với sân chơi chuyên nghiệp.",
+      "paragraph2": "Chúng tôi xây dựng một môi trường công bằng, chuyên nghiệp và mang tính quốc tế, nơi các vận động viên nữ được thi đấu, phát triển và được công nhận xứng đáng.",
+      "paragraph3": "Không chỉ tổ chức giải đấu, NextGen Women Hoops hướng đến một hệ sinh thái bóng rổ trẻ kết nối vận động viên, câu lạc bộ, tuyển trạch viên và người hâm mộ, đồng thời truyền cảm hứng để thế hệ nữ vận động viên tiếp theo tự tin theo đuổi bóng rổ.",
+      "tagline": "Where Tomorrow’s Legends Rise."
+    },
+    "hotNews": {
+      "heading": "Tin nóng",
+      "viewAll": "Xem tất cả tin tức",
+      "empty": "Chưa có tin tức — vui lòng quay lại sau.",
+      "error": "Hiện chưa thể tải tin tức mới nhất."
+    },
+    "championsCorner": {
+      "heading": "Góc nhà vô địch",
+      "empty": "Nhà vô địch đương nhiệm sẽ sớm được công bố.",
+      "error": "Hiện chưa thể tải Góc nhà vô địch."
+    }
+  },
+  "news": {
+    "categories": {
+      "tournament_news": "Tin tức giải đấu",
+      "inspirational": "Câu chuyện truyền cảm hứng",
+      "knowledge_nutrition": "Kiến thức & Dinh dưỡng"
+    },
+    "listing": {
+      "empty": "Chưa có bài viết nào trong mục này.",
+      "error": "Hiện chưa thể tải các bài viết này."
+    },
+    "detail": {
+      "error": "Hiện chưa thể tải bài viết này."
+    }
+  },
+  "about": {
+    "brandStory": {
+      "heading": "Tầm nhìn & Sứ mệnh",
+      "body": "Tầm nhìn của chúng tôi là một tương lai nơi bóng rổ nữ được tôn vinh, hỗ trợ và có cùng vị thế như bất kỳ môn thể thao nào khác. NextGen Women Hoops ra đời để hiện thực hóa tầm nhìn đó — tạo ra con đường để các vận động viên U20 phát triển kỹ năng, xây dựng những kết nối lâu dài và truyền cảm hứng cho thế hệ cầu thủ và người hâm mộ tiếp theo."
+    },
+    "tournamentSystem": {
+      "heading": "Hệ thống giải đấu",
+      "body": "Mỗi giải đấu chúng tôi tổ chức đều tuân theo các tiêu chuẩn kỹ thuật và trọng tài được công nhận, mang lại sự tin tưởng cho vận động viên, huấn luyện viên và người hâm mộ vào một cuộc thi công bằng, chuyên nghiệp. Các chứng nhận và quan hệ đối tác cụ thể sẽ được cập nhật tại đây khi được xác nhận."
+    },
+    "partners": {
+      "heading": "Ban tổ chức & Đối tác",
+      "empty": "Ban tổ chức và các đối tác sẽ sớm được công bố.",
+      "error": "Hiện chưa thể tải mục này."
+    }
+  },
+  "gallery": {
+    "media": {
+      "heading": "Thư viện khoảnh khắc vô địch",
+      "empty": "Ảnh vô địch sẽ được thêm vào đây khi có sẵn.",
+      "error": "Hiện chưa thể tải những bức ảnh này."
+    },
+    "mvp": {
+      "heading": "Điểm sáng MVP",
+      "empty": "Điểm sáng MVP sẽ sớm được công bố.",
+      "error": "Hiện chưa thể tải Điểm sáng MVP."
+    },
+    "behindScenes": {
+      "heading": "Câu chuyện hậu trường",
+      "empty": "Các câu chuyện hậu trường sẽ được thêm vào đây khi có sẵn.",
+      "error": "Hiện chưa thể tải các câu chuyện này."
+    }
+  },
+  "clubs": {
+    "directory": {
+      "filterLabel": "Lọc theo tỉnh/thành",
+      "allRegions": "Tất cả khu vực",
+      "empty": "Không tìm thấy câu lạc bộ nào.",
+      "error": "Hiện chưa thể tải danh bạ câu lạc bộ."
+    },
+    "profile": {
+      "error": "Hiện chưa thể tải thông tin câu lạc bộ này.",
+      "foundedLabel": "Thành lập",
+      "achievements": {
+        "heading": "Thành tích",
+        "empty": "Chưa có thành tích nào được ghi nhận."
+      },
+      "roster": {
+        "heading": "Đội hình",
+        "empty": "Đội hình chưa được công bố."
+      },
+      "coachingStaff": {
+        "heading": "Ban huấn luyện",
+        "empty": "Ban huấn luyện chưa được công bố."
+      },
+      "contact": {
+        "heading": "Liên hệ & Mạng xã hội",
+        "contactHeading": "Thông tin liên hệ",
+        "contactEmpty": "Chưa có thông tin liên hệ.",
+        "socialHeading": "Liên kết mạng xã hội",
+        "socialEmpty": "Chưa có liên kết mạng xã hội."
+      }
+    }
+  },
+  "clubRegistration": {
+    "intro": {
+      "title": "Cùng tranh đấu hướng thành công"
+    },
+    "form": {
+      "name": "Tên câu lạc bộ",
+      "region": "Khu vực hoạt động",
+      "representative": "Tên người đại diện",
+      "capabilityProfile": "Hồ sơ năng lực",
+      "u20AthleteList": "Danh sách vận động viên U20",
+      "submit": "Gửi đăng ký",
+      "success": "Đã nhận đăng ký — câu lạc bộ của bạn sẽ xuất hiện trong danh bạ sau khi được phê duyệt.",
+      "error": "Hiện chưa thể gửi đăng ký của bạn."
+    }
+  },
+  "tournaments": {
+    "schedule": {
+      "heading": "Lịch thi đấu",
+      "empty": "Chưa có trận đấu nào được lên lịch.",
+      "error": "Hiện chưa thể tải lịch thi đấu.",
+      "vs": "vs",
+      "status": {
+        "scheduled": "Sắp diễn ra",
+        "completed": "Đã kết thúc",
+        "postponed": "Hoãn"
+      }
+    },
+    "archives": {
+      "heading": "Lưu trữ",
+      "empty": "Chưa có mùa giải nào được ghi nhận.",
+      "error": "Hiện chưa thể tải danh sách lưu trữ.",
+      "seasonLabel": "Mùa giải {year}"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Liên hệ",
+      "intro": "Liên hệ với ban tổ chức NextGen Women Hoops. Chúng tôi luôn sẵn sàng tiếp nhận các thắc mắc về tham gia giải đấu, hợp tác tài trợ, truyền thông và hỗ trợ chuyên môn."
+    },
+    "info": {
+      "heading": "Thông tin liên hệ",
+      "empty": "Thông tin liên hệ sẽ sớm được công bố.",
+      "error": "Hiện chưa thể tải thông tin liên hệ.",
+      "officeAddressLabel": "Địa chỉ văn phòng",
+      "hotlineLabel": "Đường dây nóng"
+    },
+    "guidance": {
+      "heading": "Hướng dẫn liên hệ",
+      "body": "Vui lòng gửi thông tin đến đúng bộ phận tương ứng nêu trên để ban tổ chức hỗ trợ bạn nhanh chóng và hiệu quả nhất.",
+      "notice": "Thông tin liên hệ chính thức và các kênh gửi thắc mắc trực tiếp sẽ được cập nhật đầy đủ khi có công bố chính thức từ Ban tổ chức."
+    }
+  }
+}

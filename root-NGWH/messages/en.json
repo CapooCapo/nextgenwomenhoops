@@ -1,0 +1,185 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "tournaments": "Tournaments",
+    "gallery": "Gallery",
+    "clubs": "Clubs",
+    "clubRegistration": "Club Registration",
+    "news": "News",
+    "contact": "Contact",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu"
+  },
+  "common": {
+    "skipToContent": "Skip to main content",
+    "languageSwitcherLabel": "Language",
+    "placeholderNotice": "This page is a Sprint 0 foundation placeholder. Content for this section will be added in a later Sprint."
+  },
+  "pages": {
+    "home": { "title": "Home" },
+    "about": { "title": "About Us" },
+    "tournaments": { "title": "Tournaments" },
+    "gallery": { "title": "Gallery / Hall of Fame" },
+    "clubs": { "title": "Clubs Directory" },
+    "clubRegistration": { "title": "Club Registration" },
+    "news": { "title": "News & Media" },
+    "contact": { "title": "Contact" }
+  },
+  "home": {
+    "hero": {
+      "imageAlt": "Tournament action photo",
+      "cta": "Explore Tournaments",
+      "previousSlide": "Previous slide",
+      "nextSlide": "Next slide",
+      "goToSlide": "Go to slide {number}"
+    },
+    "mission": {
+      "heading": "Our Mission",
+      "paragraph1": "NextGen Women Hoops is a U20 female basketball platform dedicated to discovering, developing, and elevating young talents to professional stages.",
+      "paragraph2": "We build a fair, professional, and international environment where female athletes compete, grow, and receive deserving recognition.",
+      "paragraph3": "Beyond organizing tournaments, NextGen Women Hoops aims for a youth basketball ecosystem connecting athletes, clubs, scouts, and fans, while inspiring the next generation of female athletes to confidently pursue basketball.",
+      "tagline": "Where Tomorrow’s Legends Rise."
+    },
+    "hotNews": {
+      "heading": "Hot News",
+      "viewAll": "View all news",
+      "empty": "No news yet — check back soon.",
+      "error": "We couldn't load the latest news right now."
+    },
+    "championsCorner": {
+      "heading": "Champions Corner",
+      "empty": "The defending champion will be announced soon.",
+      "error": "We couldn't load the Champions Corner right now."
+    }
+  },
+  "news": {
+    "categories": {
+      "tournament_news": "Tournament News",
+      "inspirational": "Inspirational Stories",
+      "knowledge_nutrition": "Knowledge & Nutrition"
+    },
+    "listing": {
+      "empty": "No articles in this category yet.",
+      "error": "We couldn't load these articles right now."
+    },
+    "detail": {
+      "error": "We couldn't load this article right now."
+    }
+  },
+  "about": {
+    "brandStory": {
+      "heading": "Our Vision & Mission",
+      "body": "Our vision is a future where women's basketball is celebrated, supported, and given the same stage as any other sport. NextGen Women Hoops exists to make that vision real — creating a pathway for U20 athletes to develop their skills, build lasting connections, and inspire the next generation of players and fans."
+    },
+    "tournamentSystem": {
+      "heading": "Tournament System",
+      "body": "Every tournament we run follows recognized technical and officiating standards, giving players, coaches, and fans confidence in fair, professional competition. Specific certifications and partnerships will be detailed here as they're confirmed."
+    },
+    "partners": {
+      "heading": "Organizing Committee & Partners",
+      "empty": "Our organizing committee and partners will be announced soon.",
+      "error": "We couldn't load this section right now."
+    }
+  },
+  "gallery": {
+    "media": {
+      "heading": "Championship Moments Library",
+      "empty": "Championship photos will be added here as they become available.",
+      "error": "We couldn't load these photos right now."
+    },
+    "mvp": {
+      "heading": "MVP Spotlight",
+      "empty": "The MVP Spotlight will be announced soon.",
+      "error": "We couldn't load the MVP Spotlight right now."
+    },
+    "behindScenes": {
+      "heading": "Behind-the-Scenes Stories",
+      "empty": "Behind-the-scenes stories will be added here as they become available.",
+      "error": "We couldn't load these stories right now."
+    }
+  },
+  "clubs": {
+    "directory": {
+      "filterLabel": "Filter by province/region",
+      "allRegions": "All regions",
+      "empty": "No clubs found.",
+      "error": "We couldn't load the club directory right now."
+    },
+    "profile": {
+      "error": "We couldn't load this club right now.",
+      "foundedLabel": "Founded",
+      "achievements": {
+        "heading": "Achievements",
+        "empty": "No achievements on record yet."
+      },
+      "roster": {
+        "heading": "Roster",
+        "empty": "The roster hasn't been published yet."
+      },
+      "coachingStaff": {
+        "heading": "Coaching Staff",
+        "empty": "The coaching staff hasn't been published yet."
+      },
+      "contact": {
+        "heading": "Contact & Social Links",
+        "contactHeading": "Contact Info",
+        "contactEmpty": "No contact information on record yet.",
+        "socialHeading": "Social Links",
+        "socialEmpty": "No social links on record yet."
+      }
+    }
+  },
+  "clubRegistration": {
+    "intro": {
+      "title": "Together, we compete toward success"
+    },
+    "form": {
+      "name": "Club name",
+      "region": "Operating region",
+      "representative": "Representative's name",
+      "capabilityProfile": "Capability profile document",
+      "u20AthleteList": "U20 athlete list",
+      "submit": "Submit registration",
+      "success": "Registration received — your club will appear in the directory once approved.",
+      "error": "We couldn't submit your registration right now."
+    }
+  },
+  "tournaments": {
+    "schedule": {
+      "heading": "Match Schedule",
+      "empty": "No matches have been scheduled yet.",
+      "error": "We couldn't load the match schedule right now.",
+      "vs": "vs",
+      "status": {
+        "scheduled": "Scheduled",
+        "completed": "Completed",
+        "postponed": "Postponed"
+      }
+    },
+    "archives": {
+      "heading": "Archives",
+      "empty": "No past seasons on record yet.",
+      "error": "We couldn't load the archives right now.",
+      "seasonLabel": "{year} Season"
+    }
+  },
+  "contact": {
+    "hero": {
+      "title": "Contact",
+      "intro": "Get in touch with the NextGen Women Hoops organizing committee. We welcome inquiries regarding tournament participation, sponsorship, media partnerships, and general support."
+    },
+    "info": {
+      "heading": "Contact Information",
+      "empty": "Contact details will be published soon.",
+      "error": "We couldn't load contact information right now.",
+      "officeAddressLabel": "Office Address",
+      "hotlineLabel": "Hotline"
+    },
+    "guidance": {
+      "heading": "How to Reach Us",
+      "body": "Please direct your inquiries to the appropriate department listed above so our team can assist you efficiently.",
+      "notice": "Official contact details and direct channels will be fully updated upon official announcement."
+    }
+  }
+}

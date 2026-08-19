@@ -1,0 +1,84 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.cardContainer {
+  height: 100%;
+  
+  // The link is the only interactive element; it stretches over the whole card
+  // The card itself handles the hover lift via Card's 'elevated' prop
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  
+  &:focus-visible {
+    outline: none; // Handled by Card's focus-within via Card elevated mixin
+    @include focus-ring;
+  }
+}
+
+.imageWrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: $color-neutral-100;
+  border-bottom: 1px solid $color-neutral-300;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.content {
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  margin-bottom: $space-3;
+  color: $color-neutral-700;
+  @include section-label;
+}
+
+.category {
+  color: $color-brand-primary;
+}
+
+.dot {
+  color: $color-neutral-300;
+}
+
+.date {
+  font-family: $font-family-base;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.title {
+  margin: 0 0 $space-2;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  color: $color-neutral-900;
+}
+
+.summary {
+  margin: 0;
+  color: $color-neutral-700;
+  font-size: $font-size-sm;
+  line-height: $line-height-base;
+  
+  // Optional line clamp could go here, but omitted per typical requirements unless specified
+}

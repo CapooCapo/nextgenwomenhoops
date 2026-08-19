@@ -1,0 +1,36 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.section {
+  padding-bottom: $space-8;
+
+  @include breakpoint-desktop {
+    padding-bottom: $space-16;
+  }
+}
+
+.heading {
+  @include section-heading;
+}
+
+.empty {
+  @include empty-state-text;
+}
+
+.content {
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $color-neutral-900;
+  
+  @include breakpoint-tablet {
+    font-size: $font-size-lg;
+  }
+
+  p {
+    margin-bottom: $space-4;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

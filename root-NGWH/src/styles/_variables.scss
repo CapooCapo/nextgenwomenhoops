@@ -1,0 +1,108 @@
+// Design tokens — NextGen Women Hoops
+// Approved Miami Heat-inspired palette. Source of truth: the 4 approved
+// hex values below (primary/accent/black/white) — do not reinterpret them.
+// The neutral grayscale (700/500/300/100) and functional success/error
+// colors are pre-existing structural/utility tokens, not part of the
+// 4-color brand palette; left unchanged to preserve muted-text/border
+// semantics and contrast headroom.
+
+// --- Color ---
+$color-brand-primary: #98002e; // Miami Heat Red — primary brand color, primary CTA, active states
+$color-brand-accent: #f9a01b; // Miami Heat Yellow — secondary accent, highlights, badges
+$color-neutral-900: #000000; // Black — text, dark backgrounds, high-contrast UI
+$color-neutral-700: #404040;
+$color-neutral-500: #737373;
+$color-neutral-300: #d4d4d4;
+$color-neutral-100: #f5f5f5;
+$color-neutral-0: #ffffff; // White — light backgrounds and text on dark backgrounds
+$color-success: #2e7d32;
+$color-error: #c62828;
+
+// --- Typography ---
+// $font-family-display is a condensed, heavy-weight sports/display face
+// (Barlow Condensed, loaded via next/font/google in layout.tsx as
+// --font-barlow-condensed — confirmed to include a "vietnamese" Google
+// Fonts subset before adopting it, so VI headings render correctly, not
+// tofu/fallback). Reserved for headings, section labels, and numeral-style
+// emphasis (founding year, counts) — never body copy, which stays on the
+// existing, already-proven Geist family for readability.
+$font-family-base: "Geist", Arial, Helvetica, sans-serif;
+$font-family-display: var(--font-barlow-condensed), "Geist", Arial, Helvetica, sans-serif;
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.25rem;
+$font-size-xl: 1.5rem;
+$font-size-2xl: 2rem;
+$font-size-3xl: 2.5rem;
+$font-size-4xl: 3.25rem;
+$font-size-5xl: 4rem;
+$line-height-base: 1.5;
+$line-height-tight: 1.2;
+$line-height-display: 1.05;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$letter-spacing-tight: -0.02em;
+$letter-spacing-wide: 0.08em;
+
+// --- Spacing (4px scale) ---
+$space-1: 0.25rem;
+$space-2: 0.5rem;
+$space-3: 0.75rem;
+$space-4: 1rem;
+$space-6: 1.5rem;
+$space-8: 2rem;
+$space-12: 3rem;
+$space-16: 4rem;
+$space-20: 5rem;
+
+// --- Breakpoints ---
+$breakpoint-mobile: 375px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1200px;
+
+// --- Layout ---
+$container-max-width: 1200px;
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 16px;
+$border-radius-full: 999px;
+
+// --- Elevation ---
+// No shadow token existed anywhere in the codebase before this refactor
+// (every surface used a flat border for separation) — this is a new
+// scale, not a change to an existing one. Kept subtle/neutral (not
+// brand-colored) so it reads as depth, not decoration.
+$shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.06);
+$shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.08);
+
+// --- Motion ---
+// No JS animation library exists in this project (confirmed via
+// package.json) and none is introduced here — these back plain CSS
+// transitions/keyframes only.
+$transition-fast: 150ms ease;
+$transition-base: 250ms ease;
+$ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+// --- Overlays ---
+// Centralizes the rgba(255,255,255,0.1) hover wash previously duplicated
+// verbatim in SiteHeader and LanguageSwitcher (both sit on the primary-red
+// header background).
+$overlay-on-primary-hover: rgba(255, 255, 255, 0.1);
+
+// --- Z-index layers ---
+$z-header: 10;
+$z-overlay: 100;
+
+// --- Focus / accessibility ---
+// Default focus ring is primary red: against the app's predominantly
+// white/light backgrounds it measures ~8.85:1 contrast, well above the
+// 3:1 WCAG 1.4.11 non-text-contrast minimum. The accent yellow was
+// considered but measures only ~2.08:1 against white — not an invented
+// color, just the wrong semantic slot for this role (see SiteHeader/
+// LanguageSwitcher for the one context where accent yellow IS the
+// correct choice, since those sit directly on the primary-red header).
+$focus-ring-color: $color-brand-primary;
+$focus-ring-width: 3px;
+$touch-target-min: 44px;

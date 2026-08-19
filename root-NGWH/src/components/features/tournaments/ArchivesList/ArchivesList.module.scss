@@ -1,0 +1,38 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.section {
+  padding: $space-8 0;
+
+  @media (min-width: $breakpoint-desktop) {
+    padding: $space-16 0;
+  }
+}
+
+.heading {
+  @include section-heading;
+}
+
+.empty {
+  @include empty-state-text;
+}
+
+// Single column at every width — a short list of years has no
+// multi-column layout to gain from (.ai/lld/tournaments.md §11).
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  padding: $space-3 $space-4;
+  background: $color-neutral-100;
+  border-radius: $border-radius-sm;
+  font-family: $font-family-display;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-base;
+}

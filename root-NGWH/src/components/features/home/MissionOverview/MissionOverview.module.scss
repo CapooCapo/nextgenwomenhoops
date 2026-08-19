@@ -1,0 +1,60 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.section {
+  padding-top: $space-8;
+  padding-bottom: $space-8;
+
+  @include breakpoint-desktop {
+    padding-top: $space-16;
+    padding-bottom: $space-16;
+  }
+}
+
+.content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.heading {
+  @include section-heading;
+  
+  // Override section-heading's left border accent for the centered mission text
+  &::before {
+    display: none;
+  }
+  padding-left: 0;
+  text-align: center;
+}
+
+.body {
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $color-neutral-700;
+  margin: 0;
+
+  p {
+    margin: 0 0 $space-4 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  @include breakpoint-tablet {
+    font-size: $font-size-lg;
+  }
+}
+
+.tagline {
+  margin-top: $space-6;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-brand-primary;
+  font-style: italic;
+
+  @include breakpoint-tablet {
+    font-size: $font-size-xl;
+  }
+}

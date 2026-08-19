@@ -1,0 +1,146 @@
+@use "variables" as *;
+
+@mixin breakpoint-tablet {
+  @media (min-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin breakpoint-desktop {
+  @media (min-width: $breakpoint-desktop) {
+    @content;
+  }
+}
+
+// Visible, high-contrast focus ring — never remove focus outlines without
+// replacing them with something at least this visible (accessibility
+// baseline, Sprint 0). Accepts an optional color override for contexts
+// where the default doesn't contrast against the immediate background
+// (e.g. a component rendered directly on the primary-colored header) —
+// see SiteHeader/LanguageSwitcher for the one place this is used.
+@mixin focus-ring($color: $focus-ring-color) {
+  outline: $focus-ring-width solid $color;
+  outline-offset: 2px;
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Centralizes the 1-col → tablet → desktop grid previously duplicated
+// verbatim across 7 feature components (ClubMemberList, ArticleList,
+// ClubDirectoryList, BehindScenesSection, MediaAlbum, HotNewsList,
+// PartnersSection) — same breakpoints/behavior, one definition.
+@mixin responsive-grid($tablet-cols: 2, $desktop-cols: 3, $gap: $space-6) {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $gap;
+
+  @include breakpoint-tablet {
+    grid-template-columns: repeat($tablet-cols, 1fr);
+  }
+
+  @include breakpoint-desktop {
+    grid-template-columns: repeat($desktop-cols, 1fr);
+  }
+}
+
+// Centralizes the page-heading style duplicated verbatim across
+// gallery/news/clubs/club-registration page.module.scss files. Now
+// carries the display face for the sports-media typographic direction.
+@mixin page-title {
+  font-family: $font-family-display;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-3xl;
+  line-height: $line-height-display;
+  letter-spacing: $letter-spacing-tight;
+  margin: $space-8 0 $space-6;
+
+  @include breakpoint-desktop {
+    margin-top: $space-16;
+    font-size: $font-size-4xl;
+  }
+}
+
+// Centralizes the "empty state" text style repeated verbatim across
+// nearly every data-driven feature component.
+@mixin empty-state-text {
+  font-size: $font-size-base;
+  color: $color-neutral-700;
+}
+
+// Small-caps-style label for section headings/category tags/metadata —
+// uppercase used selectively (labels only, never body copy or full
+// headings) per the sports-media typographic direction.
+@mixin section-label {
+  font-family: $font-family-display;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing-wide;
+  font-size: $font-size-sm;
+}
+
+// Bold, prominent section heading — a display-face upgrade of the plain
+// h2 style previously duplicated verbatim across Home/About/News/Gallery
+// (font-size-2xl, line-height-tight, margin: 0 0 $space-6). The left
+// accent bar is the one recurring "directional accent" motif reused
+// sitewide (also see HeroSection's .eyebrow) instead of a different
+// decorative treatment per page.
+@mixin section-heading {
+  position: relative;
+  padding-left: $space-4;
+  font-family: $font-family-display;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-2xl;
+  line-height: $line-height-display;
+  letter-spacing: $letter-spacing-tight;
+  margin: 0 0 $space-6;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    bottom: 0.15em;
+    width: 4px;
+    background: $color-brand-accent;
+  }
+
+  @include breakpoint-desktop {
+    font-size: $font-size-3xl;
+  }
+}
+
+// New elevation/motion pattern for cards — this project had zero
+// box-shadow usage anywhere before this refactor (flat, border-only
+// surfaces). Restrained: a subtle resting shadow, a slightly stronger
+// one plus a small lift on hover/focus-within. Respects
+// prefers-reduced-motion by disabling the transform (the shadow change
+// alone still communicates the state, just without motion).
+@mixin card-elevate {
+  box-shadow: $shadow-sm;
+  transition: transform $transition-base, box-shadow $transition-base;
+
+  &:hover,
+  &:focus-within {
+    box-shadow: $shadow-md;
+    transform: translateY(-4px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: box-shadow $transition-fast;
+
+    &:hover,
+    &:focus-within {
+      transform: none;
+    }
+  }
+}

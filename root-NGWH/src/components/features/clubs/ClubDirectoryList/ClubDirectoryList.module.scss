@@ -1,0 +1,15 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.empty {
+  @include empty-state-text;
+}
+
+.grid {
+  @include responsive-grid(2, 3, $space-6);
+  padding-bottom: $space-8;
+
+  @include breakpoint-desktop {
+    padding-bottom: $space-16;
+  }
+}

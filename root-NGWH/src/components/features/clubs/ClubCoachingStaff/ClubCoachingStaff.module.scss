@@ -1,0 +1,35 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.section {
+  padding-bottom: $space-8;
+
+  @include breakpoint-desktop {
+    padding-bottom: $space-16;
+  }
+}
+
+.heading {
+  @include section-heading;
+}
+
+.empty {
+  @include empty-state-text;
+}
+
+.grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  @include responsive-grid(2, 3, $space-4);
+}
+
+.item {
+  padding: $space-3 $space-4;
+  background-color: $color-neutral-100;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  color: $color-neutral-900;
+}

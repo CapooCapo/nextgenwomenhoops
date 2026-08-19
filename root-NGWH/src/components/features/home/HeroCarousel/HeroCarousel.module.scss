@@ -1,0 +1,325 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+// Kept in sync by comment with HeroCarousel.tsx's SLIDE_DURATION_MS (7s).
+$indicator-fill-duration: 7s;
+
+.heroFrame {
+  position: relative;
+}
+
+// Same aspect-ratio-boxed, CLS-safe frame the previous single-image Hero
+// used — now the stacking context for multiple absolutely-positioned
+// slide layers instead of one image.
+.frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 220px;
+  overflow: hidden;
+  border-radius: $border-radius-lg;
+  background: $color-neutral-100;
+  box-shadow: $shadow-lg;
+
+  @include breakpoint-tablet {
+    aspect-ratio: 21 / 9;
+    min-height: auto;
+  }
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 600ms ease;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.slideActive {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  // Centered by default — real per-clip framing (e.g. biasing toward the
+  // action/players) can only be tuned once real footage exists; not
+  // guessed here (see src/config/heroSlides.ts).
+  object-position: center;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.25) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  padding-bottom: $space-6;
+  width: 100%;
+
+  @include breakpoint-tablet {
+    padding-bottom: $space-8;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.45) 50%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+}
+
+.content {
+  max-width: 40rem;
+
+  @media (max-width: #{$breakpoint-tablet - 1px}) {
+    display: none;
+  }
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  color: $color-neutral-0;
+  margin: 0 0 $space-1;
+
+  @include section-label;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 3px;
+    background: $color-brand-accent;
+    transform: skewX(-20deg);
+
+    @include breakpoint-tablet {
+      width: 28px;
+    }
+  }
+}
+
+.tagline {
+  color: $color-neutral-0;
+  font-family: $font-family-display;
+  font-weight: $font-weight-bold;
+  font-size: clamp(1.375rem, 5vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: $letter-spacing-tight;
+  margin: 0;
+  word-break: break-word;
+
+  @include breakpoint-tablet {
+    font-size: $font-size-4xl;
+    line-height: $line-height-display;
+  }
+
+  @include breakpoint-desktop {
+    font-size: $font-size-5xl;
+  }
+}
+
+.description {
+  color: $color-neutral-0;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  margin: $space-3 0 0;
+  max-width: 60ch;
+
+  @media (max-width: #{$breakpoint-tablet - 1px}) {
+    display: none;
+  }
+}
+
+.cta {
+  margin-top: $space-2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, $color-brand-accent 0%, #e08b00 100%) !important;
+  color: $color-neutral-900 !important;
+  font-family: $font-family-display !important;
+  font-size: clamp(0.875rem, 2vw + 0.4rem, 1rem) !important;
+  font-weight: $font-weight-bold !important;
+  text-transform: uppercase !important;
+  letter-spacing: $letter-spacing-wide !important;
+  padding: $space-2 $space-4 !important;
+  min-height: 44px;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  white-space: normal;
+  border-radius: $border-radius-md !important;
+  box-shadow: 0 4px 16px rgba($color-brand-accent, 0.4), 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  transition: background $transition-fast, box-shadow $transition-fast, transform $transition-fast !important;
+
+  @include breakpoint-tablet {
+    margin-top: $space-4;
+    padding: $space-3 $space-8 !important;
+    font-size: $font-size-lg !important;
+    box-shadow: 0 4px 20px rgba($color-brand-accent, 0.45), 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, #ffb338 0%, $color-brand-accent 100%) !important;
+    color: $color-neutral-900 !important;
+    box-shadow: 0 6px 28px rgba($color-brand-accent, 0.65), 0 4px 8px rgba(0, 0, 0, 0.3) !important;
+    transform: translateY(-2px) scale(1.02) !important;
+  }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  margin-top: 0;
+  width: 100%;
+
+  @include breakpoint-tablet {
+    justify-content: flex-start;
+    gap: $space-3;
+    width: auto;
+    margin-top: $space-6;
+  }
+}
+
+.navButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: $border-radius-full;
+  background: rgba(0, 0, 0, 0.3);
+  color: $color-neutral-0;
+  font-size: $font-size-base;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color $transition-fast, border-color $transition-fast;
+
+  @include breakpoint-tablet {
+    width: $touch-target-min;
+    height: $touch-target-min;
+    font-size: $font-size-xl;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: $color-neutral-0;
+  }
+
+  &:focus-visible {
+    @include focus-ring($color-brand-accent);
+  }
+}
+
+.indicators {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+
+  @include breakpoint-tablet {
+    gap: $space-2;
+  }
+}
+
+// Each indicator is a real button (min touch-target height via padding),
+// not just the thin visual track — the track alone would fail the
+// touch-target-size guidance.
+.indicator {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: $space-1;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+
+  @include breakpoint-tablet {
+    min-height: $touch-target-min;
+    padding: $space-2;
+  }
+
+  &:focus-visible {
+    @include focus-ring($color-brand-accent);
+  }
+}
+
+.indicatorTrack {
+  display: block;
+  width: 24px;
+  height: 3px;
+  border-radius: $border-radius-full;
+  background: rgba(255, 255, 255, 0.35);
+  overflow: hidden;
+
+  @include breakpoint-tablet {
+    width: 56px;
+    height: 4px;
+  }
+}
+
+.indicatorFill {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: $color-brand-accent;
+}
+
+.indicatorFillFull {
+  width: 100%;
+}
+
+.indicatorFillAnimated {
+  animation: heroIndicatorGrow $indicator-fill-duration linear forwards;
+}
+
+@keyframes heroIndicatorGrow {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.counter {
+  margin: $space-2 0 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-family: $font-family-display;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  letter-spacing: $letter-spacing-wide;
+  text-align: center;
+
+  @include breakpoint-tablet {
+    margin: $space-3 0 0;
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicatorFillAnimated {
+    animation: none;
+    width: 100%;
+  }
+}

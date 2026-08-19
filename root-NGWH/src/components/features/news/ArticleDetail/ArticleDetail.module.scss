@@ -1,0 +1,75 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.article {
+  padding-bottom: $space-16;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: $space-8;
+  text-align: center;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-2;
+  margin-bottom: $space-4;
+  color: $color-neutral-700;
+  @include section-label;
+}
+
+.category {
+  color: $color-brand-primary;
+}
+
+.dot {
+  color: $color-neutral-300;
+}
+
+.date {
+  font-family: $font-family-base;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.title {
+  @include page-title;
+  margin: 0;
+}
+
+.imageWrapper {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: $color-neutral-100;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+  margin-bottom: $space-8;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.body {
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $color-neutral-900;
+  
+  @include breakpoint-tablet {
+    font-size: $font-size-lg;
+  }
+  
+  p {
+    margin-bottom: $space-4;
+  }
+}

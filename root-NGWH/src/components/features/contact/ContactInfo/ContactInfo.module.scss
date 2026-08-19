@@ -1,0 +1,62 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.section {
+  padding: $space-6 0;
+
+  @include breakpoint-desktop {
+    padding: $space-12 0;
+  }
+}
+
+.heading {
+  @include section-heading;
+}
+
+.empty {
+  @include empty-state-text;
+}
+
+.grid {
+  @include responsive-grid($tablet-cols: 2, $desktop-cols: 2, $gap: $space-6);
+  margin: 0;
+}
+
+.card {
+  background-color: $color-neutral-0;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-md;
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  @include card-elevate;
+}
+
+.label {
+  @include section-label;
+  color: $color-neutral-500;
+}
+
+.value {
+  margin: 0;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $color-neutral-900;
+  word-break: break-word;
+}
+
+.placeholder {
+  color: $color-neutral-500;
+  font-style: italic;
+}
+
+.link {
+  color: $color-brand-primary;
+  font-weight: $font-weight-semibold;
+  text-decoration: underline;
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}

@@ -1,0 +1,7 @@
+@use "../../../../styles/variables" as *;
+
+.wrapper {
+  // Styles are primarily handled by HeroCarousel
+  // This wrapper is just to maintain the component hierarchy
+  width: 100%;
+}

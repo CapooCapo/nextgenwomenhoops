@@ -1,0 +1,14 @@
+@use "../../../styles/variables" as *;
+
+.container {
+  width: 100%;
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding-left: $space-4;
+  padding-right: $space-4;
+
+  @media (min-width: $breakpoint-tablet) {
+    padding-left: $space-8;
+    padding-right: $space-8;
+  }
+}

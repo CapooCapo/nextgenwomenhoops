@@ -1,0 +1,23 @@
+# IDEs and Tools
+.ai/
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Environment & Dependencies
+.env
+.env.*
+!.env.example
+
+# Frontend build & cache
+root-NGWH/node_modules/
+root-NGWH/.next/
+root-NGWH/.swc/
+root-NGWH/*.tsbuildinfo
+
+# Local uploads & media
+media/
+root-NGWH/media/

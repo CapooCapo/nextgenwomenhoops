@@ -1,0 +1,33 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.input {
+  width: 100%;
+  padding: $space-3 $space-4;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-sm;
+  background-color: $color-neutral-0;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+
+  &:focus {
+    outline: none;
+    border-color: $color-brand-primary;
+    @include focus-ring;
+  }
+
+  &:disabled {
+    background-color: $color-neutral-100;
+    cursor: not-allowed;
+  }
+}
+
+.hasError {
+  border-color: $color-error;
+  
+  &:focus {
+    border-color: $color-error;
+    @include focus-ring($color-error);
+  }
+}

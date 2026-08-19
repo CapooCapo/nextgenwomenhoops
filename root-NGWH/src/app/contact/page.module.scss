@@ -1,0 +1,73 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.pageWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+  padding-bottom: 10px;
+}
+
+.heroSection {
+  text-align: center;
+  padding-top: $space-8;
+
+  @include breakpoint-desktop {
+    padding-top: $space-12;
+  }
+}
+
+.title {
+  @include page-title;
+  margin-top: 0;
+  margin-bottom: $space-4;
+}
+
+.intro {
+  max-width: 680px;
+  margin: 0 auto;
+  font-size: $font-size-lg;
+  line-height: $line-height-base;
+  color: $color-neutral-700;
+}
+
+.guidanceSection {
+  padding-bottom: $space-8;
+}
+
+.guidanceCard {
+  background-color: $color-neutral-100;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-md;
+  padding: $space-6;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+
+  @include breakpoint-desktop {
+    padding: $space-8;
+  }
+}
+
+.guidanceHeading {
+  @include section-heading;
+  margin-bottom: $space-3;
+
+  &::before {
+    display: none;
+  }
+}
+
+.guidanceBody {
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $color-neutral-700;
+  margin-bottom: $space-4;
+}
+
+.guidanceNotice {
+  font-size: $font-size-sm;
+  color: $color-brand-primary;
+  font-weight: $font-weight-semibold;
+  font-style: italic;
+}

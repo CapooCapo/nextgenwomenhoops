@@ -1,0 +1,18 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.placeholder {
+  @include responsive-grid(1, 1);
+  padding: $space-16 $space-4;
+  text-align: center;
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h1 {
+    @include page-title;
+    margin-top: 0;
+  }
+}

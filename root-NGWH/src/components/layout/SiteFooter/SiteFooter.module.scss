@@ -1,0 +1,21 @@
+@use "../../../styles/variables" as *;
+
+.footer {
+  background-color: $color-neutral-900;
+  color: $color-neutral-100;
+  padding: $space-8 0;
+  margin-top: auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.copyright {
+  font-size: $font-size-sm;
+  color: $color-neutral-300;
+  margin: 0;
+}

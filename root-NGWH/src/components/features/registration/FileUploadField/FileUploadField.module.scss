@@ -1,0 +1,37 @@
+@use "../../../../styles/variables" as *;
+
+.field {
+  margin-bottom: $space-6;
+}
+
+.hint {
+  font-size: $font-size-sm;
+  color: $color-neutral-500;
+  margin: 0 0 $space-2;
+}
+
+.input {
+  &[type="file"] {
+    padding: $space-2;
+    background-color: $color-neutral-0;
+    cursor: pointer;
+
+    &::file-selector-button {
+      background-color: $color-neutral-100;
+      border: 1px solid $color-neutral-300;
+      border-radius: $border-radius-sm;
+      color: $color-neutral-900;
+      font-family: $font-family-base;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      padding: $space-1 $space-3;
+      margin-right: $space-3;
+      cursor: pointer;
+      transition: background-color $transition-fast;
+
+      &:hover {
+        background-color: $color-neutral-300;
+      }
+    }
+  }
+}

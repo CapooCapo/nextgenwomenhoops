@@ -1,0 +1,14 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.card {
+  background-color: $color-neutral-0;
+  border-radius: $border-radius-lg;
+  border: 1px solid $color-neutral-300;
+  overflow: hidden;
+}
+
+.elevated {
+  border: none;
+  @include card-elevate;
+}

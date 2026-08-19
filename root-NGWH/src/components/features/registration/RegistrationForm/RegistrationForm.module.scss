@@ -1,0 +1,70 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.globalError {
+  margin-bottom: $space-8;
+}
+
+.section {
+  background-color: $color-neutral-0;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-lg;
+  padding: $space-6;
+  margin-bottom: $space-8;
+
+  @include breakpoint-desktop {
+    padding: $space-8;
+  }
+}
+
+.sectionTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-neutral-900;
+  margin: 0 0 $space-6;
+  padding-bottom: $space-4;
+  border-bottom: 1px solid $color-neutral-300;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: $space-8;
+}
+
+.submitBtn {
+  width: 100%;
+
+  @include breakpoint-tablet {
+    width: auto;
+    min-width: 200px;
+  }
+}
+
+.success {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: $space-12 $space-6;
+  background-color: $color-neutral-100;
+  border: 1px solid $color-brand-primary;
+  border-radius: $border-radius-lg;
+}
+
+.successTitle {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $color-brand-primary;
+  margin: 0 0 $space-4;
+}
+
+.successMessage {
+  font-size: $font-size-lg;
+  color: $color-neutral-700;
+  margin: 0;
+}

@@ -1,0 +1,265 @@
+@use "../../../styles/variables" as *;
+@use "../../../styles/mixins" as *;
+
+.header {
+  background-color: $color-brand-primary;
+  color: $color-neutral-0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: $z-header;
+  box-shadow: $shadow-md;
+  border-bottom: 1px solid transparent;
+  transition: background-color $transition-base, box-shadow $transition-base, border-color $transition-base, backdrop-filter $transition-base;
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.scrolled {
+  background-color: rgba($color-brand-primary, 0.92);
+  backdrop-filter: blur(8px);
+  box-shadow: $shadow-lg;
+  border-bottom: 1px solid rgba($color-brand-accent, 0.3);
+}
+
+.menuOpen {
+  background-color: $color-brand-primary;
+  backdrop-filter: none;
+}
+
+.skipLink {
+  @include visually-hidden;
+  &:focus {
+    position: absolute;
+    top: $space-4;
+    left: $space-4;
+    width: auto;
+    height: auto;
+    clip: auto;
+    white-space: normal;
+    background-color: $color-neutral-0;
+    color: $color-brand-primary;
+    padding: $space-2 $space-4;
+    border-radius: $border-radius-sm;
+    z-index: $z-overlay;
+    text-decoration: none;
+    font-weight: $font-weight-bold;
+    @include focus-ring($color-brand-primary);
+  }
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  max-width: 1400px;
+
+  @include breakpoint-desktop {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: $space-3;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.logoLink {
+  text-decoration: none;
+  color: $color-neutral-0;
+  display: inline-block;
+  border-radius: $border-radius-sm;
+  
+  &:focus-visible {
+    @include focus-ring($color-brand-accent);
+  }
+}
+
+.logoText {
+  font-family: $font-family-display;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-lg;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing-tight;
+  white-space: nowrap;
+
+  @include breakpoint-desktop {
+    font-size: $font-size-xl;
+  }
+}
+
+// Desktop Navigation
+.desktopNav {
+  display: none;
+  
+  @include breakpoint-desktop {
+    display: flex;
+    justify-content: center;
+    min-width: 0;
+  }
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(4px, 0.8vw, $space-4);
+}
+
+.navLink {
+  color: rgba($color-neutral-0, 0.85);
+  text-decoration: none;
+  font-weight: $font-weight-semibold;
+  font-size: clamp(0.75rem, 0.82vw, $font-size-sm);
+  text-transform: uppercase;
+  padding: $space-1 clamp(4px, 0.5vw, $space-2);
+  border-radius: $border-radius-sm;
+  white-space: nowrap;
+  transition: color $transition-fast, background-color $transition-fast;
+
+  &:hover {
+    color: $color-neutral-0;
+    background-color: $overlay-on-primary-hover;
+  }
+  
+  &:focus-visible {
+    @include focus-ring($color-brand-accent);
+  }
+}
+
+// Desktop Actions
+.desktopActions {
+  display: none;
+
+  @include breakpoint-desktop {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+}
+
+// Mobile Menu Button
+.menuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: transparent;
+  border: 1px solid rgba($color-neutral-0, 0.2);
+  border-radius: $border-radius-md;
+  color: $color-neutral-0;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color $transition-fast, border-color $transition-fast;
+
+  &:hover {
+    background-color: $overlay-on-primary-hover;
+    border-color: rgba($color-neutral-0, 0.4);
+  }
+
+  &:focus-visible {
+    @include focus-ring($color-brand-accent);
+  }
+
+  @include breakpoint-desktop {
+    display: none;
+  }
+}
+
+.menuIcon {
+  display: block;
+}
+
+// Mobile Navigation Menu Drawer
+.mobileMenu {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: calc(100dvh - 64px);
+  max-height: calc(100dvh - 64px);
+  background-color: $color-brand-primary;
+  border-top: 1px solid rgba($color-brand-accent, 0.2);
+  overflow-y: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity $transition-base, transform $transition-base, visibility $transition-base;
+  z-index: $z-header - 1;
+
+  @include breakpoint-desktop {
+    display: none !important;
+  }
+}
+
+.mobileMenuVisible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mobileMenuContainer {
+  padding-top: $space-4;
+  padding-bottom: $space-8;
+  display: flex;
+  flex-direction: column;
+  gap: $space-6;
+}
+
+.mobileNavList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.mobileNavLink {
+  display: block;
+  color: $color-neutral-0;
+  text-decoration: none;
+  font-family: $font-family-display;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing-wide;
+  padding: $space-3 $space-4;
+  border-radius: $border-radius-md;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background-color $transition-fast, color $transition-fast, border-color $transition-fast;
+
+  &:hover,
+  &:active {
+    background-color: $overlay-on-primary-hover;
+    color: $color-brand-accent;
+    border-color: rgba($color-brand-accent, 0.4);
+  }
+
+  &:focus-visible {
+    @include focus-ring($color-brand-accent);
+  }
+}
+
+.mobileActions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: $space-4;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}

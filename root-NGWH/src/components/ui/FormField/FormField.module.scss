@@ -1,0 +1,14 @@
+@use "../../../styles/variables" as *;
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  margin-bottom: $space-4;
+}
+
+.errorText {
+  color: $color-error;
+  font-size: $font-size-sm;
+  margin-top: $space-1;
+}

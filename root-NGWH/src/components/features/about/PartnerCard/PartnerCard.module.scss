@@ -1,0 +1,48 @@
+@use "../../../../styles/variables" as *;
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: $space-6;
+  height: 100%;
+}
+
+.logoWrapper {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  margin-bottom: $space-4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.textOnlyFallback {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  margin-bottom: $space-4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $color-neutral-100;
+  border-radius: $border-radius-sm;
+}
+
+.name {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-neutral-900;
+  margin-bottom: $space-2;
+}
+
+.role {
+  font-size: $font-size-sm;
+  color: $color-neutral-500;
+}

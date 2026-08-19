@@ -1,0 +1,86 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.section {
+  padding-bottom: $space-8;
+
+  @include breakpoint-desktop {
+    padding-bottom: $space-16;
+  }
+}
+
+.heading {
+  @include section-heading;
+}
+
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+
+  @include breakpoint-tablet {
+    flex-direction: row;
+    gap: $space-12;
+  }
+}
+
+.column {
+  flex: 1;
+}
+
+.subheading {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-neutral-900;
+  margin: 0 0 $space-4;
+}
+
+.empty {
+  @include empty-state-text;
+}
+
+.content {
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $color-neutral-700;
+
+  p {
+    margin-bottom: $space-2;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.socialList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $color-neutral-700;
+
+  li {
+    margin-bottom: $space-2;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.link {
+  color: $color-brand-primary;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: none;
+    @include focus-ring($color-brand-accent);
+  }
+}

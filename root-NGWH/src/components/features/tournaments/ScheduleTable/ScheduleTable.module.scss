@@ -1,0 +1,156 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.section {
+  padding: $space-8 0;
+
+  @media (min-width: $breakpoint-desktop) {
+    padding: $space-16 0;
+  }
+}
+
+.heading {
+  @include section-heading;
+}
+
+.empty {
+  @include empty-state-text;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: $border-radius-md;
+  color: $color-neutral-0;
+  overflow: hidden;
+  transition: border-color $transition-fast;
+
+  &:hover {
+    border-color: $color-brand-accent;
+  }
+}
+
+.matchMain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $space-6 $space-4;
+  gap: $space-4;
+  background-color: $color-neutral-900;
+}
+
+.team {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  flex: 1;
+  min-width: 0;
+}
+
+.teamHome {
+  justify-content: flex-end;
+}
+
+.teamAway {
+  justify-content: flex-start;
+}
+
+.teamName {
+  font-family: $font-family-display;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-base;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @include breakpoint-tablet {
+    font-size: $font-size-xl;
+  }
+}
+
+.teamLogo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+
+  @include breakpoint-tablet {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.vsBadge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: $font-family-display;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-sm;
+  color: $color-neutral-500;
+  text-transform: uppercase;
+  padding: $space-1 $space-3;
+  background-color: #2a2a2a;
+  border-radius: $border-radius-sm;
+  flex-shrink: 0;
+}
+
+.matchMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $space-3 $space-4;
+  background-color: #111;
+  border-top: 1px solid #333;
+  font-size: $font-size-xs;
+  color: $color-neutral-300;
+  font-family: $font-family-base;
+  text-transform: uppercase;
+  letter-spacing: $letter-spacing-wide;
+}
+
+.metaLeft, .metaRight {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.metaDivider {
+  color: $color-neutral-700;
+}
+
+.dateTime, .venue {
+  margin: 0;
+  font-weight: $font-weight-semibold;
+}
+
+// Status overrides for dark theme
+.status {
+  display: inline-flex;
+  align-items: center;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
+}
+
+.status_scheduled {
+  color: $color-neutral-500;
+}
+
+.status_completed {
+  color: $color-success;
+}
+
+.status_postponed {
+  color: $color-error;
+}

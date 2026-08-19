@@ -1,0 +1,12 @@
+@use "../../../styles/variables" as *;
+
+.label {
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+  color: $color-neutral-900;
+}
+
+.required {
+  color: $color-error;
+  margin-left: 0.25em;
+}

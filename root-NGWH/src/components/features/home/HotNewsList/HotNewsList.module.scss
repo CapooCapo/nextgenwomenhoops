@@ -1,0 +1,48 @@
+@use "../../../../styles/variables" as *;
+@use "../../../../styles/mixins" as *;
+
+.section {
+  padding-bottom: $space-8;
+
+  @include breakpoint-desktop {
+    padding-bottom: $space-16;
+  }
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: $space-6;
+}
+
+.heading {
+  @include section-heading;
+  margin-bottom: 0; // Handled by headerRow
+}
+
+.viewAll {
+  font-family: $font-family-base;
+  font-weight: $font-weight-semibold;
+  color: $color-brand-primary;
+  text-decoration: none;
+  font-size: $font-size-sm;
+  padding: $space-1 $space-2;
+  border-radius: $border-radius-sm;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.grid {
+  @include responsive-grid(2, 3, $space-6);
+}
+
+.empty {
+  @include empty-state-text;
+}
