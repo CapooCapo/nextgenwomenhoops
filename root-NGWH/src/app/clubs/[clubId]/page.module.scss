@@ -11,3 +11,81 @@
     gap: $space-12;
   }
 }
+
+.ownerBanner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: $space-4 $space-6;
+  background-color: rgba($color-brand-primary, 0.1);
+  border: 1px solid $color-brand-primary;
+  border-radius: $border-radius-md;
+  color: $color-brand-primary;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+}
+
+.editClubBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-2 $space-4;
+  background-color: $color-brand-primary;
+  color: $color-neutral-0;
+  text-decoration: none;
+  font-weight: $font-weight-bold;
+  border-radius: $border-radius-sm;
+  transition: background-color $transition-fast;
+
+  &:hover {
+    background-color: darken-color($color-brand-primary, 8%);
+  }
+}
+
+.documentsSection {
+  background-color: var(--color-surface, #1e1e2d);
+  border-radius: $border-radius-lg;
+  padding: $space-6;
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.1));
+}
+
+.sectionTitle {
+  font-size: $font-size-xl;
+  font-weight: 700;
+  margin-bottom: $space-4;
+  color: var(--color-text-primary, #ffffff);
+}
+
+.documentGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: $space-4;
+}
+
+.documentCard {
+  background-color: var(--color-surface-hover, #2a2a3c);
+  padding: $space-4;
+  border-radius: $border-radius-md;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+}
+
+.documentCardTitle {
+  font-size: $font-size-base;
+  font-weight: 600;
+  color: var(--color-text-primary, #ffffff);
+}
+
+.documentLink {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+  color: var(--color-brand-primary, #e60023);
+  font-weight: 600;
+  text-decoration: underline;
+  width: fit-content;
+
+  &:hover {
+    color: var(--color-brand-primary-hover, #ff1a3c);
+  }
+}

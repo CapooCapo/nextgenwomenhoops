@@ -14,7 +14,7 @@ export async function HotNewsList() {
   let error = false;
 
   try {
-    news = getHotNews(5);
+    news = await getHotNews(5);
   } catch {
     error = true;
   }

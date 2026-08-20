@@ -31,6 +31,6 @@ describe("ClubDirectoryFilter", () => {
     render(<ClubDirectoryFilter regions={["North", "South"]} />);
     const select = screen.getByRole("combobox");
     fireEvent.change(select, { target: { value: "North" } });
-    expect(mockPush).toHaveBeenCalledWith("/clubs?region=North");
+    expect(mockPush).toHaveBeenCalledWith("/clubs?region=North&page=1");
   });
 });

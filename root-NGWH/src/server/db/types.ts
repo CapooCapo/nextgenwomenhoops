@@ -11,6 +11,7 @@ export interface ClubRow {
   representative_name: string;
   capability_profile: string | null;
   u20_athlete_list: string | null;
+  user_id?: number | null;
 }
 
 export interface PlayerRow {
@@ -44,4 +45,10 @@ export interface MatchRow {
   scheduled_at: Date;
   venue: string | null;
   status: string;
+  home_score?: number | null;
+  away_score?: number | null;
+  home_fouls?: number | null;
+  away_fouls?: number | null;
+  timer?: string | null;
+  period?: string | null;
 }

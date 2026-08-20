@@ -14,6 +14,10 @@ jest.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
 }));
 
+jest.mock("../../../../app/club-registration/actions", () => ({
+  submitClubRegistrationAction: jest.fn(),
+}));
+
 describe("RegistrationForm", () => {
   it("renders form fields correctly in idle state", () => {
     mockUseActionState.mockReturnValue([

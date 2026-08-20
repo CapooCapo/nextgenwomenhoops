@@ -52,57 +52,62 @@ describe("ClubsPage", () => {
     mockedGetClubs.mockReset();
   });
 
-  it("fetches the unfiltered list once when no region is selected", async () => {
-    mockedGetClubs.mockResolvedValueOnce([
-      {
-        id: 1,
-        name: "Hanoi Stars",
-        logo: null,
-        founding_year: null,
-        achievements: null,
-        province_region: "Hanoi",
-      },
-    ]);
+  it("fetches the list with pagination when no region is selected", async () => {
+    mockedGetClubs.mockResolvedValue({
+      data: [
+        {
+          id: 1,
+          name: "Hanoi Stars",
+          logo: null,
+          founding_year: null,
+          achievements: null,
+          province_region: "Hanoi",
+        },
+      ],
+      pagination: { page: 1, limit: 9, total: 1, totalPages: 1 },
+    });
 
     render(await ClubsPage({ searchParams: Promise.resolve({}) }));
 
-    expect(mockedGetClubs).toHaveBeenCalledTimes(1);
-    expect(mockedGetClubs).toHaveBeenCalledWith();
+    expect(mockedGetClubs).toHaveBeenCalledWith({
+      provinceRegion: undefined,
+      search: undefined,
+      page: 1,
+      limit: 9,
+    });
     expect(screen.getByText("Hanoi Stars")).toBeInTheDocument();
   });
 
-  it("fetches the collection once and filters in memory when a region is selected", async () => {
-    mockedGetClubs.mockResolvedValueOnce([
-      {
-        id: 1,
-        name: "Hanoi Stars",
-        logo: null,
-        founding_year: null,
-        achievements: null,
-        province_region: "Hanoi",
-      },
-      {
-        id: 2,
-        name: "HCMC Aces",
-        logo: null,
-        founding_year: null,
-        achievements: null,
-        province_region: "Ho Chi Minh City",
-      },
-    ]);
+  it("passes region parameter to getClubs when a region is selected", async () => {
+    mockedGetClubs.mockResolvedValue({
+      data: [
+        {
+          id: 1,
+          name: "Hanoi Stars",
+          logo: null,
+          founding_year: null,
+          achievements: null,
+          province_region: "Hanoi",
+        },
+      ],
+      pagination: { page: 1, limit: 9, total: 1, totalPages: 1 },
+    });
 
     render(
       await ClubsPage({ searchParams: Promise.resolve({ region: "Hanoi" }) }),
     );
 
-    expect(mockedGetClubs).toHaveBeenCalledTimes(1);
-    expect(mockedGetClubs).toHaveBeenCalledWith();
+    expect(mockedGetClubs).toHaveBeenCalledWith({
+      provinceRegion: "Hanoi",
+      search: undefined,
+      page: 1,
+      limit: 9,
+    });
     expect(screen.getByText("Hanoi Stars")).toBeInTheDocument();
-    expect(screen.queryByText("HCMC Aces")).not.toBeInTheDocument();
   });
 
   it("renders the shared ErrorMessage instead of the list when the fetch fails", async () => {
-    mockedGetClubs.mockRejectedValueOnce(new Error("network error"));
+    mockedGetClubs.mockRejectedValue(new Error("network error"));
 
     render(await ClubsPage({ searchParams: Promise.resolve({}) }));
 

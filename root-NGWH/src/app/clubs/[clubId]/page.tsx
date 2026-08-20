@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { getTranslations } from "next-intl/server";
+import { getUserSession } from "@/server/auth/userAuth";
 import { Container } from "@/components/ui/Container/Container";
 import { ErrorMessage } from "@/components/ui/ErrorMessage/ErrorMessage";
 import { ClubProfileHeader } from "@/components/features/clubs/ClubProfileHeader/ClubProfileHeader";
@@ -15,17 +17,12 @@ interface ClubProfilePageProps {
   params: Promise<{ clubId: string }>;
 }
 
-// Sprint 2 Batch 4 — REQ-CLUB-003 (display gate)/004/005/006. See
-// .ai/lld/club-profile.md. A club that doesn't exist or isn't approved
-// both 404 identically (§10) — BR-001 never leaks approval state via a
-// distinct message. A genuine fetch failure renders ErrorMessage instead
-// (§10), matching ClubsPage's/ArticleDetail's existing pattern. Section
-// components are invoked and awaited directly (not nested as JSX), the
-// same async-Server-Component composition pattern already required by
-// Home/News/About/Directory, since each is an async component.
 export default async function ClubProfilePage({ params }: ClubProfilePageProps) {
   const { clubId } = await params;
-  const t = await getTranslations();
+  const [t, session] = await Promise.all([
+    getTranslations(),
+    getUserSession(),
+  ]);
 
   let club: ClubDetail | null;
   try {
@@ -42,9 +39,22 @@ export default async function ClubProfilePage({ params }: ClubProfilePageProps) 
     notFound();
   }
 
+  const isOwner = session.authenticated && session.user && club.user_id === session.user.id;
+
   return (
     <Container>
       <div className={styles.page}>
+        {isOwner && (
+          <div className={styles.ownerBanner}>
+            <span>Bạn là người quản lý câu lạc bộ này</span>
+            <Link
+              href={`/account/clubs/${club.id}/edit`}
+              className={styles.editClubBtn}
+            >
+              ✏️ Chỉnh sửa CLB
+            </Link>
+          </div>
+        )}
         {await ClubProfileHeader({ club })}
         {await ClubAchievements({ achievements: club.achievements })}
         {await ClubRoster({ players: club.players })}
@@ -53,6 +63,45 @@ export default async function ClubProfilePage({ params }: ClubProfilePageProps) 
           contactInfo: club.contact_info,
           socialLinks: club.social_links,
         })}
+        {(club.capability_profile || club.u20_athlete_list) && (
+          <section className={styles.documentsSection}>
+            <h2 className={styles.sectionTitle}>
+              {t("clubs.profile.documents.heading")}
+            </h2>
+            <div className={styles.documentGrid}>
+              {club.capability_profile && (
+                <div className={styles.documentCard}>
+                  <h3 className={styles.documentCardTitle}>
+                    {t("clubs.profile.documents.capabilityProfile")}
+                  </h3>
+                  <a
+                    href={club.capability_profile}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.documentLink}
+                  >
+                    {t("clubs.profile.documents.viewDocument")}
+                  </a>
+                </div>
+              )}
+              {club.u20_athlete_list && (
+                <div className={styles.documentCard}>
+                  <h3 className={styles.documentCardTitle}>
+                    {t("clubs.profile.documents.u20AthleteList")}
+                  </h3>
+                  <a
+                    href={club.u20_athlete_list}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.documentLink}
+                  >
+                    {t("clubs.profile.documents.viewDocument")}
+                  </a>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
       </div>
     </Container>
   );

@@ -29,8 +29,23 @@ export interface ClubDetail extends Club {
   contact_info: unknown;
   /** Shape not confirmed (.ai/lld/clubs.md §12) — rendered defensively, no locale-switching. */
   social_links: unknown;
+  capability_profile?: string | null;
+  u20_athlete_list?: string | null;
   players: ClubRosterMember[];
   coach_staff: ClubRosterMember[];
+  user_id?: number | null;
+}
+
+export interface ClubPagination {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface PaginatedClubsResponse {
+  data: Club[];
+  pagination: ClubPagination;
 }
 
 // Club Registration data shape — Sprint 3 (.ai/lld/club-registration.md
@@ -42,6 +57,7 @@ export interface ClubRegistrationResult {
   name: string;
   province_region: string;
   representative_name: string;
+  logo: string | null;
   capability_profile: string | null;
   u20_athlete_list: string | null;
 }

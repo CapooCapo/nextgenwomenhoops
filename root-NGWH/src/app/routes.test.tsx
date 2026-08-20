@@ -64,6 +64,14 @@ jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: jest.fn() }),
   usePathname: () => "/clubs",
   useSearchParams: () => new URLSearchParams(),
+  redirect: jest.fn(),
+}));
+
+jest.mock("@/server/auth/userAuth", () => ({
+  getUserSession: jest.fn().mockResolvedValue({
+    authenticated: true,
+    user: { id: 1, email: "test@example.com", role: "club_user" },
+  }),
 }));
 
 // ClubRegistrationPage reads the intro-seen cookie server-side; mocked
@@ -80,7 +88,10 @@ jest.mock("next/headers", () => ({
 // ClubsPage fetches from the API service; mocked here since this is a
 // routing-shell smoke test, not a network integration test.
 jest.mock("@/services/clubsService", () => ({
-  getClubs: jest.fn().mockResolvedValue([]),
+  getClubs: jest.fn().mockResolvedValue({
+    data: [],
+    pagination: { page: 1, limit: 9, total: 0, totalPages: 1 },
+  }),
 }));
 
 // RegistrationForm submits via this Server Action; mocked here for the

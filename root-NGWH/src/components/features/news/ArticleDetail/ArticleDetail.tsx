@@ -20,7 +20,7 @@ export async function ArticleDetail({ slug }: ArticleDetailProps) {
   let error = false;
 
   try {
-    article = getArticleBySlug(slug);
+    article = await getArticleBySlug(slug);
   } catch (err) {
     error = true;
   }

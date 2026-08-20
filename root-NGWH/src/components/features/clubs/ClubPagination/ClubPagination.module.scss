@@ -1,0 +1,43 @@
+@use "../../../../styles/variables" as *;
+
+.paginationNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $space-4;
+  margin-top: $space-8;
+}
+
+.pageNumbers {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+}
+
+.pageNumberBtn {
+  background: none;
+  border: 1px solid var(--color-border, rgba(255, 255, 255, 0.2));
+  color: var(--color-text-primary, #ffffff);
+  padding: $space-2 $space-3;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  font-weight: 600;
+
+  &:hover {
+    background-color: var(--color-surface-hover, rgba(255, 255, 255, 0.1));
+  }
+}
+
+.activePage {
+  background-color: var(--color-brand-primary, #e60023);
+  border-color: var(--color-brand-primary, #e60023);
+  color: #ffffff;
+
+  &:hover {
+    background-color: var(--color-brand-primary, #e60023);
+  }
+}
+
+.pageBtn {
+  min-width: 90px;
+}

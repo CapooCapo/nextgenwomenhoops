@@ -1,0 +1,89 @@
+@use "@/styles/variables" as *;
+
+.sidebar {
+  width: 240px;
+  background-color: #0f172a;
+  border-right: 1px solid #1e293b;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.brand {
+  padding: 1.5rem;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-accent, #f59e0b);
+  border-bottom: 1px solid #1e293b;
+
+  span {
+    color: #ffffff;
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.25rem;
+  }
+}
+
+.nav {
+  flex: 1;
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  color: #94a3b8;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #1e293b;
+    color: #ffffff;
+  }
+
+  &.active {
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--color-accent, #f59e0b);
+    font-weight: 600;
+  }
+}
+
+.footer {
+  padding: 1rem;
+  border-top: 1px solid #1e293b;
+}
+
+.logoutBtn {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  background: transparent;
+  border: 1px solid #334155;
+  border-radius: 6px;
+  color: #ef4444;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(239, 68, 68, 0.1);
+  }
+}

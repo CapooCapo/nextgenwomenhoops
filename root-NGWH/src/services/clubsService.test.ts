@@ -17,7 +17,7 @@ describe("clubsService", () => {
     await getClubs();
 
     const requestedUrl = new URL(mockFetch.mock.calls[0][0]);
-    expect(requestedUrl.pathname).toBe("/api/clubs/");
+    expect(requestedUrl.pathname).toBe("/api/clubs");
     expect(requestedUrl.searchParams.has("province_region")).toBe(false);
     expect(mockFetch.mock.calls[0][1]).toEqual({ cache: "no-store" });
   });
@@ -35,13 +35,16 @@ describe("clubsService", () => {
   });
 
   it("returns the parsed JSON body on success", async () => {
-    const clubs = [{ id: 1, name: "Test Club" }];
+    const responseData = {
+      data: [{ id: 1, name: "Test Club" }],
+      pagination: { page: 1, limit: 9, total: 1, totalPages: 1 },
+    };
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => clubs,
+      json: async () => responseData,
     });
 
-    await expect(getClubs()).resolves.toEqual(clubs);
+    await expect(getClubs()).resolves.toEqual(responseData);
   });
 
   it("throws when the response is not ok", async () => {
@@ -73,7 +76,7 @@ describe("getClubById", () => {
     await getClubById(1);
 
     const requestedUrl = new URL(mockFetch.mock.calls[0][0]);
-    expect(requestedUrl.pathname).toBe("/api/clubs/1/");
+    expect(requestedUrl.pathname).toBe("/api/clubs/1");
     expect(mockFetch.mock.calls[0][1]).toEqual({ cache: "no-store" });
   });
 
@@ -128,7 +131,7 @@ describe("registerClub", () => {
     await registerClub(formData);
 
     const [requestedUrl, options] = mockFetch.mock.calls[0];
-    expect(new URL(requestedUrl).pathname).toBe("/api/clubs/");
+    expect(new URL(requestedUrl).pathname).toBe("/api/clubs");
     expect(options).toEqual({ method: "POST", body: formData });
   });
 
@@ -149,12 +152,13 @@ describe("registerClub", () => {
     });
   });
 
-  it("returns ok:false with networkError on an unexpected status", async () => {
-    mockFetch.mockResolvedValueOnce({ status: 500, json: async () => ({}) });
+  it("returns ok:false with HTTP status on an unexpected status", async () => {
+    mockFetch.mockResolvedValueOnce({ status: 500, statusText: "Internal Server Error", json: async () => ({}) });
 
     await expect(registerClub(new FormData())).resolves.toEqual({
       ok: false,
-      networkError: true,
+      status: 500,
+      message: "Internal Server Error",
     });
   });
 

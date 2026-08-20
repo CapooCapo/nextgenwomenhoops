@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { registerClub } from "@/services/clubsService";
 import type { RegistrationActionState } from "./registrationActionState";
 
@@ -18,11 +20,16 @@ export async function submitClubRegistrationAction(
 ): Promise<RegistrationActionState> {
   const result = await registerClub(formData);
 
-  if (result.ok) {
-    return { status: "success" };
+  if (!result.ok) {
+    if ("fieldErrors" in result && result.fieldErrors) {
+      return { status: "error", fieldErrors: result.fieldErrors };
+    }
+    if ("networkError" in result && result.networkError) {
+      return { status: "error", networkError: true };
+    }
+    return { status: "error" };
   }
-  if ("fieldErrors" in result) {
-    return { status: "error", fieldErrors: result.fieldErrors };
-  }
-  return { status: "error", networkError: true };
+
+  revalidatePath("/clubs");
+  redirect("/clubs");
 }

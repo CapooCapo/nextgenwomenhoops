@@ -49,6 +49,7 @@ export function RegistrationForm() {
           <Input
             id="name"
             name="name"
+            placeholder="Enter club name"
             required
             aria-required="true"
             error={!!state.fieldErrors?.name}
@@ -60,6 +61,7 @@ export function RegistrationForm() {
           <Input
             id="province_region"
             name="province_region"
+            placeholder="Enter province or region"
             required
             aria-required="true"
             error={!!state.fieldErrors?.province_region}
@@ -71,6 +73,7 @@ export function RegistrationForm() {
           <Input
             id="representative_name"
             name="representative_name"
+            placeholder="Enter representative name"
             required
             aria-required="true"
             error={!!state.fieldErrors?.representative_name}
@@ -79,12 +82,22 @@ export function RegistrationForm() {
       </div>
 
       <div className={styles.section}>
-        <h2 className={styles.sectionTitle}>Documents</h2>
+        <h2 className={styles.sectionTitle}>Documents & Logo</h2>
+
+        <FileUploadField
+          id="logo"
+          name="logo"
+          label="Club Logo (PNG/JPEG)"
+          hint="Upload club logo (PNG or JPEG)"
+          accept="image/png,image/jpeg,image/webp,image/gif"
+          error={state.fieldErrors?.logo?.[0]}
+        />
         
         <FileUploadField
           id="capability_profile"
           name="capability_profile"
           label={t("clubRegistration.form.capabilityProfile")}
+          hint="Describe the club's facilities, training, and capabilities"
           error={state.fieldErrors?.capability_profile?.[0]}
         />
 
@@ -92,6 +105,7 @@ export function RegistrationForm() {
           id="u20_athlete_list"
           name="u20_athlete_list"
           label={t("clubRegistration.form.u20AthleteList")}
+          hint="Enter U20 athletes, one per line"
           error={state.fieldErrors?.u20_athlete_list?.[0]}
         />
       </div>

@@ -3,60 +3,66 @@ import { Container } from "@/components/ui/Container/Container";
 import { ErrorMessage } from "@/components/ui/ErrorMessage/ErrorMessage";
 import { ClubDirectoryFilter } from "@/components/features/clubs/ClubDirectoryFilter/ClubDirectoryFilter";
 import { ClubDirectoryList } from "@/components/features/clubs/ClubDirectoryList/ClubDirectoryList";
+import { ClubPagination } from "@/components/features/clubs/ClubPagination/ClubPagination";
 import { getClubs } from "@/services/clubsService";
-import type { Club } from "@/types/club";
+import type { PaginatedClubsResponse } from "@/types/club";
 import styles from "./page.module.scss";
 
 interface ClubsPageProps {
-  searchParams: Promise<{ region?: string }>;
+  searchParams: Promise<{ region?: string; search?: string; page?: string }>;
 }
 
-// Sprint 2 Batch 3 — REQ-CLUB-001 (list slice)/REQ-CLUB-002. See
-// .ai/lld/club-directory.md. Single content region: heading, region
-// filter, club list — no map/list toggle (OQ-009 not resolved, §2/§7).
-// Fetches the collection once and filters in memory — REQ-CLUB-002 only
-// requires narrowing what's displayed, not a second network round trip.
-// The backend's own `?province_region=` filter (.ai/lld/clubs.md §11)
-// is unchanged and still available; this page just no longer needs it.
-// ClubDirectoryList is invoked and awaited directly (not nested as
-// `<ClubDirectoryList />` JSX) — same corrected async-Server-Component
-// composition pattern already used by Home/News/About, since it's async.
 export default async function ClubsPage({ searchParams }: ClubsPageProps) {
   const t = await getTranslations();
-  const { region } = await searchParams;
+  const { region, search, page: pageStr } = await searchParams;
+  const page = pageStr ? parseInt(pageStr, 10) || 1 : 1;
 
-  let allClubs: Club[] = [];
+  let clubsData: PaginatedClubsResponse | null = null;
+  let allClubsForRegions: PaginatedClubsResponse | null = null;
   let loadFailed = false;
 
   try {
-    allClubs = await getClubs();
+    [clubsData, allClubsForRegions] = await Promise.all([
+      getClubs({ provinceRegion: region, search, page, limit: 9 }),
+      getClubs({ limit: 1000 }),
+    ]);
   } catch {
     loadFailed = true;
   }
 
-  const regions = Array.from(
-    new Set(allClubs.map((club) => club.province_region)),
-  ).sort();
+  const regions = allClubsForRegions
+    ? Array.from(
+        new Set(allClubsForRegions.data.map((club) => club.province_region)),
+      ).sort()
+    : [];
 
-  const displayedClubs = region
-    ? allClubs.filter((club) => club.province_region === region)
-    : allClubs;
-
-  const clubDirectoryList = loadFailed
-    ? null
-    : await ClubDirectoryList({ clubs: displayedClubs });
+  const clubDirectoryList =
+    loadFailed || !clubsData
+      ? null
+      : await ClubDirectoryList({ clubs: clubsData.data });
 
   return (
     <Container>
       <h1 className={styles.title}>{t("pages.clubs.title")}</h1>
 
       {!loadFailed && (
-        <ClubDirectoryFilter regions={regions} selectedRegion={region} />
+        <ClubDirectoryFilter
+          regions={regions}
+          selectedRegion={region}
+          searchQuery={search}
+        />
       )}
 
       {loadFailed && <ErrorMessage message={t("clubs.directory.error")} />}
 
       {clubDirectoryList}
+
+      {!loadFailed && clubsData && (
+        <ClubPagination
+          currentPage={clubsData.pagination.page}
+          totalPages={clubsData.pagination.totalPages}
+        />
+      )}
     </Container>
   );
 }

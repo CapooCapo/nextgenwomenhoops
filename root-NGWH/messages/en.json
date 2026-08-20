@@ -9,7 +9,12 @@
     "news": "News",
     "contact": "Contact",
     "openMenu": "Open navigation menu",
-    "closeMenu": "Close navigation menu"
+    "closeMenu": "Close navigation menu",
+    "signIn": "Sign In",
+    "register": "Register",
+    "accountInfo": "Account Info",
+    "myClubs": "My Clubs",
+    "logout": "Logout"
   },
   "common": {
     "skipToContent": "Skip to main content",
@@ -51,6 +56,16 @@
       "heading": "Champions Corner",
       "empty": "The defending champion will be announced soon.",
       "error": "We couldn't load the Champions Corner right now."
+    },
+    "scoreboard": {
+      "heading": "Live & Results",
+      "liveBadge": "LIVE",
+      "finalBadge": "MATCH ENDED",
+      "matchEnded": "MATCH ENDED",
+      "scheduledBadge": "SCHEDULED",
+      "foulsLabel": "FOULS",
+      "empty": "No matches currently live or scheduled.",
+      "error": "We couldn't load the live scoreboard right now."
     }
   },
   "news": {
@@ -103,12 +118,23 @@
     "directory": {
       "filterLabel": "Filter by province/region",
       "allRegions": "All regions",
+      "searchPlaceholder": "Search club name or region...",
+      "searchButton": "Search",
+      "noSearchMatch": "No clubs match your search.",
       "empty": "No clubs found.",
-      "error": "We couldn't load the club directory right now."
+      "error": "We couldn't load the club directory right now.",
+      "previous": "Previous",
+      "next": "Next"
     },
     "profile": {
       "error": "We couldn't load this club right now.",
       "foundedLabel": "Founded",
+      "documents": {
+        "heading": "Club Documents",
+        "capabilityProfile": "Capability Profile",
+        "u20AthleteList": "U20 Athlete List",
+        "viewDocument": "View document"
+      },
       "achievements": {
         "heading": "Achievements",
         "empty": "No achievements on record yet."
@@ -180,6 +206,118 @@
       "heading": "How to Reach Us",
       "body": "Please direct your inquiries to the appropriate department listed above so our team can assist you efficiently.",
       "notice": "Official contact details and direct channels will be fully updated upon official announcement."
+    }
+  },
+  "admin": {
+    "login": {
+      "title": "Admin Portal Login",
+      "username": "Username",
+      "password": "Password",
+      "submit": "Sign In",
+      "error": "Invalid username or password"
+    },
+    "nav": {
+      "title": "Admin Portal",
+      "dashboard": "Dashboard",
+      "clubs": "Clubs",
+      "registrations": "Registrations",
+      "players": "Players",
+      "seasons": "Seasons",
+      "matches": "Matches",
+      "news": "News",
+      "gallery": "Gallery",
+      "contact": "Contact",
+      "hero": "Homepage Hero",
+      "logout": "Logout"
+    },
+    "dashboard": {
+      "title": "Admin Dashboard",
+      "totalClubs": "Total Clubs",
+      "pendingApprovals": "Pending Approvals",
+      "seasons": "Seasons",
+      "matches": "Matches",
+      "news": "News Articles",
+      "heroSlides": "Hero Slides"
+    },
+    "clubs": {
+      "title": "Manage Clubs",
+      "approve": "Approve",
+      "revoke": "Revoke Approval",
+      "delete": "Delete",
+      "all": "All Clubs",
+      "approved": "Approved",
+      "pending": "Pending"
+    },
+    "matches": {
+      "title": "Manage Matches & Live Scoreboard"
+    },
+    "registrations": {
+      "title": "Manage Registrations",
+      "approve": "Approve Club",
+      "reject": "Reject",
+      "empty": "No pending club registrations."
+    },
+    "hero": {
+      "title": "Manage Homepage Hero",
+      "addSlide": "Add New Slide",
+      "slideTitle": "Slide Title",
+      "slideDescription": "Description",
+      "videoSrc": "Video URL (.mp4)",
+      "posterSrc": "Poster Image URL",
+      "ctaLabel": "CTA Label",
+      "ctaLink": "CTA Destination",
+      "order": "Display Order",
+      "enabled": "Enabled",
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save Changes",
+      "cancel": "Cancel"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "subtitle": "Access your NextGen Women Hoops account",
+      "email": "Email Address",
+      "password": "Password",
+      "submit": "Sign In",
+      "error": "Invalid email or password.",
+      "noAccount": "Don't have an account?",
+      "registerLink": "Register here",
+      "forgotPasswordLink": "Forgot password?"
+    },
+    "register": {
+      "title": "Create Account",
+      "subtitle": "Join NextGen Women Hoops as a Club Representative",
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Create Account",
+      "error": "Failed to create account.",
+      "passwordMismatch": "Passwords do not match.",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign in"
+    },
+    "forgotPassword": {
+      "title": "Reset Password",
+      "subtitle": "Enter your registered email to receive password reset instructions",
+      "email": "Email Address",
+      "submit": "Send Reset Link",
+      "error": "Failed to request password reset.",
+      "backToLogin": "Back to Sign In"
+    },
+    "resetPassword": {
+      "title": "New Password",
+      "subtitle": "Enter a new password for your account",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Reset Password",
+      "error": "Failed to reset password.",
+      "missingToken": "Invalid or missing password reset token.",
+      "passwordMismatch": "Passwords do not match.",
+      "success": "Password reset successful! Redirecting to login...",
+      "backToLogin": "Back to Sign In"
     }
   }
 }

@@ -15,7 +15,7 @@ describe("tournamentsService", () => {
       await getMatches();
 
       const requestedUrl = new URL(mockFetch.mock.calls[0][0]);
-      expect(requestedUrl.pathname).toBe("/api/matches/");
+      expect(requestedUrl.pathname).toBe("/api/matches");
       expect(mockFetch.mock.calls[0][1]).toEqual({ cache: "no-store" });
     });
 
@@ -40,7 +40,7 @@ describe("tournamentsService", () => {
       await getSeasons();
 
       const requestedUrl = new URL(mockFetch.mock.calls[0][0]);
-      expect(requestedUrl.pathname).toBe("/api/seasons/");
+      expect(requestedUrl.pathname).toBe("/api/seasons");
       expect(mockFetch.mock.calls[0][1]).toEqual({ cache: "no-store" });
     });
 

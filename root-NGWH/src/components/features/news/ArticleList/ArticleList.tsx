@@ -18,7 +18,7 @@ export async function ArticleList({ category }: ArticleListProps) {
   let error = false;
 
   try {
-    articles = getNewsByCategory(category);
+    articles = await getNewsByCategory(category);
   } catch {
     error = true;
   }

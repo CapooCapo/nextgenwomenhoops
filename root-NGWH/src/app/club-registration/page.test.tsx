@@ -23,6 +23,13 @@ jest.mock("next/headers", () => ({
   cookies: jest.fn(),
 }));
 
+jest.mock("@/server/auth/userAuth", () => ({
+  getUserSession: jest.fn().mockResolvedValue({
+    authenticated: true,
+    user: { id: 1, email: "test@example.com", role: "club_user" },
+  }),
+}));
+
 jest.mock("@/app/club-registration/actions", () => ({
   submitClubRegistrationAction: jest.fn(),
 }));

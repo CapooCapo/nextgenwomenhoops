@@ -9,7 +9,12 @@
     "news": "Tin tức",
     "contact": "Liên hệ",
     "openMenu": "Mở menu điều hướng",
-    "closeMenu": "Đóng menu điều hướng"
+    "closeMenu": "Đóng menu điều hướng",
+    "signIn": "Đăng nhập",
+    "register": "Đăng ký",
+    "accountInfo": "Thông tin tài khoản",
+    "myClubs": "CLB của tôi",
+    "logout": "Đăng xuất"
   },
   "common": {
     "skipToContent": "Bỏ qua đến nội dung chính",
@@ -51,6 +56,16 @@
       "heading": "Góc nhà vô địch",
       "empty": "Nhà vô địch đương nhiệm sẽ sớm được công bố.",
       "error": "Hiện chưa thể tải Góc nhà vô địch."
+    },
+    "scoreboard": {
+      "heading": "Trực tiếp & Kết quả",
+      "liveBadge": "TRỰC TIẾP",
+      "finalBadge": "TRẬN ĐẤU ĐÃ KẾT THÚC",
+      "matchEnded": "TRẬN ĐẤU ĐÃ KẾT THÚC",
+      "scheduledBadge": "SẮP DIỄN RA",
+      "foulsLabel": "LỖI",
+      "empty": "Hiện chưa có trận đấu nào đang diễn ra hoặc sắp diễn ra.",
+      "error": "Hiện chưa thể tải bảng điểm trực tiếp."
     }
   },
   "news": {
@@ -103,12 +118,23 @@
     "directory": {
       "filterLabel": "Lọc theo tỉnh/thành",
       "allRegions": "Tất cả khu vực",
+      "searchPlaceholder": "Tìm tên CLB hoặc tỉnh/thành...",
+      "searchButton": "Tìm kiếm",
+      "noSearchMatch": "Không tìm thấy câu lạc bộ khớp với tìm kiếm.",
       "empty": "Không tìm thấy câu lạc bộ nào.",
-      "error": "Hiện chưa thể tải danh bạ câu lạc bộ."
+      "error": "Hiện chưa thể tải danh bạ câu lạc bộ.",
+      "previous": "Trang trước",
+      "next": "Trang sau"
     },
     "profile": {
       "error": "Hiện chưa thể tải thông tin câu lạc bộ này.",
       "foundedLabel": "Thành lập",
+      "documents": {
+        "heading": "Tài liệu câu lạc bộ",
+        "capabilityProfile": "Hồ sơ năng lực",
+        "u20AthleteList": "Danh sách VĐV U20",
+        "viewDocument": "Xem tài liệu"
+      },
       "achievements": {
         "heading": "Thành tích",
         "empty": "Chưa có thành tích nào được ghi nhận."
@@ -180,6 +206,118 @@
       "heading": "Hướng dẫn liên hệ",
       "body": "Vui lòng gửi thông tin đến đúng bộ phận tương ứng nêu trên để ban tổ chức hỗ trợ bạn nhanh chóng và hiệu quả nhất.",
       "notice": "Thông tin liên hệ chính thức và các kênh gửi thắc mắc trực tiếp sẽ được cập nhật đầy đủ khi có công bố chính thức từ Ban tổ chức."
+    }
+  },
+  "admin": {
+    "login": {
+      "title": "Đăng nhập Cổng Quản trị",
+      "username": "Tên đăng nhập",
+      "password": "Mật khẩu",
+      "submit": "Đăng nhập",
+      "error": "Tên đăng nhập hoặc mật khẩu không hợp lệ"
+    },
+    "nav": {
+      "title": "Cổng Quản trị",
+      "dashboard": "Bảng điều khiển",
+      "clubs": "Câu lạc bộ",
+      "registrations": "Đăng ký",
+      "players": "Cầu thủ",
+      "seasons": "Mùa giải",
+      "matches": "Trận đấu",
+      "news": "Tin tức",
+      "gallery": "Thư viện",
+      "contact": "Liên hệ",
+      "hero": "Hero Trang chủ",
+      "logout": "Đăng xuất"
+    },
+    "dashboard": {
+      "title": "Bảng điều khiển Quản trị",
+      "totalClubs": "Tổng số CLB",
+      "pendingApprovals": "Chờ duyệt",
+      "seasons": "Mùa giải",
+      "matches": "Trận đấu",
+      "news": "Bài viết",
+      "heroSlides": "Hero Slide"
+    },
+    "clubs": {
+      "title": "Quản lý CLB",
+      "approve": "Duyệt",
+      "revoke": "Hủy duyệt",
+      "delete": "Xóa",
+      "all": "Tất cả CLB",
+      "approved": "Đã duyệt",
+      "pending": "Chờ duyệt"
+    },
+    "matches": {
+      "title": "Quản lý trận đấu & Bảng điểm trực tiếp"
+    },
+    "registrations": {
+      "title": "Quản lý Đăng ký",
+      "approve": "Duyệt CLB",
+      "reject": "Từ chối",
+      "empty": "Không có đăng ký CLB nào đang chờ duyệt."
+    },
+    "hero": {
+      "title": "Quản lý Hero Trang chủ",
+      "addSlide": "Thêm Slide mới",
+      "slideTitle": "Tiêu đề Slide",
+      "slideDescription": "Mô tả",
+      "videoSrc": "URL Video (.mp4)",
+      "posterSrc": "URL Ảnh bìa",
+      "ctaLabel": "Nhãn Nút CTA",
+      "ctaLink": "Đường dẫn CTA",
+      "order": "Thứ tự hiển thị",
+      "enabled": "Kích hoạt",
+      "actions": "Thao tác",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa",
+      "save": "Lưu thay đổi",
+      "cancel": "Hủy"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Đăng nhập",
+      "subtitle": "Truy cập tài khoản NextGen Women Hoops của bạn",
+      "email": "Địa chỉ Email",
+      "password": "Mật khẩu",
+      "submit": "Đăng nhập",
+      "error": "Email hoặc mật khẩu không đúng.",
+      "noAccount": "Chưa có tài khoản?",
+      "registerLink": "Đăng ký tại đây",
+      "forgotPasswordLink": "Quên mật khẩu?"
+    },
+    "register": {
+      "title": "Tạo tài khoản",
+      "subtitle": "Tham gia NextGen Women Hoops với tư cách Đại diện Câu lạc bộ",
+      "email": "Địa chỉ Email",
+      "password": "Mật khẩu",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "submit": "Tạo tài khoản",
+      "error": "Tạo tài khoản thất bại.",
+      "passwordMismatch": "Mật khẩu không khớp.",
+      "hasAccount": "Đã có tài khoản?",
+      "loginLink": "Đăng nhập"
+    },
+    "forgotPassword": {
+      "title": "Đặt lại mật khẩu",
+      "subtitle": "Nhập email đã đăng ký để nhận hướng dẫn đặt lại mật khẩu",
+      "email": "Địa chỉ Email",
+      "submit": "Gửi liên kết đặt lại",
+      "error": "Yêu cầu đặt lại mật khẩu thất bại.",
+      "backToLogin": "Quay lại Đăng nhập"
+    },
+    "resetPassword": {
+      "title": "Mật khẩu mới",
+      "subtitle": "Nhập mật khẩu mới cho tài khoản của bạn",
+      "newPassword": "Mật khẩu mới",
+      "confirmPassword": "Xác nhận mật khẩu",
+      "submit": "Đặt lại mật khẩu",
+      "error": "Đặt lại mật khẩu thất bại.",
+      "missingToken": "Mã xác thực không hợp lệ hoặc đã hết hạn.",
+      "passwordMismatch": "Mật khẩu không khớp.",
+      "success": "Đặt lại mật khẩu thành công! Đang chuyển hướng...",
+      "backToLogin": "Quay lại Đăng nhập"
     }
   }
 }

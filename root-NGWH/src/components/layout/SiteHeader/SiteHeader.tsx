@@ -26,6 +26,29 @@ export function SiteHeader() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<{ id: number; email: string; role: string } | null>(null);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.authenticated && data.user) {
+            setUser(data.user);
+          } else {
+            setUser(null);
+          }
+        } else {
+          setUser(null);
+        }
+      } catch {
+        setUser(null);
+      }
+    };
+    fetchUser();
+  }, [pathname]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,6 +66,7 @@ export function SiteHeader() {
   if (prevPathname !== pathname) {
     setPrevPathname(pathname);
     setIsMobileMenuOpen(false);
+    setIsUserMenuOpen(false);
   }
 
   // Lock body scroll when mobile menu is open
@@ -63,6 +87,18 @@ export function SiteHeader() {
 
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", { method: "POST" });
+      setUser(null);
+      setIsUserMenuOpen(false);
+      setIsMobileMenuOpen(false);
+      window.location.href = "/login";
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
   };
 
   const headerClassName = [
@@ -101,6 +137,75 @@ export function SiteHeader() {
         {/* Desktop Actions */}
         <div className={styles.desktopActions}>
           <LanguageSwitcher />
+          {user ? (
+            <div className={styles.userMenuWrapper}>
+              <button
+                type="button"
+                className={styles.userMenuBtn}
+                onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                aria-expanded={isUserMenuOpen}
+                aria-haspopup="true"
+              >
+                <span className={styles.userAvatar}>
+                  {user.email.charAt(0).toUpperCase()}
+                </span>
+                <span className={styles.userName}>
+                  {user.email.split("@")[0]}
+                </span>
+                <svg
+                  className={styles.chevronIcon}
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                  width="16"
+                  height="16"
+                  aria-hidden="true"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+              {isUserMenuOpen && (
+                <div className={styles.userDropdown}>
+                  <div className={styles.dropdownHeader}>
+                    <span className={styles.dropdownEmail}>{user.email}</span>
+                  </div>
+                  <Link
+                    href="/account"
+                    className={styles.dropdownItem}
+                    onClick={() => setIsUserMenuOpen(false)}
+                  >
+                    {t("accountInfo")}
+                  </Link>
+                  <Link
+                    href="/account/clubs"
+                    className={styles.dropdownItem}
+                    onClick={() => setIsUserMenuOpen(false)}
+                  >
+                    {t("myClubs")}
+                  </Link>
+                  <button
+                    type="button"
+                    className={`${styles.dropdownItem} ${styles.logoutItem}`}
+                    onClick={handleLogout}
+                  >
+                    {t("logout")}
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className={styles.authButtons}>
+              <Link href="/login" className={styles.signInBtn}>
+                {t("signIn")}
+              </Link>
+              <Link href="/register" className={styles.registerBtn}>
+                {t("register")}
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Mobile Menu Toggle Button */}
@@ -173,6 +278,56 @@ export function SiteHeader() {
           </nav>
           <div className={styles.mobileActions}>
             <LanguageSwitcher />
+            {user ? (
+              <div className={styles.mobileUserSection}>
+                <div className={styles.mobileUserInfo}>
+                  <span className={styles.mobileUserAvatar}>
+                    {user.email.charAt(0).toUpperCase()}
+                  </span>
+                  <span className={styles.mobileUserEmail}>{user.email}</span>
+                </div>
+                <div className={styles.mobileUserLinks}>
+                  <Link
+                    href="/account"
+                    className={styles.mobileUserLink}
+                    onClick={closeMobileMenu}
+                  >
+                    {t("accountInfo")}
+                  </Link>
+                  <Link
+                    href="/account/clubs"
+                    className={styles.mobileUserLink}
+                    onClick={closeMobileMenu}
+                  >
+                    {t("myClubs")}
+                  </Link>
+                  <button
+                    type="button"
+                    className={styles.mobileLogoutBtn}
+                    onClick={handleLogout}
+                  >
+                    {t("logout")}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className={styles.mobileAuthButtons}>
+                <Link
+                  href="/login"
+                  className={styles.mobileSignInBtn}
+                  onClick={closeMobileMenu}
+                >
+                  {t("signIn")}
+                </Link>
+                <Link
+                  href="/register"
+                  className={styles.mobileRegisterBtn}
+                  onClick={closeMobileMenu}
+                >
+                  {t("register")}
+                </Link>
+              </div>
+            )}
           </div>
         </Container>
       </div>

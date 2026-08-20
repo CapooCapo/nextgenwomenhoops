@@ -4,16 +4,34 @@ let pool: Pool | null = null;
 
 export function getDbPool(): Pool {
   if (!pool) {
-    pool = new Pool({
-      host: process.env.POSTGRES_HOST || "postgres",
-      port: Number(process.env.POSTGRES_PORT || 5432),
-      database: process.env.POSTGRES_DB || "nextgen_women_hoops",
-      user: process.env.POSTGRES_USER || "postgres",
-      password: process.env.POSTGRES_PASSWORD || "postgres",
-      max: 10,
-      idleTimeoutMillis: 30000,
-      connectionTimeoutMillis: 5000,
-    });
+    const connectionString = process.env.DATABASE_URL;
+    const useSsl =
+      process.env.POSTGRES_SSL === "true" ||
+      (Boolean(connectionString) &&
+        !connectionString?.includes("localhost") &&
+        !connectionString?.includes("127.0.0.1"));
+
+    if (connectionString) {
+      pool = new Pool({
+        connectionString,
+        ssl: useSsl ? { rejectUnauthorized: false } : false,
+        max: 10,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 5000,
+      });
+    } else {
+      pool = new Pool({
+        host: process.env.POSTGRES_HOST || "postgres",
+        port: Number(process.env.POSTGRES_PORT || 5432),
+        database: process.env.POSTGRES_DB || "nextgen_women_hoops",
+        user: process.env.POSTGRES_USER || "postgres",
+        password: process.env.POSTGRES_PASSWORD || "postgres",
+        ssl: useSsl ? { rejectUnauthorized: false } : false,
+        max: 10,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 5000,
+      });
+    }
   }
   return pool;
 }

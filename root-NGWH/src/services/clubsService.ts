@@ -1,22 +1,34 @@
 import type {
-  Club,
   ClubDetail,
+  ClubPagination,
   ClubRegistrationFieldErrors,
   ClubRegistrationResult,
+  PaginatedClubsResponse,
 } from "@/types/club";
 
-// API client calling Next.js Route Handlers.
 const API_BASE_URL = process.env.API_BASE_URL ?? "http://localhost:3000";
 
-interface GetClubsParams {
+export interface GetClubsParams {
   provinceRegion?: string;
+  search?: string;
+  page?: number;
+  limit?: number;
 }
 
 /** REQ-CLUB-001 (list slice)/REQ-CLUB-002 (region filter). */
-export async function getClubs(params: GetClubsParams = {}): Promise<Club[]> {
-  const url = new URL("/api/clubs/", API_BASE_URL);
+export async function getClubs(params: GetClubsParams = {}): Promise<PaginatedClubsResponse> {
+  const url = new URL("/api/clubs", API_BASE_URL);
   if (params.provinceRegion) {
     url.searchParams.set("province_region", params.provinceRegion);
+  }
+  if (params.search) {
+    url.searchParams.set("search", params.search);
+  }
+  if (params.page !== undefined) {
+    url.searchParams.set("page", String(params.page));
+  }
+  if (params.limit !== undefined) {
+    url.searchParams.set("limit", String(params.limit));
   }
 
   const response = await fetch(url, { cache: "no-store" });
@@ -24,7 +36,19 @@ export async function getClubs(params: GetClubsParams = {}): Promise<Club[]> {
     throw new Error(`Failed to fetch clubs: ${response.status}`);
   }
 
-  return response.json();
+  const json = await response.json();
+  if (Array.isArray(json)) {
+    return {
+      data: json,
+      pagination: {
+        page: 1,
+        limit: json.length || 9,
+        total: json.length,
+        totalPages: 1,
+      },
+    };
+  }
+  return json;
 }
 
 /**
@@ -36,7 +60,7 @@ export async function getClubs(params: GetClubsParams = {}): Promise<Club[]> {
  * the page renders `ErrorMessage` instead.
  */
 export async function getClubById(id: string | number): Promise<ClubDetail | null> {
-  const url = new URL(`/api/clubs/${id}/`, API_BASE_URL);
+  const url = new URL(`/api/clubs/${id}`, API_BASE_URL);
 
   const response = await fetch(url, { cache: "no-store" });
   if (response.status === 404) {
@@ -52,24 +76,24 @@ export async function getClubById(id: string | number): Promise<ClubDetail | nul
 export type RegisterClubResult =
   | { ok: true; club: ClubRegistrationResult }
   | { ok: false; fieldErrors: ClubRegistrationFieldErrors }
+  | { ok: false; status: number; message?: string }
   | { ok: false; networkError: true };
 
 /**
  * REQ-REG-001/002/003: Club Registration (.ai/lld/club-registration.md
  * §8/§10). `formData` is forwarded to API Route Handlers unmodified — fetch sets the
  * multipart boundary itself, no manual encoding. `201` → success echo;
- * `400` → DRF's own per-field validation messages, passed through
- * as-is (no translated backend validation copy is authored here); any
- * other outcome (network failure, unexpected status) → `networkError`,
- * so the page renders the shared `ErrorMessage`.
+ * `400` → DRF's own per-field validation messages; other HTTP statuses → log status,
+ * network errors → networkError: true.
  */
 export async function registerClub(formData: FormData): Promise<RegisterClubResult> {
-  const url = new URL("/api/clubs/", API_BASE_URL);
+  const url = new URL("/api/clubs", API_BASE_URL);
 
   let response: Response;
   try {
     response = await fetch(url, { method: "POST", body: formData });
-  } catch {
+  } catch (error) {
+    console.error("registerClub fetch failed:", error);
     return { ok: false, networkError: true };
   }
 
@@ -81,5 +105,7 @@ export async function registerClub(formData: FormData): Promise<RegisterClubResu
     const fieldErrors: ClubRegistrationFieldErrors = await response.json();
     return { ok: false, fieldErrors };
   }
-  return { ok: false, networkError: true };
+
+  console.error(`registerClub HTTP error status ${response.status}: ${response.statusText}`);
+  return { ok: false, status: response.status, message: response.statusText };
 }
