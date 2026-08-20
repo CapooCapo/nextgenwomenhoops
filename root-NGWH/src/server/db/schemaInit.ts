@@ -296,4 +296,48 @@ export async function ensureDatabaseSchema(): Promise<void> {
     END $$;`,
     "trg_matches_match_notify trigger"
   );
+
+  // 15. Admin Bootstrap (One-time Superadmin Initialization)
+  await bootstrapAdminUser();
+}
+
+async function bootstrapAdminUser(): Promise<void> {
+  const bootstrapUsername = process.env.ADMIN_BOOTSTRAP?.trim();
+  const bootstrapPassword = process.env.ADMIN_BOOTSTRAP_PASSWORD;
+
+  if (!bootstrapUsername || !bootstrapPassword) {
+    return;
+  }
+
+  try {
+    const pool = getDbPool();
+    const checkRes = await pool.query(
+      `SELECT id FROM admin_users WHERE LOWER(username) = LOWER($1) LIMIT 1`,
+      [bootstrapUsername]
+    );
+
+    if ((checkRes.rowCount ?? 0) > 0) {
+      if (process.env.NODE_ENV !== "test") {
+        console.log("[DB SchemaInit] Admin bootstrap skipped: account already exists.");
+      }
+      return;
+    }
+
+    const { hashAdminPassword } = await import("../repositories/adminUsersRepository");
+    const passwordHash = hashAdminPassword(bootstrapPassword);
+
+    await pool.query(
+      `INSERT INTO admin_users (username, password_hash, role, status)
+       VALUES ($1, $2, 'admin', 'active')`,
+      [bootstrapUsername, passwordHash]
+    );
+
+    if (process.env.NODE_ENV !== "test") {
+      console.log("[DB SchemaInit] Admin bootstrap completed successfully.");
+    }
+  } catch (err) {
+    if (process.env.NODE_ENV !== "test") {
+      console.error("[DB SchemaInit] Admin bootstrap failed:", err instanceof Error ? err.message : err);
+    }
+  }
 }
