@@ -1,7 +1,7 @@
 import { Pool } from "pg";
+import { ensureDatabaseSchema } from "./schemaInit";
 
 let pool: Pool | null = null;
-
 export function getDbPool(): Pool {
   if (!pool) {
     const connectionString = process.env.DATABASE_URL;
@@ -40,6 +40,7 @@ export async function query<T = Record<string, unknown>>(
   text: string,
   params?: unknown[]
 ): Promise<T[]> {
+  await ensureDatabaseSchema();
   const p = getDbPool();
   const res = await p.query(text, params);
   return res.rows as T[];
