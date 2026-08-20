@@ -280,6 +280,35 @@
       }
     }
   },
+  "account": {
+    "title": "Account Information",
+    "userId": "User ID",
+    "contactEmail": "Contact Email",
+    "accountType": "Account Type",
+    "roleAdmin": "Administrator (Admin)",
+    "roleClub": "Club Representative",
+    "viewMyClubs": "View My Clubs",
+    "registerNewClub": "+ Register New Club",
+    "myClubs": {
+      "title": "My Clubs",
+      "subtitle": "Manage basketball clubs registered under your account.",
+      "registerBtn": "+ Register New Club",
+      "emptyTitle": "You haven't registered any clubs yet.",
+      "emptyText": "Register your club today to participate in NextGen Women Hoops tournaments!",
+      "emptyCta": "Register Club Now",
+      "statusApproved": "Approved",
+      "statusPending": "Pending Approval",
+      "representative": "Representative:",
+      "foundingYear": "Founding Year:",
+      "attachedDocs": "Attached Documents:",
+      "capabilityProfile": "📄 Capability Profile",
+      "noCapabilityProfile": "No Capability Profile",
+      "u20AthleteList": "📋 U20 Athlete List",
+      "noU20AthleteList": "No U20 List",
+      "viewProfile": "View Profile",
+      "editClub": "Edit Club"
+    }
+  },
   "clubRegistration": {
     "intro": {
       "title": "Together, we compete toward success"

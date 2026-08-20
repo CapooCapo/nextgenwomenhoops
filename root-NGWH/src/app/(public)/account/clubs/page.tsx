@@ -1,14 +1,18 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { getUserSession } from "@/server/auth/userAuth";
 import { getUserClubsList } from "@/server/services/clubsServerService";
 import { Container } from "@/components/ui/Container/Container";
 import styles from "./myClubs.module.scss";
 
-export const metadata = {
-  title: "CLB của tôi | NextGen Women Hoops",
-  description: "Quản lý câu lạc bộ do bạn sở hữu",
-};
+export async function generateMetadata() {
+  const t = await getTranslations("account.myClubs");
+  return {
+    title: `${t("title")} | NextGen Women Hoops`,
+    description: t("subtitle"),
+  };
+}
 
 export default async function MyClubsPage() {
   const session = await getUserSession();
@@ -17,6 +21,7 @@ export default async function MyClubsPage() {
     redirect("/login");
   }
 
+  const t = await getTranslations("account.myClubs");
   const clubs = await getUserClubsList(session.user.id);
 
   return (
@@ -24,25 +29,21 @@ export default async function MyClubsPage() {
       <Container className={styles.container}>
         <div className={styles.headerRow}>
           <div>
-            <h1 className={styles.title}>CLB của tôi</h1>
-            <p className={styles.subtitle}>
-              Quản lý các câu lạc bộ bóng rổ nữ do tài khoản của bạn đăng ký.
-            </p>
+            <h1 className={styles.title}>{t("title")}</h1>
+            <p className={styles.subtitle}>{t("subtitle")}</p>
           </div>
           <Link href="/club-registration" className={styles.registerBtn}>
-            + Đăng ký CLB mới
+            {t("registerBtn")}
           </Link>
         </div>
 
         {clubs.length === 0 ? (
           <div className={styles.emptyState}>
             <div className={styles.emptyIcon}>🏀</div>
-            <h2 className={styles.emptyTitle}>Bạn chưa đăng ký CLB nào.</h2>
-            <p className={styles.emptyText}>
-              Đăng ký câu lạc bộ của bạn ngay hôm nay để tham gia giải đấu NextGen Women Hoops!
-            </p>
+            <h2 className={styles.emptyTitle}>{t("emptyTitle")}</h2>
+            <p className={styles.emptyText}>{t("emptyText")}</p>
             <Link href="/club-registration" className={styles.ctaBtn}>
-              Đăng ký CLB ngay
+              {t("emptyCta")}
             </Link>
           </div>
         ) : (
@@ -70,20 +71,20 @@ export default async function MyClubsPage() {
                       club.is_approved ? styles.approved : styles.pending
                     }`}
                   >
-                    {club.is_approved ? "Đã phê duyệt" : "Chờ duyệt"}
+                    {club.is_approved ? t("statusApproved") : t("statusPending")}
                   </span>
                 </div>
 
                 <div className={styles.cardBody}>
                   <div className={styles.infoRow}>
-                    <span className={styles.infoLabel}>Người đại diện:</span>
+                    <span className={styles.infoLabel}>{t("representative")}</span>
                     <span className={styles.infoValue}>
                       {club.representative_name}
                     </span>
                   </div>
                   {club.founding_year && (
                     <div className={styles.infoRow}>
-                      <span className={styles.infoLabel}>Năm thành lập:</span>
+                      <span className={styles.infoLabel}>{t("foundingYear")}</span>
                       <span className={styles.infoValue}>
                         {club.founding_year}
                       </span>
@@ -91,7 +92,7 @@ export default async function MyClubsPage() {
                   )}
 
                   <div className={styles.docsSection}>
-                    <span className={styles.docsTitle}>Hồ sơ đính kèm:</span>
+                    <span className={styles.docsTitle}>{t("attachedDocs")}</span>
                     <div className={styles.docsLinks}>
                       {club.capability_profile ? (
                         <a
@@ -100,10 +101,10 @@ export default async function MyClubsPage() {
                           rel="noopener noreferrer"
                           className={styles.docLink}
                         >
-                          📄 Hồ sơ năng lực
+                          {t("capabilityProfile")}
                         </a>
                       ) : (
-                        <span className={styles.noDoc}>Chưa gửi hồ sơ NL</span>
+                        <span className={styles.noDoc}>{t("noCapabilityProfile")}</span>
                       )}
                       {club.u20_athlete_list ? (
                         <a
@@ -112,10 +113,10 @@ export default async function MyClubsPage() {
                           rel="noopener noreferrer"
                           className={styles.docLink}
                         >
-                          📋 Danh sách VĐV U20
+                          {t("u20AthleteList")}
                         </a>
                       ) : (
-                        <span className={styles.noDoc}>Chưa gửi DS VĐV</span>
+                        <span className={styles.noDoc}>{t("noU20AthleteList")}</span>
                       )}
                     </div>
                   </div>
@@ -126,13 +127,13 @@ export default async function MyClubsPage() {
                     href={`/clubs/${club.id}`}
                     className={styles.viewBtn}
                   >
-                    Xem hồ sơ
+                    {t("viewProfile")}
                   </Link>
                   <Link
                     href={`/account/clubs/${club.id}/edit`}
                     className={styles.editBtn}
                   >
-                    Chỉnh sửa CLB
+                    {t("editClub")}
                   </Link>
                 </div>
               </div>

@@ -280,6 +280,35 @@
       }
     }
   },
+  "account": {
+    "title": "Thông tin tài khoản",
+    "userId": "Mã người dùng (User ID)",
+    "contactEmail": "Email liên hệ",
+    "accountType": "Loại tài khoản",
+    "roleAdmin": "Quản trị viên (Admin)",
+    "roleClub": "Đại diện Câu lạc bộ",
+    "viewMyClubs": "Xem CLB của tôi",
+    "registerNewClub": "+ Đăng ký CLB mới",
+    "myClubs": {
+      "title": "CLB của tôi",
+      "subtitle": "Quản lý các câu lạc bộ bóng rổ nữ do tài khoản của bạn đăng ký.",
+      "registerBtn": "+ Đăng ký CLB mới",
+      "emptyTitle": "Bạn chưa đăng ký CLB nào.",
+      "emptyText": "Đăng ký câu lạc bộ của bạn ngay hôm nay để tham gia giải đấu NextGen Women Hoops!",
+      "emptyCta": "Đăng ký CLB ngay",
+      "statusApproved": "Đã phê duyệt",
+      "statusPending": "Chờ duyệt",
+      "representative": "Người đại diện:",
+      "foundingYear": "Năm thành lập:",
+      "attachedDocs": "Hồ sơ đính kèm:",
+      "capabilityProfile": "📄 Hồ sơ năng lực",
+      "noCapabilityProfile": "Chưa gửi hồ sơ NL",
+      "u20AthleteList": "📋 Danh sách VĐV U20",
+      "noU20AthleteList": "Chưa gửi DS VĐV",
+      "viewProfile": "Xem hồ sơ",
+      "editClub": "Chỉnh sửa CLB"
+    }
+  },
   "clubRegistration": {
     "intro": {
       "title": "Cùng tranh đấu hướng thành công"
