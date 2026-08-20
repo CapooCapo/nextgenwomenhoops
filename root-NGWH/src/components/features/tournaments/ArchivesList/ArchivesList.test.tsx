@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import en from "../../../../../messages/en.json";
-import { getSeasons } from "@/services/tournamentsService";
+import { getSeasonsList } from "@/server/services/seasonsServerService";
 import { ArchivesList } from "./ArchivesList";
 
-jest.mock("@/services/tournamentsService", () => ({
-  getSeasons: jest.fn(),
+jest.mock("@/server/services/seasonsServerService", () => ({
+  getSeasonsList: jest.fn(),
 }));
 
 jest.mock("next-intl/server", () => ({
@@ -19,7 +19,7 @@ jest.mock("next-intl/server", () => ({
   },
 }));
 
-const mockedGetSeasons = jest.mocked(getSeasons);
+const mockedGetSeasons = jest.mocked(getSeasonsList);
 
 describe("ArchivesList", () => {
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe("ArchivesList", () => {
   });
 
   it("renders the section heading", async () => {
-    mockedGetSeasons.mockResolvedValueOnce([]);
+    mockedGetSeasons.mockResolvedValue([]);
     render(await ArchivesList());
     expect(
       screen.getByRole("heading", { name: en.tournaments.archives.heading }),
@@ -35,13 +35,13 @@ describe("ArchivesList", () => {
   });
 
   it("renders the empty state when there are no seasons", async () => {
-    mockedGetSeasons.mockResolvedValueOnce([]);
+    mockedGetSeasons.mockResolvedValue([]);
     render(await ArchivesList());
     expect(screen.getByText(en.tournaments.archives.empty)).toBeInTheDocument();
   });
 
   it("renders one labeled list item per season, most recent first as returned by the API", async () => {
-    mockedGetSeasons.mockResolvedValueOnce([
+    mockedGetSeasons.mockResolvedValue([
       { id: 2, year: 2025 },
       { id: 1, year: 2024 },
     ]);
@@ -54,7 +54,7 @@ describe("ArchivesList", () => {
   });
 
   it("renders ErrorMessage when the fetch fails", async () => {
-    mockedGetSeasons.mockRejectedValueOnce(new Error("network error"));
+    mockedGetSeasons.mockRejectedValue(new Error("network error"));
     render(await ArchivesList());
     expect(screen.getByRole("alert")).toHaveTextContent(en.tournaments.archives.error);
     expect(screen.queryByText(en.tournaments.archives.empty)).not.toBeInTheDocument();

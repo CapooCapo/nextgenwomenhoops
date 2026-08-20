@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import en from "../../../messages/en.json";
-import { getClubs } from "@/services/clubsService";
+import { getApprovedClubsList } from "@/server/services/clubsServerService";
 import ClubsPage from "./page";
 
 jest.mock("next-intl/server", () => ({
@@ -41,11 +41,11 @@ jest.mock("next/navigation", () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
-jest.mock("@/services/clubsService", () => ({
-  getClubs: jest.fn(),
+jest.mock("@/server/services/clubsServerService", () => ({
+  getApprovedClubsList: jest.fn(),
 }));
 
-const mockedGetClubs = jest.mocked(getClubs);
+const mockedGetClubs = jest.mocked(getApprovedClubsList);
 
 describe("ClubsPage", () => {
   beforeEach(() => {

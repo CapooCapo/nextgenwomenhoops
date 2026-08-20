@@ -9,7 +9,7 @@ import { ClubAchievements } from "@/components/features/clubs/ClubAchievements/C
 import { ClubRoster } from "@/components/features/clubs/ClubRoster/ClubRoster";
 import { ClubCoachingStaff } from "@/components/features/clubs/ClubCoachingStaff/ClubCoachingStaff";
 import { ClubContactSection } from "@/components/features/clubs/ClubContactSection/ClubContactSection";
-import { getClubById } from "@/services/clubsService";
+import { getApprovedClubDetail } from "@/server/services/clubsServerService";
 import type { ClubDetail } from "@/types/club";
 import styles from "./page.module.scss";
 
@@ -24,9 +24,14 @@ export default async function ClubProfilePage({ params }: ClubProfilePageProps) 
     getUserSession(),
   ]);
 
+  const numericId = parseInt(clubId, 10);
+  if (isNaN(numericId)) {
+    notFound();
+  }
+
   let club: ClubDetail | null;
   try {
-    club = await getClubById(clubId);
+    club = await getApprovedClubDetail(numericId);
   } catch {
     return (
       <Container>

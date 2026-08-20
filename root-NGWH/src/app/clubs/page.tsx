@@ -4,7 +4,7 @@ import { ErrorMessage } from "@/components/ui/ErrorMessage/ErrorMessage";
 import { ClubDirectoryFilter } from "@/components/features/clubs/ClubDirectoryFilter/ClubDirectoryFilter";
 import { ClubDirectoryList } from "@/components/features/clubs/ClubDirectoryList/ClubDirectoryList";
 import { ClubPagination } from "@/components/features/clubs/ClubPagination/ClubPagination";
-import { getClubs } from "@/services/clubsService";
+import { getApprovedClubsList } from "@/server/services/clubsServerService";
 import type { PaginatedClubsResponse } from "@/types/club";
 import styles from "./page.module.scss";
 
@@ -23,8 +23,8 @@ export default async function ClubsPage({ searchParams }: ClubsPageProps) {
 
   try {
     [clubsData, allClubsForRegions] = await Promise.all([
-      getClubs({ provinceRegion: region, search, page, limit: 9 }),
-      getClubs({ limit: 1000 }),
+      getApprovedClubsList({ provinceRegion: region, search, page, limit: 9 }),
+      getApprovedClubsList({ limit: 1000 }),
     ]);
   } catch {
     loadFailed = true;

@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import en from "../../../../../messages/en.json";
-import { getMatches } from "@/services/tournamentsService";
+import { getMatchesList } from "@/server/services/matchesServerService";
 import type { Match } from "@/types/tournament";
 import { ScheduleTable } from "./ScheduleTable";
 
-jest.mock("@/services/tournamentsService", () => ({
-  getMatches: jest.fn(),
+jest.mock("@/server/services/matchesServerService", () => ({
+  getMatchesList: jest.fn(),
 }));
 
 jest.mock("next-intl/server", () => ({
@@ -23,7 +23,7 @@ jest.mock("next-intl/server", () => ({
   }),
 }));
 
-const mockedGetMatches = jest.mocked(getMatches);
+const mockedGetMatches = jest.mocked(getMatchesList);
 
 const sampleMatch: Match = {
   id: 1,
@@ -40,7 +40,7 @@ describe("ScheduleTable", () => {
   });
 
   it("renders the section heading", async () => {
-    mockedGetMatches.mockResolvedValueOnce([]);
+    mockedGetMatches.mockResolvedValue([]);
     render(await ScheduleTable());
     expect(
       screen.getByRole("heading", { name: en.tournaments.schedule.heading }),
@@ -48,13 +48,13 @@ describe("ScheduleTable", () => {
   });
 
   it("renders the empty state when there are no matches", async () => {
-    mockedGetMatches.mockResolvedValueOnce([]);
+    mockedGetMatches.mockResolvedValue([]);
     render(await ScheduleTable());
     expect(screen.getByText(en.tournaments.schedule.empty)).toBeInTheDocument();
   });
 
   it("renders team names, venue, and translated status for each match", async () => {
-    mockedGetMatches.mockResolvedValueOnce([sampleMatch]);
+    mockedGetMatches.mockResolvedValue([sampleMatch]);
     render(await ScheduleTable());
 
     expect(screen.getByText("Hanoi Stars")).toBeInTheDocument();
@@ -64,13 +64,13 @@ describe("ScheduleTable", () => {
   });
 
   it("omits the venue element when a match has none", async () => {
-    mockedGetMatches.mockResolvedValueOnce([{ ...sampleMatch, venue: null }]);
+    mockedGetMatches.mockResolvedValue([{ ...sampleMatch, venue: null }]);
     render(await ScheduleTable());
     expect(screen.queryByText("District Sports Complex")).not.toBeInTheDocument();
   });
 
   it("renders ErrorMessage when the fetch fails", async () => {
-    mockedGetMatches.mockRejectedValueOnce(new Error("network error"));
+    mockedGetMatches.mockRejectedValue(new Error("network error"));
     render(await ScheduleTable());
     expect(screen.getByRole("alert")).toHaveTextContent(en.tournaments.schedule.error);
     expect(screen.queryByText(en.tournaments.schedule.empty)).not.toBeInTheDocument();

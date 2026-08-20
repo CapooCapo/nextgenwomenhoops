@@ -6,7 +6,17 @@ import type {
   PaginatedClubsResponse,
 } from "@/types/club";
 
-const API_BASE_URL = process.env.API_BASE_URL ?? "http://localhost:3000";
+function getApiBaseUrl(): string {
+  return (
+    process.env.API_BASE_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    `http://127.0.0.1:${process.env.PORT || 3000}`
+  );
+}
+
+function buildUrl(pathStr: string): URL {
+  return new URL(pathStr, getApiBaseUrl());
+}
 
 export interface GetClubsParams {
   provinceRegion?: string;
@@ -17,21 +27,21 @@ export interface GetClubsParams {
 
 /** REQ-CLUB-001 (list slice)/REQ-CLUB-002 (region filter). */
 export async function getClubs(params: GetClubsParams = {}): Promise<PaginatedClubsResponse> {
-  const url = new URL("/api/clubs", API_BASE_URL);
+  const urlObj = buildUrl("/api/clubs");
   if (params.provinceRegion) {
-    url.searchParams.set("province_region", params.provinceRegion);
+    urlObj.searchParams.set("province_region", params.provinceRegion);
   }
   if (params.search) {
-    url.searchParams.set("search", params.search);
+    urlObj.searchParams.set("search", params.search);
   }
   if (params.page !== undefined) {
-    url.searchParams.set("page", String(params.page));
+    urlObj.searchParams.set("page", String(params.page));
   }
   if (params.limit !== undefined) {
-    url.searchParams.set("limit", String(params.limit));
+    urlObj.searchParams.set("limit", String(params.limit));
   }
 
-  const response = await fetch(url, { cache: "no-store" });
+  const response = await fetch(urlObj, { cache: "no-store" });
   if (!response.ok) {
     throw new Error(`Failed to fetch clubs: ${response.status}`);
   }
@@ -60,7 +70,7 @@ export async function getClubs(params: GetClubsParams = {}): Promise<PaginatedCl
  * the page renders `ErrorMessage` instead.
  */
 export async function getClubById(id: string | number): Promise<ClubDetail | null> {
-  const url = new URL(`/api/clubs/${id}`, API_BASE_URL);
+  const url = buildUrl(`/api/clubs/${id}`);
 
   const response = await fetch(url, { cache: "no-store" });
   if (response.status === 404) {
@@ -87,7 +97,7 @@ export type RegisterClubResult =
  * network errors → networkError: true.
  */
 export async function registerClub(formData: FormData): Promise<RegisterClubResult> {
-  const url = new URL("/api/clubs", API_BASE_URL);
+  const url = buildUrl("/api/clubs");
 
   let response: Response;
   try {

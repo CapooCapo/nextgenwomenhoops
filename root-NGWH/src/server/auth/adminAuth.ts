@@ -61,7 +61,12 @@ export function verifyAdminToken(token: string | undefined | null): boolean {
 export function authenticateAdminCredentials(user: string, pass: string): boolean {
   if (!user || !pass) return false;
   const { user: expectedUser, pass: expectedPass } = getAdminConfig();
-  if (!expectedUser || !expectedPass) return false;
+  if (!expectedUser || !expectedPass) {
+    console.error(
+      "ADMIN AUTH FAILED: ADMIN_USERNAME or ADMIN_PASSWORD environment variable is not configured in production."
+    );
+    return false;
+  }
   return user === expectedUser && pass === expectedPass;
 }
 

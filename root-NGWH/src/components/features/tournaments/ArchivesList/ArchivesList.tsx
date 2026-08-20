@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Container } from "@/components/ui/Container/Container";
 import { ErrorMessage } from "@/components/ui/ErrorMessage/ErrorMessage";
-import { getSeasons } from "@/services/tournamentsService";
+import { getSeasonsList } from "@/server/services/seasonsServerService";
 import type { Season } from "@/types/tournament";
 import styles from "./ArchivesList.module.scss";
 
@@ -18,7 +18,7 @@ export async function ArchivesList() {
   let seasons: Season[] = [];
   let loadFailed = false;
   try {
-    seasons = await getSeasons();
+    seasons = await getSeasonsList();
   } catch {
     loadFailed = true;
   }

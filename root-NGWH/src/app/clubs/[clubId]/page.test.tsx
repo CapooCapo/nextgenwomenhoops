@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import en from "../../../../messages/en.json";
-import { getClubById } from "@/services/clubsService";
+import { getApprovedClubDetail } from "@/server/services/clubsServerService";
 import type { ClubDetail } from "@/types/club";
 import ClubProfilePage from "./page";
 
-jest.mock("@/services/clubsService", () => ({
-  getClubById: jest.fn(),
+jest.mock("@/server/services/clubsServerService", () => ({
+  getApprovedClubDetail: jest.fn(),
 }));
 
 const notFound = jest.fn(() => {
@@ -28,7 +28,7 @@ jest.mock("next-intl/server", () => ({
   },
 }));
 
-const mockedGetClubById = jest.mocked(getClubById);
+const mockedGetClubById = jest.mocked(getApprovedClubDetail);
 
 const fullClub: ClubDetail = {
   id: 1,
@@ -39,6 +39,9 @@ const fullClub: ClubDetail = {
   province_region: "Hanoi",
   contact_info: "club@example.com",
   social_links: "https://facebook.com/example",
+  capability_profile: null,
+  u20_athlete_list: null,
+  user_id: null,
   players: [{ id: 1, name: "Player One" }],
   coach_staff: [{ id: 1, name: "Coach One" }],
 };
@@ -50,11 +53,11 @@ describe("ClubProfilePage", () => {
   });
 
   it("renders the club header and all confirmed sections for an approved club", async () => {
-    mockedGetClubById.mockResolvedValueOnce(fullClub);
+    mockedGetClubById.mockResolvedValueOnce(fullClub as unknown as Awaited<ReturnType<typeof getApprovedClubDetail>>);
 
     render(await ClubProfilePage({ params: Promise.resolve({ clubId: "1" }) }));
 
-    expect(mockedGetClubById).toHaveBeenCalledWith("1");
+    expect(mockedGetClubById).toHaveBeenCalledWith(1);
     expect(screen.getByRole("heading", { level: 1, name: "Hanoi Stars" })).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { name: en.clubs.profile.achievements.heading }),

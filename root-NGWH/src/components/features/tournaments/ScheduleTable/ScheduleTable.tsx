@@ -2,8 +2,8 @@ import { getFormatter, getTranslations } from "next-intl/server";
 import { Card } from "@/components/ui/Card/Card";
 import { Container } from "@/components/ui/Container/Container";
 import { ErrorMessage } from "@/components/ui/ErrorMessage/ErrorMessage";
-import { getMatches } from "@/services/tournamentsService";
-import type { Match } from "@/types/tournament";
+import { getMatchesList } from "@/server/services/matchesServerService";
+import type { Match, MatchStatus } from "@/types/tournament";
 import styles from "./ScheduleTable.module.scss";
 
 /**
@@ -26,7 +26,11 @@ export async function ScheduleTable() {
   let matches: Match[] = [];
   let loadFailed = false;
   try {
-    matches = await getMatches();
+    const list = await getMatchesList();
+    matches = list.map((m) => ({
+      ...m,
+      status: m.status as MatchStatus,
+    }));
   } catch {
     loadFailed = true;
   }
