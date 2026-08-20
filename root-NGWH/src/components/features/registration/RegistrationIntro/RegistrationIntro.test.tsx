@@ -6,7 +6,7 @@ jest.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
 }));
 
-jest.mock("../../../../app/club-registration/introActions", () => ({
+jest.mock("@/app/(public)/club-registration/introActions", () => ({
   markRegistrationIntroSeenAction: jest.fn().mockResolvedValue(undefined),
 }));
 

@@ -5,7 +5,7 @@
   padding-bottom: $space-8;
 
   @include breakpoint-desktop {
-    padding-bottom: $space-16;
+    padding-bottom: $space-12;
   }
 }
 
@@ -17,19 +17,153 @@
   @include empty-state-text;
 }
 
-.grid {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  @include responsive-grid(2, 3, $space-4);
+.rosterContainer {
+  max-height: 28rem;
+  overflow-y: auto;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-md;
+  background-color: $color-neutral-100;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: $color-neutral-300;
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $color-neutral-500;
+    border-radius: 4px;
+
+    &:hover {
+      background: $color-neutral-700;
+    }
+  }
 }
 
-.item {
-  padding: $space-3 $space-4;
-  background-color: $color-neutral-100;
-  border: 1px solid $color-neutral-300;
-  border-radius: $border-radius-sm;
+.desktopView {
+  display: none;
+
+  @include breakpoint-tablet {
+    display: block;
+  }
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
   font-size: $font-size-base;
+
+  thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: $color-neutral-300;
+    border-bottom: 2px solid $color-neutral-500;
+
+    th {
+      padding: $space-3 $space-4;
+      font-weight: $font-weight-bold;
+      color: $color-neutral-900;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid $color-neutral-300;
+      transition: background-color 0.15s ease;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+      }
+
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+
+    td {
+      padding: $space-3 $space-4;
+      color: $color-neutral-700;
+    }
+  }
+}
+
+.colNumber {
+  width: 10%;
+  font-weight: $font-weight-semibold;
+  color: $color-brand-primary;
+}
+
+.colName {
+  width: 40%;
+}
+
+.playerName {
   font-weight: $font-weight-semibold;
   color: $color-neutral-900;
+}
+
+.colPosition {
+  width: 25%;
+}
+
+.colDob {
+  width: 25%;
+  color: $color-neutral-500;
+}
+
+.mobileView {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  list-style: none;
+  padding: $space-3;
+  margin: 0;
+
+  @include breakpoint-tablet {
+    display: none;
+  }
+}
+
+.mobileCard {
+  padding: $space-3 $space-4;
+  background-color: $color-neutral-0;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-sm;
+}
+
+.mobileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.jerseyNumber {
+  font-size: 0.85rem;
+  font-weight: $font-weight-bold;
+  color: $color-brand-primary;
+  background-color: rgba($color-brand-primary, 0.1);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.mobileMeta {
+  display: flex;
+  gap: $space-3;
+  margin-top: $space-1;
+  font-size: 0.875rem;
+  color: $color-neutral-700;
+}
+
+.playerPosition {
+  font-weight: 500;
+}
+
+.playerDob {
+  color: $color-neutral-500;
 }

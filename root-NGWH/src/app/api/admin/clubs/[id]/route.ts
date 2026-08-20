@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { requireAdminAuth } from "@/server/auth/adminAuth";
+import { revalidatePath } from "next/cache";
+import { requireAdminRole } from "@/server/auth/adminAuth";
 import {
   updateClubApprovalStatus,
   deleteClubById,
@@ -9,9 +10,12 @@ export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const isAuth = await requireAdminAuth();
-  if (!isAuth) {
+  const auth = await requireAdminRole("admin");
+  if (!auth.authenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!auth.allowed) {
+    return NextResponse.json({ error: "Forbidden: Admin role required" }, { status: 403 });
   }
 
   const { id } = await params;
@@ -35,6 +39,12 @@ export async function PATCH(
     return NextResponse.json({ error: "Club not found" }, { status: 404 });
   }
 
+  revalidatePath(`/clubs/${clubId}`);
+  revalidatePath("/clubs");
+  revalidatePath("/api/clubs");
+  revalidatePath("/account/clubs");
+  revalidatePath("/");
+
   return NextResponse.json({ success: true, club: updated });
 }
 
@@ -42,9 +52,12 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const isAuth = await requireAdminAuth();
-  if (!isAuth) {
+  const auth = await requireAdminRole("admin");
+  if (!auth.authenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!auth.allowed) {
+    return NextResponse.json({ error: "Forbidden: Admin role required" }, { status: 403 });
   }
 
   const { id } = await params;
@@ -57,6 +70,12 @@ export async function DELETE(
   if (!deleted) {
     return NextResponse.json({ error: "Club not found" }, { status: 404 });
   }
+
+  revalidatePath(`/clubs/${clubId}`);
+  revalidatePath("/clubs");
+  revalidatePath("/api/clubs");
+  revalidatePath("/account/clubs");
+  revalidatePath("/");
 
   return NextResponse.json({ success: true });
 }

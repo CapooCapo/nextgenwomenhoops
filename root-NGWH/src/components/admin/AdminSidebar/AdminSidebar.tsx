@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -8,7 +8,20 @@ import styles from "./AdminSidebar.module.scss";
 
 export function AdminSidebar() {
   const t = useTranslations("admin.nav");
+  const roleT = useTranslations("admin.roles");
   const pathname = usePathname();
+  const [role, setRole] = useState<"admin" | "subadmin" | null>(null);
+
+  useEffect(() => {
+    fetch("/api/admin/me")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.authenticated && data.role) {
+          setRole(data.role);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const navItems = [
     { href: "/admin", label: t("dashboard") },
@@ -22,11 +35,47 @@ export function AdminSidebar() {
     { href: "/admin/homepage/hero", label: t("hero") },
   ];
 
+  if (role === "admin") {
+    navItems.push({ href: "/admin/users", label: t("users") });
+  }
+
   return (
     <aside className={styles.sidebar}>
       <div className={styles.brand}>
         NGWH Admin
-        <span>NextGen Women Hoops</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "0.25rem" }}>
+          <span style={{ fontSize: "0.75rem", opacity: 0.8 }}>NextGen Women Hoops</span>
+          {role === "admin" && (
+            <span
+              style={{
+                background: "#2563eb",
+                color: "#ffffff",
+                fontSize: "0.65rem",
+                fontWeight: 700,
+                padding: "2px 6px",
+                borderRadius: "4px",
+                textTransform: "uppercase",
+              }}
+            >
+              {roleT("admin")}
+            </span>
+          )}
+          {role === "subadmin" && (
+            <span
+              style={{
+                background: "#d97706",
+                color: "#ffffff",
+                fontSize: "0.65rem",
+                fontWeight: 700,
+                padding: "2px 6px",
+                borderRadius: "4px",
+                textTransform: "uppercase",
+              }}
+            >
+              {roleT("subadminReadOnly")}
+            </span>
+          )}
+        </div>
       </div>
 
       <nav className={styles.nav}>

@@ -2,14 +2,15 @@
 
 import React, { useActionState, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { submitClubRegistrationAction } from "../../../../app/club-registration/actions";
-import { initialRegistrationActionState } from "../../../../app/club-registration/registrationActionState";
+import { submitClubRegistrationAction } from "@/app/(public)/club-registration/actions";
+import { initialRegistrationActionState } from "@/app/(public)/club-registration/registrationActionState";
 import { FormField } from "../../../ui/FormField/FormField";
 import { Label } from "../../../ui/Label/Label";
 import { Input } from "../../../ui/Input/Input";
 import { Button } from "../../../ui/Button/Button";
 import { ErrorMessage } from "../../../ui/ErrorMessage/ErrorMessage";
 import { FileUploadField } from "../FileUploadField/FileUploadField";
+import { MultiImageUploadField } from "../MultiImageUploadField/MultiImageUploadField";
 import styles from "./RegistrationForm.module.scss";
 
 export function RegistrationForm() {
@@ -101,11 +102,12 @@ export function RegistrationForm() {
           error={state.fieldErrors?.capability_profile?.[0]}
         />
 
-        <FileUploadField
-          id="u20_athlete_list"
-          name="u20_athlete_list"
+        <MultiImageUploadField
+          id="u20_athlete_images"
+          name="u20_athlete_images"
           label={t("clubRegistration.form.u20AthleteList")}
-          hint="Enter U20 athletes, one per line"
+          hint="Tải lên tối đa 12 hình ảnh của các vận động viên U20"
+          maxFiles={12}
           error={state.fieldErrors?.u20_athlete_list?.[0]}
         />
       </div>

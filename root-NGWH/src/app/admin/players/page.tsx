@@ -18,6 +18,7 @@ interface ClubSimple {
 
 export default function AdminPlayersPage() {
   const t = useTranslations("admin.players");
+  const commonT = useTranslations("admin.common");
   const [players, setPlayers] = useState<PlayerItem[]>([]);
   const [clubs, setClubs] = useState<ClubSimple[]>([]);
   const [loading, setLoading] = useState(true);
@@ -102,7 +103,7 @@ export default function AdminPlayersPage() {
   }
 
   async function handleDeletePlayer(id: number) {
-    if (!confirm("Are you sure you want to delete this player?")) return;
+    if (!confirm(t("deleteConfirm"))) return;
     try {
       const res = await fetch(`/api/admin/players/${id}`, { method: "DELETE" });
       if (res.ok) {
@@ -126,7 +127,7 @@ export default function AdminPlayersPage() {
           onChange={(e) => setSelectedClubId(Number(e.target.value))}
           required
         >
-          <option value="" disabled>Select Club</option>
+          <option value="" disabled>{t("selectClub")}</option>
           {clubs.map((c) => (
             <option key={c.id} value={c.id}>
               {c.name}
@@ -136,30 +137,30 @@ export default function AdminPlayersPage() {
 
         <input
           type="text"
-          placeholder="Player Full Name"
+          placeholder={t("playerFullName")}
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
 
         <button type="submit" className={styles.btnSuccess}>
-          Add Player
+          {t("addPlayer")}
         </button>
       </form>
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <div className={styles.emptyState}>Loading players...</div>
+          <div className={styles.emptyState}>{t("loading")}</div>
         ) : players.length === 0 ? (
-          <div className={styles.emptyState}>No players found. Add your first player above.</div>
+          <div className={styles.emptyState}>{t("empty")}</div>
         ) : (
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Player Name</th>
-                <th>Club Name</th>
-                <th>Actions</th>
+                <th>{t("tableHeaders.id")}</th>
+                <th>{t("tableHeaders.name")}</th>
+                <th>{t("tableHeaders.club")}</th>
+                <th>{t("tableHeaders.actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -176,7 +177,7 @@ export default function AdminPlayersPage() {
                       onClick={() => handleDeletePlayer(p.id)}
                       className={styles.btnDanger}
                     >
-                      Delete
+                      {commonT("delete")}
                     </button>
                   </td>
                 </tr>

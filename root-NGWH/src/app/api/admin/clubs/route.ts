@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { requireAdminAuth } from "@/server/auth/adminAuth";
+import { requireAdminRole } from "@/server/auth/adminAuth";
 import { findAllClubsAdmin } from "@/server/repositories/adminClubsRepository";
 
 export async function GET(request: Request) {
-  const isAuth = await requireAdminAuth();
-  if (!isAuth) {
+  const auth = await requireAdminRole("admin", "subadmin");
+  if (!auth.authenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

@@ -1,0 +1,510 @@
+@use "@/styles/variables" as *;
+@use "@/styles/mixins" as *;
+
+.main {
+  min-height: calc(100vh - 200px);
+  padding: $space-12 0;
+  background-color: $color-neutral-100;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: $space-8;
+}
+
+.title {
+  font-family: $font-family-display;
+  font-size: $font-size-2xl;
+  color: $color-neutral-900;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: $font-size-sm;
+  color: $color-neutral-500;
+  margin-top: $space-1;
+}
+
+.formCard {
+  background-color: $color-neutral-0;
+  border-radius: $border-radius-lg;
+  padding: $space-8;
+  box-shadow: $shadow-md;
+  border: 1px solid $color-neutral-300;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $space-8;
+}
+
+.sectionCard {
+  background-color: $color-neutral-0;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-md;
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+
+.sectionHeaderFlex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-family: $font-family-display;
+  font-size: $font-size-lg;
+  color: $color-brand-primary;
+  margin: 0;
+}
+
+.addItemBtn {
+  background-color: rgba($color-brand-primary, 0.1);
+  color: $color-brand-primary;
+  border: 1px dashed $color-brand-primary;
+  padding: $space-2 $space-4;
+  border-radius: $border-radius-md;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-xs;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background-color: $color-brand-primary;
+    color: $color-neutral-0;
+  }
+}
+
+.emptyNotice {
+  font-size: $font-size-sm;
+  color: $color-neutral-500;
+  font-style: italic;
+  margin: 0;
+}
+
+.repeatableItem {
+  background-color: $color-neutral-100;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-md;
+  padding: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.itemHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.itemIndex {
+  font-weight: $font-weight-bold;
+  font-size: $font-size-xs;
+  color: $color-neutral-700;
+  text-transform: uppercase;
+}
+
+.removeItemBtn {
+  background: none;
+  border: none;
+  color: $color-error;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+  padding: $space-1 $space-2;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.itemGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-3;
+
+  @include breakpoint-tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.itemGridQuad {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-3;
+  width: 100%;
+  box-sizing: border-box;
+
+  @include breakpoint-tablet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --- ROSTER EDIT COMPACT STYLES --- */
+.rosterContainer {
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+}
+
+.rosterEditList {
+  max-height: 420px;
+  overflow-y: auto;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-md;
+  background-color: $color-neutral-100;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: $color-neutral-300;
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $color-neutral-500;
+    border-radius: 4px;
+
+    &:hover {
+      background: $color-neutral-700;
+    }
+  }
+}
+
+.rosterTableDesktop {
+  display: none;
+
+  @include breakpoint-tablet {
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: $font-size-sm;
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background-color: $color-neutral-300;
+      border-bottom: 2px solid $color-neutral-500;
+
+      th {
+        padding: $space-3 $space-4;
+        font-weight: $font-weight-bold;
+        color: $color-neutral-900;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        text-align: left;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid $color-neutral-300;
+        transition: background-color 0.15s ease;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        &.activeRow {
+          background-color: rgba($color-brand-primary, 0.08);
+        }
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      td {
+        padding: $space-3 $space-4;
+        color: $color-neutral-700;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 180px;
+      }
+    }
+  }
+}
+
+.rosterMobileList {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  padding: $space-3;
+  margin: 0;
+  list-style: none;
+
+  @include breakpoint-tablet {
+    display: none;
+  }
+}
+
+.rosterMobileCard {
+  background-color: $color-neutral-0;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-sm;
+  padding: $space-3;
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+
+  &.activeCard {
+    border-color: $color-brand-primary;
+    background-color: rgba($color-brand-primary, 0.04);
+  }
+}
+
+.rosterMobileHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rosterMobileMeta {
+  display: flex;
+  gap: $space-3;
+  font-size: $font-size-xs;
+  color: $color-neutral-500;
+}
+
+.rosterActionsFlex {
+  display: flex;
+  gap: $space-2;
+  align-items: center;
+}
+
+.editRowBtn {
+  background: none;
+  border: 1px solid $color-neutral-300;
+  color: $color-neutral-700;
+  padding: $space-1 $space-2;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background-color: $color-neutral-300;
+    color: $color-neutral-900;
+  }
+}
+
+.inlineEditorCard {
+  background-color: $color-neutral-0;
+  border: 2px solid $color-brand-primary;
+  border-radius: $border-radius-md;
+  padding: $space-4;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  box-shadow: $shadow-sm;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.inlineEditorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid $color-neutral-300;
+  padding-bottom: $space-2;
+}
+
+.inlineEditorTitle {
+  font-weight: $font-weight-bold;
+  font-size: $font-size-sm;
+  color: $color-brand-primary;
+}
+
+.inlineEditorActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $space-2;
+  margin-top: $space-2;
+}
+
+.doneBtn {
+  background-color: $color-brand-primary;
+  color: $color-neutral-0;
+  border: none;
+  padding: $space-2 $space-4;
+  border-radius: $border-radius-md;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+/* --- FORM CONTROLS --- */
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+  width: 100%;
+  box-sizing: border-box;
+
+  @include breakpoint-tablet {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: $space-2;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: $color-neutral-700;
+}
+
+.required {
+  color: $color-error;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  padding: $space-3 $space-4;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-md;
+  font-size: $font-size-base;
+  color: $color-neutral-900;
+  background-color: $color-neutral-0;
+
+  &:focus {
+    outline: none;
+    border-color: $color-brand-primary;
+    box-shadow: 0 0 0 3px rgba($color-brand-primary, 0.15);
+  }
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.fileInput {
+  font-size: $font-size-sm;
+  color: $color-neutral-500;
+}
+
+.currentFile {
+  font-size: $font-size-xs;
+  color: $color-neutral-500;
+  margin: 0;
+
+  a {
+    color: $color-brand-primary;
+    text-decoration: underline;
+  }
+}
+
+.errorAlert {
+  padding: $space-3 $space-4;
+  background-color: #fee2e2;
+  color: #991b1b;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  font-weight: 500;
+}
+
+.successAlert {
+  padding: $space-3 $space-4;
+  background-color: #dcfce7;
+  color: #166534;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  font-weight: 500;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: $space-4;
+  padding-top: $space-4;
+  border-top: 1px solid $color-neutral-300;
+}
+
+.cancelBtn,
+.submitBtn {
+  padding: $space-3 $space-6;
+  border-radius: $border-radius-md;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-sm;
+  cursor: pointer;
+  transition: background-color $transition-fast;
+}
+
+.cancelBtn {
+  background-color: transparent;
+  color: $color-neutral-700;
+  border: 1px solid $color-neutral-300;
+
+  &:hover {
+    background-color: $color-neutral-300;
+  }
+}
+
+.submitBtn {
+  background-color: $color-brand-primary;
+  color: $color-neutral-0;
+  border: none;
+
+  &:hover {
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.accessDeniedCard {
+  background-color: $color-neutral-0;
+  padding: $space-8;
+  border-radius: $border-radius-lg;
+  text-align: center;
+  border: 1px solid $color-error;
+
+  h2 {
+    color: $color-error;
+    font-family: $font-family-display;
+  }
+
+  p {
+    color: $color-neutral-700;
+    margin-bottom: $space-6;
+  }
+}
+
+.backBtn {
+  display: inline-block;
+  padding: $space-3 $space-6;
+  background-color: $color-brand-primary;
+  color: $color-neutral-0;
+  text-decoration: none;
+  font-weight: $font-weight-bold;
+  border-radius: $border-radius-md;
+}

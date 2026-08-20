@@ -15,6 +15,7 @@ interface GalleryItem {
 
 export default function AdminGalleryPage() {
   const t = useTranslations("admin.gallery");
+  const commonT = useTranslations("admin.common");
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -89,7 +90,7 @@ export default function AdminGalleryPage() {
   }
 
   async function handleDeleteItem(id: number) {
-    if (!confirm("Are you sure you want to delete this gallery item?")) return;
+    if (!confirm(t("deleteConfirm"))) return;
     try {
       const res = await fetch(`/api/admin/gallery/${id}`, { method: "DELETE" });
       if (res.ok) {
@@ -110,7 +111,7 @@ export default function AdminGalleryPage() {
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", width: "100%" }}>
           <input
             type="text"
-            placeholder="Item Title"
+            placeholder={t("itemTitlePlaceholder")}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
@@ -118,20 +119,20 @@ export default function AdminGalleryPage() {
           />
 
           <select value={category} onChange={(e) => setCategory(e.target.value)} style={{ flex: 1 }}>
-            <option value="media">Championship Library</option>
-            <option value="mvp">MVP Spotlight</option>
-            <option value="behindScenes">Behind The Scenes</option>
+            <option value="media">{t("categories.media")}</option>
+            <option value="mvp">{t("categories.mvp")}</option>
+            <option value="behindScenes">{t("categories.behindScenes")}</option>
           </select>
 
           <select value={mediaType} onChange={(e) => setMediaType(e.target.value)} style={{ flex: 1 }}>
-            <option value="image">Image</option>
-            <option value="video">Video</option>
+            <option value="image">{t("mediaTypes.image")}</option>
+            <option value="video">{t("mediaTypes.video")}</option>
           </select>
         </div>
 
         <input
           type="text"
-          placeholder="Media URL (e.g. /images/hero.jpg or https://...)"
+          placeholder={t("mediaUrlPlaceholder")}
           value={mediaUrl}
           onChange={(e) => setMediaUrl(e.target.value)}
           required
@@ -140,33 +141,33 @@ export default function AdminGalleryPage() {
 
         <input
           type="text"
-          placeholder="Caption (Optional)"
+          placeholder={t("captionPlaceholder")}
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
           style={{ width: "100%" }}
         />
 
         <button type="submit" className={styles.btnSuccess} style={{ marginTop: "0.5rem" }}>
-          Add Gallery Item
+          {t("addItem")}
         </button>
       </form>
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <div className={styles.emptyState}>Loading gallery items...</div>
+          <div className={styles.emptyState}>{t("loading")}</div>
         ) : items.length === 0 ? (
-          <div className={styles.emptyState}>No gallery items found. Add your first photo/video above.</div>
+          <div className={styles.emptyState}>{t("empty")}</div>
         ) : (
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Type</th>
-                <th>Media URL</th>
-                <th>Caption</th>
-                <th>Actions</th>
+                <th>{t("tableHeaders.id")}</th>
+                <th>{t("tableHeaders.title")}</th>
+                <th>{t("tableHeaders.category")}</th>
+                <th>{t("tableHeaders.type")}</th>
+                <th>{t("tableHeaders.mediaUrl")}</th>
+                <th>{t("tableHeaders.caption")}</th>
+                <th>{t("tableHeaders.actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -186,7 +187,7 @@ export default function AdminGalleryPage() {
                       onClick={() => handleDeleteItem(item.id)}
                       className={styles.btnDanger}
                     >
-                      Delete
+                      {commonT("delete")}
                     </button>
                   </td>
                 </tr>

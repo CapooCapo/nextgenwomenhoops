@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
-import { requireAdminAuth } from "@/server/auth/adminAuth";
+import { requireAdminRole } from "@/server/auth/adminAuth";
 import {
   findAllPlayersAdmin,
   createPlayerAdmin,
 } from "@/server/repositories/adminPlayersRepository";
 
 export async function GET(request: Request) {
-  const isAuth = await requireAdminAuth();
-  if (!isAuth) {
+  const auth = await requireAdminRole("admin", "subadmin");
+  if (!auth.authenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -20,9 +20,12 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const isAuth = await requireAdminAuth();
-  if (!isAuth) {
+  const auth = await requireAdminRole("admin");
+  if (!auth.authenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!auth.allowed) {
+    return NextResponse.json({ error: "Forbidden: Admin role required" }, { status: 403 });
   }
 
   try {
@@ -37,6 +40,13 @@ export async function POST(request: Request) {
     }
 
     const player = await createPlayerAdmin(club_id, name);
+    try {
+      const { revalidatePath } = await import("next/cache");
+      revalidatePath(`/clubs/${club_id}`);
+      revalidatePath("/clubs");
+    } catch {
+      // Ignore
+    }
     return NextResponse.json({ player }, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Failed to create player" }, { status: 500 });

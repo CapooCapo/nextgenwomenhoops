@@ -13,7 +13,7 @@ export default async function AdminDashboardPage() {
     <div>
       <div className={styles.header}>
         <h1>{t("title")}</h1>
-        <p>NextGen Women Hoops Administration & Content Control</p>
+        <p>{t("subtitle")}</p>
       </div>
 
       <div className={styles.metricsGrid}>
@@ -46,7 +46,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className={styles.quickActions}>
-        <h2>Quick Management Links</h2>
+        <h2>{t("quickLinks")}</h2>
         <div className={styles.actionLinks}>
           <Link href="/admin/registrations">{navT("registrations")}</Link>
           <Link href="/admin/clubs">{navT("clubs")}</Link>

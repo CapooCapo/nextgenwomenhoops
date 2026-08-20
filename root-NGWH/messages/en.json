@@ -129,11 +129,16 @@
     "profile": {
       "error": "We couldn't load this club right now.",
       "foundedLabel": "Founded",
+      "pendingNotice": "⏳ Status: Pending Admin Approval. This club is not publicly visible yet.",
+      "ownerBanner": "You are managing this club",
+      "editClubBtn": "Edit Club",
       "documents": {
         "heading": "Club Documents",
         "capabilityProfile": "Capability Profile",
         "u20AthleteList": "U20 Athlete List",
-        "viewDocument": "View document"
+        "viewDocument": "View document",
+        "imagesCount": "({count} images)",
+        "u20ImageAlt": "U20 Athlete {index}"
       },
       "achievements": {
         "heading": "Achievements",
@@ -141,7 +146,13 @@
       },
       "roster": {
         "heading": "Roster",
-        "empty": "The roster hasn't been published yet."
+        "empty": "The roster hasn't been published yet.",
+        "tableHeaders": {
+          "number": "#",
+          "name": "Player Name",
+          "position": "Position",
+          "dateOfBirth": "Date of Birth / Age"
+        }
       },
       "coachingStaff": {
         "heading": "Coaching Staff",
@@ -152,7 +163,120 @@
         "contactHeading": "Contact Info",
         "contactEmpty": "No contact information on record yet.",
         "socialHeading": "Social Links",
-        "socialEmpty": "No social links on record yet."
+        "socialEmpty": "No social links on record yet.",
+        "labels": {
+          "email": "Email",
+          "phone": "Phone",
+          "website": "Website",
+          "address": "Address"
+        }
+      }
+    },
+    "edit": {
+      "title": "Edit Club Profile",
+      "subtitle": "Update information for club {name}",
+      "accessDeniedTitle": "Access Denied",
+      "accessDeniedBody": "You are not the owner of this club and do not have permission to edit it.",
+      "backToMyClubs": "Back to My Clubs",
+      "sections": {
+        "basicInfo": "1. Basic Information",
+        "media": "2. Logo & Documents",
+        "achievements": "3. Achievements",
+        "roster": "4. Athlete Roster",
+        "coachingStaff": "5. Coaching Staff",
+        "contactInfo": "6. Contact Information",
+        "socialLinks": "7. Social Links"
+      },
+      "fields": {
+        "name": "Club Name",
+        "region": "Province / City / Region",
+        "representative": "Representative Name",
+        "foundingYear": "Founding Year",
+        "logo": "Club Logo (Upload new file to replace)",
+        "capabilityProfile": "Capability Profile (PDF / DOCX)",
+        "u20AthleteImages": "U20 Athlete List (Images)",
+        "u20ImagesHint": "Upload up to 12 images of U20 athletes",
+        "currentFile": "Current file:",
+        "viewFile": "View file",
+        "email": "Contact Email",
+        "phone": "Phone Number",
+        "website": "Official Website",
+        "address": "Office Address / Practice Facility",
+        "facebook": "Facebook URL",
+        "instagram": "Instagram URL",
+        "tiktok": "TikTok URL",
+        "youtube": "YouTube URL"
+      },
+      "placeholders": {
+        "name": "e.g. Hanoi Stars Basketball Club",
+        "region": "e.g. Hanoi",
+        "representative": "e.g. John Doe",
+        "foundingYear": "e.g. 2020",
+        "email": "contact@club.com",
+        "phone": "0901234567",
+        "website": "https://myclub.com",
+        "address": "123 Main Street, District 1",
+        "facebook": "https://facebook.com/clubpage",
+        "instagram": "https://instagram.com/clubpage",
+        "tiktok": "https://tiktok.com/@clubpage",
+        "youtube": "https://youtube.com/@clubchannel",
+        "achievementTitle": "e.g. U20 National Championship",
+        "achievementYear": "e.g. 2026",
+        "achievementDescription": "e.g. Champions after 78-75 final match",
+        "playerName": "e.g. Nguyen Van A",
+        "jerseyNumber": "e.g. 10",
+        "playerPosition": "e.g. Point Guard",
+        "playerDob": "e.g. 2005 / 19 years old",
+        "coachName": "e.g. Tran Van B",
+        "coachRole": "e.g. Head Coach",
+        "coachDescription": "e.g. Former national coach with 10 years experience"
+      },
+      "actions": {
+        "addAchievement": "+ Add Achievement",
+        "addPlayer": "+ Add Player",
+        "addCoach": "+ Add Staff",
+        "editPlayer": "Edit",
+        "deletePlayer": "Delete",
+        "doneEditing": "Done",
+        "cancelEditing": "Cancel",
+        "remove": "Remove",
+        "cancel": "Cancel",
+        "save": "Save Changes",
+        "saving": "Saving..."
+      },
+      "items": {
+        "achievementHeader": "Achievement #{index}",
+        "playerHeader": "Player #{index}",
+        "coachHeader": "Staff #{index}",
+        "editPlayerTitle": "Edit Player: {name}",
+        "newPlayerTitle": "Add New Player",
+        "emptyAchievements": "No achievements added yet.",
+        "emptyPlayers": "No athletes added to the roster yet.",
+        "emptyCoachingStaff": "No coaching staff listed yet."
+      },
+      "tableHeaders": {
+        "number": "#",
+        "name": "Player Name",
+        "position": "Position",
+        "dateOfBirth": "Date of Birth / Age",
+        "actions": "Actions"
+      },
+      "labels": {
+        "achievementTitle": "Award / Achievement Title",
+        "achievementYear": "Year Achieved",
+        "achievementDescription": "Description (Optional)",
+        "playerName": "Player Full Name",
+        "jerseyNumber": "Jersey Number",
+        "playerPosition": "Position",
+        "playerDob": "Date of Birth / Age",
+        "coachName": "Full Name",
+        "coachRole": "Title / Role",
+        "coachDescription": "Description / Notes (Optional)"
+      },
+      "messages": {
+        "success": "Club information updated successfully!",
+        "error": "Failed to update club information.",
+        "genericError": "An error occurred during update."
       }
     }
   },
@@ -209,6 +333,35 @@
     }
   },
   "admin": {
+    "roles": {
+      "roleLabel": "Role: {role}",
+      "admin": "Admin",
+      "subadmin": "Subadmin",
+      "subadminReadOnly": "Subadmin (Read-Only)",
+      "subadminNotice": "🔒 Subadmin Mode (Read-Only)",
+      "readOnlyBadge": "Read-Only",
+      "primaryAdmin": "Primary Admin"
+    },
+    "common": {
+      "actions": "Actions",
+      "edit": "Edit",
+      "delete": "Delete",
+      "save": "Save Changes",
+      "cancel": "Cancel",
+      "create": "Create",
+      "filter": "Filter",
+      "status": "Status",
+      "search": "Search",
+      "searchPlaceholder": "Search...",
+      "loading": "Loading...",
+      "confirmDelete": "Are you sure you want to delete this item?",
+      "success": "Operation completed successfully.",
+      "error": "An error occurred.",
+      "active": "Active",
+      "disabled": "Disabled",
+      "enable": "Enable",
+      "disable": "Disable"
+    },
     "login": {
       "title": "Admin Portal Login",
       "username": "Username",
@@ -228,16 +381,46 @@
       "gallery": "Gallery",
       "contact": "Contact",
       "hero": "Homepage Hero",
+      "users": "Admin Users",
       "logout": "Logout"
     },
     "dashboard": {
       "title": "Admin Dashboard",
+      "subtitle": "NextGen Women Hoops Administration & Content Control",
       "totalClubs": "Total Clubs",
       "pendingApprovals": "Pending Approvals",
       "seasons": "Seasons",
       "matches": "Matches",
       "news": "News Articles",
-      "heroSlides": "Hero Slides"
+      "heroSlides": "Hero Slides",
+      "quickLinks": "Quick Management Links"
+    },
+    "users": {
+      "title": "Manage Admin & Subadmin Accounts",
+      "subtitle": "Create Subadmin accounts (read-only), enable/disable, or remove secondary accounts.",
+      "createTitle": "➕ Create New Subadmin Account (Read-Only Permission)",
+      "usernameLabel": "Username *",
+      "passwordLabel": "Password (Optional - auto-generated if left empty)",
+      "usernamePlaceholder": "subadmin_username",
+      "passwordPlaceholder": "Password",
+      "submit": "Create Subadmin",
+      "submitting": "Creating...",
+      "usernameRequired": "Username cannot be empty.",
+      "createSuccess": "Subadmin account \"{username}\" created successfully!{pwdNotice}",
+      "createError": "Failed to create Subadmin account.",
+      "updateSuccess": "Account status updated successfully!",
+      "updateError": "Failed to update account status.",
+      "deleteSuccess": "Deleted account \"{username}\".",
+      "deleteError": "Failed to delete account.",
+      "deleteConfirm": "Are you sure you want to delete Subadmin account \"{username}\"?",
+      "tableHeaders": {
+        "id": "ID",
+        "username": "Username",
+        "role": "Role",
+        "status": "Status",
+        "createdAt": "Date Created",
+        "actions": "Actions"
+      }
     },
     "clubs": {
       "title": "Manage Clubs",
@@ -246,33 +429,218 @@
       "delete": "Delete",
       "all": "All Clubs",
       "approved": "Approved",
-      "pending": "Pending"
-    },
-    "matches": {
-      "title": "Manage Matches & Live Scoreboard"
+      "pending": "Pending",
+      "searchPlaceholder": "Search by club name or region...",
+      "searchButton": "Search",
+      "loading": "Loading clubs...",
+      "empty": "No clubs found.",
+      "deleteConfirm": "Are you sure you want to delete this club?",
+      "pageInfo": "Showing page {page} of {totalPages} ({total} total clubs)",
+      "previous": "Previous",
+      "next": "Next",
+      "tableHeaders": {
+        "id": "ID",
+        "name": "Club Name",
+        "region": "Region",
+        "representative": "Representative",
+        "status": "Status",
+        "actions": "Actions"
+      }
     },
     "registrations": {
       "title": "Manage Registrations",
       "approve": "Approve Club",
       "reject": "Reject",
-      "empty": "No pending club registrations."
+      "empty": "No pending club registrations.",
+      "loading": "Loading registrations...",
+      "rejectConfirm": "Are you sure you want to reject and delete this registration?",
+      "capabilityProfile": "📄 Capability Profile",
+      "noCapabilityProfile": "No capability profile uploaded",
+      "u20AthleteImages": "🖼️ U20 Athlete Images ({count}/12):",
+      "noU20Images": "No U20 athlete images uploaded",
+      "tableHeaders": {
+        "id": "ID",
+        "name": "Club Name",
+        "region": "Region",
+        "representative": "Representative",
+        "documents": "Uploaded Documents & Images",
+        "actions": "Actions"
+      }
+    },
+    "players": {
+      "title": "Manage Players",
+      "selectClub": "Select Club",
+      "playerFullName": "Player Full Name",
+      "addPlayer": "Add Player",
+      "loading": "Loading players...",
+      "empty": "No players found. Add your first player above.",
+      "deleteConfirm": "Are you sure you want to delete this player?",
+      "tableHeaders": {
+        "id": "ID",
+        "name": "Player Name",
+        "club": "Club Name",
+        "actions": "Actions"
+      }
+    },
+    "seasons": {
+      "title": "Manage Seasons",
+      "createSeason": "+ Create Season",
+      "cancelNewSeason": "Cancel New Season",
+      "addNewSeason": "Add New Season:",
+      "yearPlaceholder": "Year (e.g. 2026)",
+      "saveSeason": "Save Season",
+      "saving": "Saving...",
+      "invalidYear": "Please enter a valid numeric year (e.g. 2026).",
+      "createSuccess": "Season created successfully.",
+      "createError": "Failed to create season."
+    },
+    "matches": {
+      "title": "Manage Matches & Live Scoreboard",
+      "selectSeason": "Select Season",
+      "seasonLabel": "{year} Season",
+      "homeClub": "Home Club",
+      "awayClub": "Away Club",
+      "scheduledAt": "Scheduled Date & Time",
+      "venueLocation": "Venue Location",
+      "createMatch": "Create Match",
+      "sameClubError": "Home and Away clubs must be different.",
+      "deleteConfirm": "Are you sure you want to delete this match?",
+      "updateError": "Failed to update match.",
+      "controlPanelTitle": "Live Scoreboard Control (Match #{id})",
+      "statusLabel": "STATUS: {status}",
+      "startMatch": "START MATCH",
+      "endMatch": "END MATCH",
+      "homeTeam": "HOME TEAM",
+      "awayTeam": "AWAY TEAM",
+      "score": "SCORE",
+      "fouls": "FOULS (0 - 5)",
+      "period": "PERIOD",
+      "periodPlaceholder": "e.g. PERIOD 1, PERIOD 3, OT",
+      "timer": "TIMER",
+      "timerPlaceholder": "e.g. 10:00, 05:42",
+      "statusScheduled": "scheduled",
+      "statusLive": "live",
+      "statusFinished": "finished",
+      "controlling": "Controlling",
+      "control": "Control",
+      "loading": "Loading matches...",
+      "empty": "No matches scheduled yet.",
+      "tableHeaders": {
+        "id": "ID",
+        "homeClub": "Home Club",
+        "vs": "VS",
+        "awayClub": "Away Club",
+        "score": "Score",
+        "status": "Status",
+        "dateTime": "Date & Time",
+        "actions": "Actions"
+      }
+    },
+    "news": {
+      "title": "Manage News & Media Articles",
+      "createArticle": "+ Create News Article",
+      "loading": "Loading news articles...",
+      "empty": "No news articles found. Click \"Create News Article\" above to create your first article.",
+      "deleteConfirm": "Are you sure you want to delete this article?",
+      "tableHeaders": {
+        "id": "ID",
+        "title": "Title",
+        "category": "Category",
+        "summary": "Summary",
+        "createdAt": "Created At",
+        "actions": "Actions"
+      },
+      "createTitle": "Create News Article",
+      "editTitle": "Edit News Article #{id}",
+      "backToNews": "← Back to News",
+      "titleLabel": "Title",
+      "titlePlaceholder": "Article title...",
+      "categoryLabel": "Category",
+      "summaryLabel": "Summary / Excerpt",
+      "summaryPlaceholder": "Brief 1-2 sentence summary...",
+      "contentLabel": "Full Content",
+      "contentPlaceholder": "Write full article content here...",
+      "imageLabel": "Article Image",
+      "removeImage": "Remove Image",
+      "orEnterUrl": "Or enter image URL:",
+      "urlPlaceholder": "https://example.com/image.jpg",
+      "publish": "Publish Article",
+      "publishing": "Publishing...",
+      "saveChanges": "Save Changes",
+      "saving": "Saving...",
+      "titleRequired": "Article title is required.",
+      "imageTypeError": "Please select a valid image file (JPG, PNG, WebP).",
+      "imageSizeError": "Image size must be less than 5MB."
+    },
+    "gallery": {
+      "title": "Manage Gallery & Media",
+      "addGalleryItem": "Add Gallery Item",
+      "loading": "Loading gallery items...",
+      "empty": "No gallery items found. Add your first photo/video above.",
+      "deleteConfirm": "Are you sure you want to delete this gallery item?",
+      "titlePlaceholder": "Item Title",
+      "mediaUrlPlaceholder": "Media URL (e.g. /images/hero.jpg or https://...)",
+      "captionPlaceholder": "Caption (Optional)",
+      "categories": {
+        "media": "Championship Library",
+        "mvp": "MVP Spotlight",
+        "behindScenes": "Behind The Scenes"
+      },
+      "types": {
+        "image": "Image",
+        "video": "Video"
+      },
+      "tableHeaders": {
+        "id": "ID",
+        "title": "Title",
+        "category": "Category",
+        "type": "Type",
+        "mediaUrl": "Media URL",
+        "caption": "Caption",
+        "actions": "Actions"
+      }
     },
     "hero": {
       "title": "Manage Homepage Hero",
       "addSlide": "Add New Slide",
-      "slideTitle": "Slide Title",
-      "slideDescription": "Description",
-      "videoSrc": "Video URL (.mp4)",
-      "posterSrc": "Poster Image URL",
-      "ctaLabel": "CTA Label",
-      "ctaLink": "CTA Destination",
-      "order": "Display Order",
-      "enabled": "Enabled",
-      "actions": "Actions",
-      "edit": "Edit",
-      "delete": "Delete",
-      "save": "Save Changes",
-      "cancel": "Cancel"
+      "slideIdPlaceholder": "Slide Unique ID (e.g. team-huddle)",
+      "videoUrlPlaceholder": "Video URL (.mp4)",
+      "displayOrderPlaceholder": "Display Order",
+      "slideTitlePlaceholder": "Slide Title / Tagline (Optional)",
+      "posterUrlPlaceholder": "Poster Image URL (Optional)",
+      "ctaLabelPlaceholder": "CTA Button Label",
+      "ctaLinkPlaceholder": "CTA Destination Link (e.g. /tournaments)",
+      "loading": "Loading hero slides...",
+      "empty": "No hero slides configured. Create one above.",
+      "deleteConfirm": "Are you sure you want to delete this hero slide?",
+      "active": "Active",
+      "disabled": "Disabled",
+      "enable": "Enable",
+      "disable": "Disable",
+      "tableHeaders": {
+        "order": "Order",
+        "slideId": "Slide ID",
+        "videoUrl": "Video URL",
+        "posterUrl": "Poster URL",
+        "ctaDestination": "CTA Destination",
+        "status": "Status",
+        "actions": "Actions"
+      }
+    },
+    "contact": {
+      "title": "Manage Contact Submissions",
+      "loading": "Loading contact submissions...",
+      "empty": "No contact submissions recorded yet.",
+      "deleteConfirm": "Are you sure you want to delete this submission?",
+      "tableHeaders": {
+        "id": "ID",
+        "name": "Name",
+        "email": "Email",
+        "subject": "Subject",
+        "message": "Message",
+        "receivedAt": "Received At",
+        "actions": "Actions"
+      }
     }
   },
   "auth": {

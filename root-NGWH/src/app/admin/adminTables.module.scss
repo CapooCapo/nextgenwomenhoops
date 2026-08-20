@@ -192,3 +192,106 @@
   }
 }
 
+.createCard {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+
+  h3 {
+    margin: 0 0 1rem 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+}
+
+.createForm {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-end;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.formGroup {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    flex: 1 1 100%;
+  }
+
+  label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    color: #cbd5e1;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    border-radius: 6px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: #ffffff;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: var(--color-accent, #f59e0b);
+    }
+
+    &::placeholder {
+      color: #64748b;
+    }
+  }
+}
+
+.submitWrapper {
+  display: flex;
+  align-items: flex-end;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  button {
+    background: #2563eb;
+    color: #ffffff;
+    padding: 0.6rem 1.25rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background: #1d4ed8;
+    }
+
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+      width: 100%;
+      padding: 0.75rem;
+    }
+  }
+}
+
+

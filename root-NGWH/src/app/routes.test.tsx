@@ -1,14 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import en from "../../messages/en.json";
 import { BRAND } from "@/config/brand";
-import HomePage from "./page";
-import AboutPage from "./about/page";
-import TournamentsPage from "./tournaments/page";
-import GalleryPage from "./gallery/page";
-import ClubsPage from "./clubs/page";
-import ClubRegistrationPage from "./club-registration/page";
-import NewsPage from "./news/page";
-import ContactPage from "./contact/page";
+import HomePage from "./(public)/page";
+import AboutPage from "./(public)/about/page";
+import TournamentsPage from "./(public)/tournaments/page";
+import GalleryPage from "./(public)/gallery/page";
+import ClubsPage from "./(public)/clubs/page";
+import ClubRegistrationPage from "./(public)/club-registration/page";
+import NewsPage from "./(public)/news/page";
+import ContactPage from "./(public)/contact/page";
 
 // Page components are async Server Components that call next-intl's
 // getTranslations(); outside a real Next.js request there is no request
@@ -97,7 +97,7 @@ jest.mock("@/services/clubsService", () => ({
 // RegistrationForm submits via this Server Action; mocked here for the
 // same reason — a routing-shell smoke test, not a network integration
 // test.
-jest.mock("@/app/club-registration/actions", () => ({
+jest.mock("@/app/(public)/club-registration/actions", () => ({
   submitClubRegistrationAction: jest.fn(),
 }));
 

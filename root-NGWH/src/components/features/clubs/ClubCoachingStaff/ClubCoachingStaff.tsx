@@ -1,10 +1,10 @@
 import React from "react";
 import { getTranslations } from "next-intl/server";
-import { ClubRosterMember } from "../../../../types/club";
+import { ClubCoachingStaffMember } from "../../../../types/club";
 import styles from "./ClubCoachingStaff.module.scss";
 
 interface ClubCoachingStaffProps {
-  coachStaff: ClubRosterMember[];
+  coachStaff: ClubCoachingStaffMember[];
 }
 
 export async function ClubCoachingStaff({ coachStaff }: ClubCoachingStaffProps) {
@@ -17,9 +17,17 @@ export async function ClubCoachingStaff({ coachStaff }: ClubCoachingStaffProps) 
         <p className={styles.empty}>{t("coachingStaff.empty")}</p>
       ) : (
         <ul className={styles.grid}>
-          {coachStaff.map((coach) => (
-            <li key={coach.id} className={styles.item}>
-              {coach.name}
+          {coachStaff.map((coach, idx) => (
+            <li key={coach.id || idx} className={styles.item}>
+              <div className={styles.coachHeader}>
+                <span className={styles.coachName}>{coach.name}</span>
+                {coach.role && (
+                  <span className={styles.coachRole}>{coach.role}</span>
+                )}
+              </div>
+              {coach.description && (
+                <p className={styles.coachDescription}>{coach.description}</p>
+              )}
             </li>
           ))}
         </ul>

@@ -34,7 +34,6 @@ export async function ensureHeroTable(): Promise<void> {
     );
   `);
 
-  // Check if table is empty, if so seed initial video slides
   const countRes = await query<{ count: string }>("SELECT COUNT(*) FROM hero_slides");
   const count = parseInt(countRes[0]?.count || "0", 10);
 
@@ -42,10 +41,10 @@ export async function ensureHeroTable(): Promise<void> {
     for (let i = 0; i < HERO_VIDEO_SLIDES.length; i++) {
       const slide = HERO_VIDEO_SLIDES[i];
       await query(
-        `INSERT INTO hero_slides (slide_id, video_src, display_order, is_enabled)
-         VALUES ($1, $2, $3, true)
+        `INSERT INTO hero_slides (slide_id, title, video_src, display_order, is_enabled)
+         VALUES ($1, $2, $3, $4, true)
          ON CONFLICT (slide_id) DO NOTHING`,
-        [slide.id, slide.videoSrc, i + 1]
+        [slide.id, slide.title || "", slide.videoSrc, i + 1]
       );
     }
   }
@@ -54,15 +53,28 @@ export async function ensureHeroTable(): Promise<void> {
 export async function findAllHeroSlides(): Promise<HeroSlideRow[]> {
   await ensureHeroTable();
   return query<HeroSlideRow>(
-    `SELECT * FROM hero_slides ORDER BY display_order ASC, id ASC`
+    `SELECT * FROM hero_slides ORDER BY display_order ASC, updated_at DESC, id ASC`
   );
 }
 
 export async function findEnabledHeroSlides(): Promise<HeroSlideRow[]> {
   await ensureHeroTable();
   return query<HeroSlideRow>(
-    `SELECT * FROM hero_slides WHERE is_enabled = true ORDER BY display_order ASC, id ASC`
+    `SELECT * FROM hero_slides WHERE is_enabled = true ORDER BY display_order ASC, updated_at DESC, id ASC`
   );
+}
+
+export async function reorderHeroSlides(
+  orders: { id: number; display_order: number }[]
+): Promise<boolean> {
+  await ensureHeroTable();
+  for (const item of orders) {
+    await query(
+      `UPDATE hero_slides SET display_order = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2`,
+      [item.display_order, item.id]
+    );
+  }
+  return true;
 }
 
 export async function createHeroSlide(data: {

@@ -8,6 +8,11 @@ export async function getPublicHeroSlides(): Promise<HeroVideoSlide[]> {
       return slides.map((s) => ({
         id: s.slide_id,
         videoSrc: s.video_src,
+        posterSrc: s.poster_src || undefined,
+        title: s.title || undefined,
+        description: s.description || undefined,
+        ctaLabel: s.cta_label || undefined,
+        ctaLink: s.cta_link || undefined,
       }));
     }
   } catch {

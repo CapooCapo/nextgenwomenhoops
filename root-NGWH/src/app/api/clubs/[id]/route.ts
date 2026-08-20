@@ -74,6 +74,16 @@ export async function PATCH(
       );
     }
 
+    try {
+      const { revalidatePath } = await import("next/cache");
+      revalidatePath(`/clubs/${numId}`);
+      revalidatePath("/clubs");
+      revalidatePath("/account/clubs");
+      revalidatePath("/dashboard");
+    } catch {
+      // Ignore in non-Next runtime
+    }
+
     return NextResponse.json(result.club, { status: 200 });
   } catch (err) {
     console.error("PATCH /api/clubs/[id] error:", err);

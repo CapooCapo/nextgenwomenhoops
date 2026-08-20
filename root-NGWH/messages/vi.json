@@ -129,11 +129,16 @@
     "profile": {
       "error": "Hiện chưa thể tải thông tin câu lạc bộ này.",
       "foundedLabel": "Thành lập",
+      "pendingNotice": "⏳ Trạng thái: Đang chờ duyệt. CLB này chưa xuất hiện trên trang công khai.",
+      "ownerBanner": "Bạn là người quản lý câu lạc bộ này",
+      "editClubBtn": "Chỉnh sửa CLB",
       "documents": {
         "heading": "Tài liệu câu lạc bộ",
         "capabilityProfile": "Hồ sơ năng lực",
         "u20AthleteList": "Danh sách VĐV U20",
-        "viewDocument": "Xem tài liệu"
+        "viewDocument": "Xem tài liệu",
+        "imagesCount": "({count} hình ảnh)",
+        "u20ImageAlt": "VĐV U20 {index}"
       },
       "achievements": {
         "heading": "Thành tích",
@@ -141,7 +146,13 @@
       },
       "roster": {
         "heading": "Đội hình",
-        "empty": "Đội hình chưa được công bố."
+        "empty": "Đội hình chưa được công bố.",
+        "tableHeaders": {
+          "number": "#",
+          "name": "Tên VĐV",
+          "position": "Vị trí",
+          "dateOfBirth": "Ngày sinh / Tuổi"
+        }
       },
       "coachingStaff": {
         "heading": "Ban huấn luyện",
@@ -152,7 +163,120 @@
         "contactHeading": "Thông tin liên hệ",
         "contactEmpty": "Chưa có thông tin liên hệ.",
         "socialHeading": "Liên kết mạng xã hội",
-        "socialEmpty": "Chưa có liên kết mạng xã hội."
+        "socialEmpty": "Chưa có liên kết mạng xã hội.",
+        "labels": {
+          "email": "Email",
+          "phone": "Điện thoại",
+          "website": "Website",
+          "address": "Địa chỉ"
+        }
+      }
+    },
+    "edit": {
+      "title": "Chỉnh sửa Hồ sơ Câu lạc bộ",
+      "subtitle": "Cập nhật thông tin cho câu lạc bộ {name}",
+      "accessDeniedTitle": "Không có quyền truy cập",
+      "accessDeniedBody": "Bạn không phải là người sở hữu câu lạc bộ này và không có quyền chỉnh sửa.",
+      "backToMyClubs": "Quay lại danh sách CLB của tôi",
+      "sections": {
+        "basicInfo": "1. Thông tin chung",
+        "media": "2. Logo & Hồ sơ tài liệu",
+        "achievements": "3. Thành tích",
+        "roster": "4. Đội hình Vận động viên",
+        "coachingStaff": "5. Ban huấn luyện",
+        "contactInfo": "6. Thông tin liên hệ",
+        "socialLinks": "7. Liên kết Mạng xã hội"
+      },
+      "fields": {
+        "name": "Tên câu lạc bộ",
+        "region": "Tỉnh / Thành phố / Khu vực",
+        "representative": "Người đại diện",
+        "foundingYear": "Năm thành lập",
+        "logo": "Logo câu lạc bộ (Tải lên file mới để thay thế)",
+        "capabilityProfile": "Hồ sơ năng lực CLB (PDF / DOCX)",
+        "u20AthleteImages": "Danh sách VĐV U20 (Hình ảnh)",
+        "u20ImagesHint": "Tải lên tối đa 12 hình ảnh của các vận động viên U20",
+        "currentFile": "File hiện tại:",
+        "viewFile": "Xem file",
+        "email": "Email liên hệ",
+        "phone": "Số điện thoại",
+        "website": "Website chính thức",
+        "address": "Địa chỉ trụ sở / Sân tập",
+        "facebook": "Facebook URL",
+        "instagram": "Instagram URL",
+        "tiktok": "TikTok URL",
+        "youtube": "YouTube URL"
+      },
+      "placeholders": {
+        "name": "VD: Câu lạc bộ Hà Nội Stars",
+        "region": "VD: Hà Nội",
+        "representative": "VD: Nguyễn Văn A",
+        "foundingYear": "VD: 2020",
+        "email": "contact@club.com",
+        "phone": "0901234567",
+        "website": "https://myclub.com",
+        "address": "123 Đường ABC, Quận 1, TP.HCM",
+        "facebook": "https://facebook.com/clubpage",
+        "instagram": "https://instagram.com/clubpage",
+        "tiktok": "https://tiktok.com/@clubpage",
+        "youtube": "https://youtube.com/@clubchannel",
+        "achievementTitle": "VD: Vô địch Giải U20 Quốc Gia",
+        "achievementYear": "VD: 2026",
+        "achievementDescription": "VD: Thắng trận chung kết với tỷ số 78-75",
+        "playerName": "VD: Nguyễn Văn A",
+        "jerseyNumber": "VD: 10",
+        "playerPosition": "VD: Point Guard",
+        "playerDob": "VD: 2005 / 19 tuổi",
+        "coachName": "VD: Trần Văn B",
+        "coachRole": "VD: HLV Trưởng",
+        "coachDescription": "VD: Cựu HLV Quốc gia với 10 năm kinh nghiệm"
+      },
+      "actions": {
+        "addAchievement": "+ Thêm thành tích",
+        "addPlayer": "+ Thêm VĐV",
+        "addCoach": "+ Thêm HLV / Cán bộ",
+        "editPlayer": "Chỉnh sửa",
+        "deletePlayer": "Xóa",
+        "doneEditing": "Xong",
+        "cancelEditing": "Hủy bỏ",
+        "remove": "Xóa",
+        "cancel": "Hủy bỏ",
+        "save": "Lưu thay đổi",
+        "saving": "Đang lưu..."
+      },
+      "items": {
+        "achievementHeader": "Thành tích #{index}",
+        "playerHeader": "VĐV #{index}",
+        "coachHeader": "Thành viên #{index}",
+        "editPlayerTitle": "Chỉnh sửa VĐV: {name}",
+        "newPlayerTitle": "Thêm VĐV mới",
+        "emptyAchievements": "Chưa có thành tích nào được thêm.",
+        "emptyPlayers": "Chưa có vận động viên nào trong danh sách.",
+        "emptyCoachingStaff": "Chưa có thành viên ban huấn luyện nào."
+      },
+      "tableHeaders": {
+        "number": "#",
+        "name": "Tên VĐV",
+        "position": "Vị trí",
+        "dateOfBirth": "Ngày sinh / Tuổi",
+        "actions": "Thao tác"
+      },
+      "labels": {
+        "achievementTitle": "Tên giải thưởng / Thành tích",
+        "achievementYear": "Năm đạt được",
+        "achievementDescription": "Mô tả chi tiết (Tùy chọn)",
+        "playerName": "Họ và tên VĐV",
+        "jerseyNumber": "Số áo",
+        "playerPosition": "Vị trí",
+        "playerDob": "Ngày sinh / Tuổi",
+        "coachName": "Họ và tên",
+        "coachRole": "Chức danh / Vai trò",
+        "coachDescription": "Mô tả / Ghi chú (Tùy chọn)"
+      },
+      "messages": {
+        "success": "Cập nhật thông tin câu lạc bộ thành công!",
+        "error": "Cập nhật câu lạc bộ thất bại.",
+        "genericError": "Có lỗi xảy ra trong quá trình cập nhật."
       }
     }
   },
@@ -209,6 +333,35 @@
     }
   },
   "admin": {
+    "roles": {
+      "roleLabel": "Vai trò: {role}",
+      "admin": "Quản trị viên",
+      "subadmin": "Subadmin",
+      "subadminReadOnly": "Subadmin (Chỉ đọc)",
+      "subadminNotice": "🔒 Chế độ Subadmin (Chỉ đọc)",
+      "readOnlyBadge": "Chỉ đọc",
+      "primaryAdmin": "Admin Chính"
+    },
+    "common": {
+      "actions": "Thao tác",
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa",
+      "save": "Lưu thay đổi",
+      "cancel": "Hủy",
+      "create": "Tạo mới",
+      "filter": "Lọc",
+      "status": "Trạng thái",
+      "search": "Tìm kiếm",
+      "searchPlaceholder": "Tìm kiếm...",
+      "loading": "Đang tải...",
+      "confirmDelete": "Bạn có chắc chắn muốn xóa mục này?",
+      "success": "Thao tác thành công.",
+      "error": "Đã xảy ra lỗi.",
+      "active": "Hoạt động",
+      "disabled": "Đã vô hiệu hóa",
+      "enable": "Kích hoạt",
+      "disable": "Vô hiệu hóa"
+    },
     "login": {
       "title": "Đăng nhập Cổng Quản trị",
       "username": "Tên đăng nhập",
@@ -228,16 +381,46 @@
       "gallery": "Thư viện",
       "contact": "Liên hệ",
       "hero": "Hero Trang chủ",
+      "users": "Tài khoản Admin",
       "logout": "Đăng xuất"
     },
     "dashboard": {
       "title": "Bảng điều khiển Quản trị",
+      "subtitle": "Hệ thống Quản trị & Điều phối Nội dung NextGen Women Hoops",
       "totalClubs": "Tổng số CLB",
       "pendingApprovals": "Chờ duyệt",
       "seasons": "Mùa giải",
       "matches": "Trận đấu",
-      "news": "Bài viết",
-      "heroSlides": "Hero Slide"
+      "news": "Bài viết tin tức",
+      "heroSlides": "Hero Slide",
+      "quickLinks": "Liên kết quản lý nhanh"
+    },
+    "users": {
+      "title": "Quản lý Tài khoản Admin & Subadmin",
+      "subtitle": "Tạo tài khoản Subadmin (chỉ đọc), kích hoạt/vô hiệu hóa hoặc xóa tài khoản phụ.",
+      "createTitle": "➕ Tạo Tài Khoản Subadmin Mới (Quyền Chỉ Đọc)",
+      "usernameLabel": "Tên đăng nhập *",
+      "passwordLabel": "Mật khẩu (Tùy chọn - Tự động tạo nếu để trống)",
+      "usernamePlaceholder": "nhap_username_subadmin",
+      "passwordPlaceholder": "Mật khẩu",
+      "submit": "Tạo Subadmin",
+      "submitting": "Đang tạo...",
+      "usernameRequired": "Tên đăng nhập không được để trống.",
+      "createSuccess": "Tạo tài khoản Subadmin \"{username}\" thành công!{pwdNotice}",
+      "createError": "Tạo tài khoản Subadmin thất bại.",
+      "updateSuccess": "Cập nhật trạng thái tài khoản thành công!",
+      "updateError": "Cập nhật trạng thái thất bại.",
+      "deleteSuccess": "Đã xóa tài khoản \"{username}\".",
+      "deleteError": "Xóa tài khoản thất bại.",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa tài khoản Subadmin \"{username}\"?",
+      "tableHeaders": {
+        "id": "ID",
+        "username": "Tên Đăng Nhập",
+        "role": "Vai Trò",
+        "status": "Trạng Thái",
+        "createdAt": "Ngày Tạo",
+        "actions": "Thao Tác"
+      }
     },
     "clubs": {
       "title": "Quản lý CLB",
@@ -246,33 +429,218 @@
       "delete": "Xóa",
       "all": "Tất cả CLB",
       "approved": "Đã duyệt",
-      "pending": "Chờ duyệt"
-    },
-    "matches": {
-      "title": "Quản lý trận đấu & Bảng điểm trực tiếp"
+      "pending": "Chờ duyệt",
+      "searchPlaceholder": "Tìm tên CLB hoặc tỉnh/thành...",
+      "searchButton": "Tìm kiếm",
+      "loading": "Đang tải danh sách CLB...",
+      "empty": "Không tìm thấy câu lạc bộ nào.",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa câu lạc bộ này?",
+      "pageInfo": "Hiển thị trang {page} / {totalPages} (Tổng số {total} CLB)",
+      "previous": "Trang trước",
+      "next": "Trang sau",
+      "tableHeaders": {
+        "id": "ID",
+        "name": "Tên CLB",
+        "region": "Khu vực",
+        "representative": "Người đại diện",
+        "status": "Trạng thái",
+        "actions": "Thao tác"
+      }
     },
     "registrations": {
       "title": "Quản lý Đăng ký",
       "approve": "Duyệt CLB",
       "reject": "Từ chối",
-      "empty": "Không có đăng ký CLB nào đang chờ duyệt."
+      "empty": "Không có đăng ký CLB nào đang chờ duyệt.",
+      "loading": "Đang tải danh sách đăng ký...",
+      "rejectConfirm": "Bạn có chắc chắn muốn từ chối và xóa đăng ký này?",
+      "capabilityProfile": "📄 Hồ sơ năng lực",
+      "noCapabilityProfile": "Chưa có hồ sơ năng lực",
+      "u20AthleteImages": "🖼️ Hình ảnh VĐV U20 ({count}/12):",
+      "noU20Images": "Chưa có hình VĐV U20",
+      "tableHeaders": {
+        "id": "ID",
+        "name": "Tên CLB",
+        "region": "Khu vực",
+        "representative": "Người đại diện",
+        "documents": "Tài liệu & Hình ảnh đã tải lên",
+        "actions": "Thao tác"
+      }
+    },
+    "players": {
+      "title": "Quản lý Cầu thủ",
+      "selectClub": "Chọn câu lạc bộ",
+      "playerFullName": "Họ và tên cầu thủ",
+      "addPlayer": "Thêm cầu thủ",
+      "loading": "Đang tải danh sách cầu thủ...",
+      "empty": "Chưa có cầu thủ nào. Vui lòng thêm cầu thủ đầu tiên phía trên.",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa cầu thủ này?",
+      "tableHeaders": {
+        "id": "ID",
+        "name": "Tên cầu thủ",
+        "club": "Tên CLB",
+        "actions": "Thao tác"
+      }
+    },
+    "seasons": {
+      "title": "Quản lý Mùa giải",
+      "createSeason": "+ Tạo Mùa giải",
+      "cancelNewSeason": "Hủy tạo Mùa giải",
+      "addNewSeason": "Thêm Mùa giải mới:",
+      "yearPlaceholder": "Năm (VD: 2026)",
+      "saveSeason": "Lưu Mùa giải",
+      "saving": "Đang lưu...",
+      "invalidYear": "Vui lòng nhập năm hợp lệ (VD: 2026).",
+      "createSuccess": "Tạo mùa giải thành công.",
+      "createError": "Tạo mùa giải thất bại."
+    },
+    "matches": {
+      "title": "Quản lý Trận đấu & Bảng điểm trực tiếp",
+      "selectSeason": "Chọn Mùa giải",
+      "seasonLabel": "Mùa giải {year}",
+      "homeClub": "Đội nhà",
+      "awayClub": "Đội khách",
+      "scheduledAt": "Ngày & Giờ thi đấu",
+      "venueLocation": "Địa điểm / Sân thi đấu",
+      "createMatch": "Tạo trận đấu",
+      "sameClubError": "Đội nhà và Đội khách phải khác nhau.",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa trận đấu này?",
+      "updateError": "Cập nhật trận đấu thất bại.",
+      "controlPanelTitle": "Điều khiển Bảng điểm Trực tiếp (Trận #{id})",
+      "statusLabel": "TRẠNG THÁI: {status}",
+      "startMatch": "BẮT ĐẦU TRẬN",
+      "endMatch": "KẾT THÚC TRẬN",
+      "homeTeam": "ĐỘI NHÀ",
+      "awayTeam": "ĐỘI KHÁCH",
+      "score": "TỶ SỐ",
+      "fouls": "LỖI (0 - 5)",
+      "period": "HIỆP THI ĐẤU",
+      "periodPlaceholder": "VD: HIỆP 1, HIỆP 3, OT",
+      "timer": "THỜI GIAN",
+      "timerPlaceholder": "VD: 10:00, 05:42",
+      "statusScheduled": "Sắp diễn ra",
+      "statusLive": "Trực tiếp",
+      "statusFinished": "Đã kết thúc",
+      "controlling": "Đang điều khiển",
+      "control": "Điều khiển",
+      "loading": "Đang tải danh sách trận đấu...",
+      "empty": "Chưa có trận đấu nào được lên lịch.",
+      "tableHeaders": {
+        "id": "ID",
+        "homeClub": "Đội nhà",
+        "vs": "VS",
+        "awayClub": "Đội khách",
+        "score": "Tỷ số",
+        "status": "Trạng thái",
+        "dateTime": "Ngày & Giờ",
+        "actions": "Thao tác"
+      }
+    },
+    "news": {
+      "title": "Quản lý Tin tức & Truyền thông",
+      "createArticle": "+ Tạo bài viết mới",
+      "loading": "Đang tải bài viết tin tức...",
+      "empty": "Chưa có bài viết tin tức nào. Bấm \"Tạo bài viết mới\" phía trên để tạo bài viết đầu tiên.",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa bài viết này?",
+      "tableHeaders": {
+        "id": "ID",
+        "title": "Tiêu đề",
+        "category": "Chuyên mục",
+        "summary": "Tóm tắt",
+        "createdAt": "Ngày tạo",
+        "actions": "Thao tác"
+      },
+      "createTitle": "Tạo bài viết tin tức",
+      "editTitle": "Chỉnh sửa bài viết #{id}",
+      "backToNews": "← Quay lại Tin tức",
+      "titleLabel": "Tiêu đề",
+      "titlePlaceholder": "Tiêu đề bài viết...",
+      "categoryLabel": "Chuyên mục",
+      "summaryLabel": "Tóm tắt / Đoạn trích",
+      "summaryPlaceholder": "Tóm tắt ngắn 1-2 câu...",
+      "contentLabel": "Nội dung đầy đủ",
+      "contentPlaceholder": "Viết nội dung bài viết đầy đủ tại đây...",
+      "imageLabel": "Hình ảnh bài viết",
+      "removeImage": "Xóa hình ảnh",
+      "orEnterUrl": "Hoặc nhập URL hình ảnh:",
+      "urlPlaceholder": "https://example.com/image.jpg",
+      "publish": "Xuất bản bài viết",
+      "publishing": "Đang xuất bản...",
+      "saveChanges": "Lưu thay đổi",
+      "saving": "Đang lưu...",
+      "titleRequired": "Tiêu đề bài viết là bắt buộc.",
+      "imageTypeError": "Vui lòng chọn định dạng ảnh hợp lệ (JPG, PNG, WebP).",
+      "imageSizeError": "Dung lượng ảnh phải nhỏ hơn 5MB."
+    },
+    "gallery": {
+      "title": "Quản lý Thư viện & Truyền thông",
+      "addGalleryItem": "Thêm mục Thư viện",
+      "loading": "Đang tải thư viện ảnh...",
+      "empty": "Chưa có mục thư viện nào. Thêm hình ảnh/video đầu tiên phía trên.",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa mục thư viện này?",
+      "titlePlaceholder": "Tiêu đề mục",
+      "mediaUrlPlaceholder": "URL media (VD: /images/hero.jpg hoặc https://...)",
+      "captionPlaceholder": "Chú thích (Tùy chọn)",
+      "categories": {
+        "media": "Thư viện vinh quang",
+        "mvp": "Điểm sáng MVP",
+        "behindScenes": "Hậu trường"
+      },
+      "types": {
+        "image": "Hình ảnh",
+        "video": "Video"
+      },
+      "tableHeaders": {
+        "id": "ID",
+        "title": "Tiêu đề",
+        "category": "Chuyên mục",
+        "type": "Loại",
+        "mediaUrl": "URL Media",
+        "caption": "Chú thích",
+        "actions": "Thao tác"
+      }
     },
     "hero": {
       "title": "Quản lý Hero Trang chủ",
       "addSlide": "Thêm Slide mới",
-      "slideTitle": "Tiêu đề Slide",
-      "slideDescription": "Mô tả",
-      "videoSrc": "URL Video (.mp4)",
-      "posterSrc": "URL Ảnh bìa",
-      "ctaLabel": "Nhãn Nút CTA",
-      "ctaLink": "Đường dẫn CTA",
-      "order": "Thứ tự hiển thị",
-      "enabled": "Kích hoạt",
-      "actions": "Thao tác",
-      "edit": "Chỉnh sửa",
-      "delete": "Xóa",
-      "save": "Lưu thay đổi",
-      "cancel": "Hủy"
+      "slideIdPlaceholder": "ID Slide duy nhất (VD: team-huddle)",
+      "videoUrlPlaceholder": "URL Video (.mp4)",
+      "displayOrderPlaceholder": "Thứ tự hiển thị",
+      "slideTitlePlaceholder": "Tiêu đề Slide / Khẩu hiệu (Tùy chọn)",
+      "posterUrlPlaceholder": "URL Ảnh bìa (Tùy chọn)",
+      "ctaLabelPlaceholder": "Nhãn nút CTA",
+      "ctaLinkPlaceholder": "Đường dẫn CTA (VD: /tournaments)",
+      "loading": "Đang tải danh sách slide...",
+      "empty": "Chưa có hero slide nào được cấu hình. Tạo slide mới phía trên.",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa slide này?",
+      "active": "Hoạt động",
+      "disabled": "Đã vô hiệu hóa",
+      "enable": "Kích hoạt",
+      "disable": "Vô hiệu hóa",
+      "tableHeaders": {
+        "order": "Thứ tự",
+        "slideId": "ID Slide",
+        "videoUrl": "URL Video",
+        "posterUrl": "URL Ảnh bìa",
+        "ctaDestination": "Đích đến CTA",
+        "status": "Trạng thái",
+        "actions": "Thao tác"
+      }
+    },
+    "contact": {
+      "title": "Quản lý Phản hồi Liên hệ",
+      "loading": "Đang tải danh sách liên hệ...",
+      "empty": "Chưa có thông tin liên hệ nào.",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa phản hồi liên hệ này?",
+      "tableHeaders": {
+        "id": "ID",
+        "name": "Họ và tên",
+        "email": "Email",
+        "subject": "Tiêu đề",
+        "message": "Nội dung",
+        "receivedAt": "Thời gian nhận",
+        "actions": "Thao tác"
+      }
     }
   },
   "auth": {

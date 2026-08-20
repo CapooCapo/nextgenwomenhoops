@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useAdminRole } from "@/hooks/useAdminRole";
 import styles from "../adminTables.module.scss";
 
 interface PendingRegistration {
@@ -13,8 +14,25 @@ interface PendingRegistration {
   u20_athlete_list: string | null;
 }
 
+function parseAthleteImages(raw: string | null): string[] {
+  if (!raw) return [];
+  if (raw.startsWith("[") && raw.endsWith("]")) {
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        return parsed.map((item) =>
+          String(item).startsWith("/") ? String(item) : `/media/${item}`
+        );
+      }
+    } catch {}
+  }
+  return [raw.startsWith("/") ? raw : `/media/${raw}`];
+}
+
 export default function AdminRegistrationsPage() {
   const t = useTranslations("admin.registrations");
+  const roleT = useTranslations("admin.roles");
+  const { isSubadmin } = useAdminRole();
   const [registrations, setRegistrations] = useState<PendingRegistration[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -54,6 +72,7 @@ export default function AdminRegistrationsPage() {
   }, []);
 
   async function handleApprove(id: number) {
+    if (isSubadmin) return;
     try {
       const res = await fetch(`/api/admin/clubs/${id}`, {
         method: "PATCH",
@@ -69,7 +88,8 @@ export default function AdminRegistrationsPage() {
   }
 
   async function handleReject(id: number) {
-    if (!confirm("Are you sure you want to reject and delete this registration?")) return;
+    if (isSubadmin) return;
+    if (!confirm(t("rejectConfirm"))) return;
     try {
       const res = await fetch(`/api/admin/clubs/${id}`, {
         method: "DELETE",
@@ -86,84 +106,118 @@ export default function AdminRegistrationsPage() {
     <div>
       <div className={styles.pageHeader}>
         <h1>{t("title")}</h1>
+        {isSubadmin && (
+          <span style={{ fontSize: "0.85rem", color: "#d97706", fontWeight: 600 }}>
+            {roleT("subadminNotice")}
+          </span>
+        )}
       </div>
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <div className={styles.emptyState}>Loading registrations...</div>
+          <div className={styles.emptyState}>{t("loading")}</div>
         ) : registrations.length === 0 ? (
           <div className={styles.emptyState}>{t("empty")}</div>
         ) : (
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Club Name</th>
-                <th>Region</th>
-                <th>Representative</th>
-                <th>Uploaded Documents</th>
-                <th>Actions</th>
+                <th>{t("tableHeaders.id")}</th>
+                <th>{t("tableHeaders.name")}</th>
+                <th>{t("tableHeaders.region")}</th>
+                <th>{t("tableHeaders.representative")}</th>
+                <th>{t("tableHeaders.documents")}</th>
+                <th>{t("tableHeaders.actions")}</th>
               </tr>
             </thead>
             <tbody>
-              {registrations.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>
-                    <strong>{item.name}</strong>
-                  </td>
-                  <td>{item.province_region}</td>
-                  <td>{item.representative_name || "-"}</td>
-                  <td>
-                    <div>
-                      {item.capability_profile ? (
-                        <a
-                          href={item.capability_profile.startsWith("/") ? item.capability_profile : `/media/${item.capability_profile}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.docLink}
-                        >
-                          Capability Profile
-                        </a>
+              {registrations.map((item) => {
+                const u20Images = parseAthleteImages(item.u20_athlete_list);
+
+                return (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>
+                      <strong>{item.name}</strong>
+                    </td>
+                    <td>{item.province_region}</td>
+                    <td>{item.representative_name || "-"}</td>
+                    <td>
+                      <div style={{ marginBottom: "0.5rem" }}>
+                        {item.capability_profile ? (
+                          <a
+                            href={
+                              item.capability_profile.startsWith("/")
+                                ? item.capability_profile
+                                : `/media/${item.capability_profile}`
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.docLink}
+                          >
+                            {t("capabilityProfile")}
+                          </a>
+                        ) : (
+                          <span style={{ color: "#64748b", fontSize: "0.85rem" }}>
+                            {t("noCapabilityProfile")}
+                          </span>
+                        )}
+                      </div>
+
+                      {u20Images.length > 0 ? (
+                        <div>
+                          <p style={{ fontSize: "0.8rem", fontWeight: 600, margin: "0 0 0.25rem 0", color: "#2563eb" }}>
+                            {t("u20AthleteImages", { count: u20Images.length })}
+                          </p>
+                          <div style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
+                            {u20Images.map((src, idx) => (
+                              <a key={idx} href={src} target="_blank" rel="noreferrer">
+                                <img
+                                  src={src}
+                                  alt={`U20 ${idx + 1}`}
+                                  style={{
+                                    width: "36px",
+                                    height: "36px",
+                                    objectFit: "cover",
+                                    borderRadius: "4px",
+                                    border: "1px solid #cbd5e1",
+                                  }}
+                                />
+                              </a>
+                            ))}
+                          </div>
+                        </div>
                       ) : (
-                        <span style={{ color: "#64748b" }}>No profile document</span>
+                        <span style={{ color: "#64748b", fontSize: "0.85rem" }}>
+                          {t("noU20Images")}
+                        </span>
                       )}
-                    </div>
-                    <div>
-                      {item.u20_athlete_list ? (
-                        <a
-                          href={item.u20_athlete_list.startsWith("/") ? item.u20_athlete_list : `/media/${item.u20_athlete_list}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={styles.docLink}
-                        >
-                          U20 Athlete List
-                        </a>
+                    </td>
+                    <td>
+                      {isSubadmin ? (
+                        <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>{roleT("readOnlyBadge")}</span>
                       ) : (
-                        <span style={{ color: "#64748b" }}>No athlete list</span>
+                        <div className={styles.actionsCell}>
+                          <button
+                            type="button"
+                            onClick={() => handleApprove(item.id)}
+                            className={styles.btnSuccess}
+                          >
+                            {t("approve")}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleReject(item.id)}
+                            className={styles.btnDanger}
+                          >
+                            {t("reject")}
+                          </button>
+                        </div>
                       )}
-                    </div>
-                  </td>
-                  <td>
-                    <div className={styles.actionsCell}>
-                      <button
-                        type="button"
-                        onClick={() => handleApprove(item.id)}
-                        className={styles.btnSuccess}
-                      >
-                        {t("approve")}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleReject(item.id)}
-                        className={styles.btnDanger}
-                      >
-                        {t("reject")}
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}

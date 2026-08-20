@@ -3,12 +3,15 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 import styles from "../../newsEditor.module.scss";
 
 export default function AdminEditNewsPage() {
   const router = useRouter();
   const params = useParams();
   const articleId = params?.id as string;
+  const t = useTranslations("admin.news");
+  const commonT = useTranslations("admin.common");
 
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState("");
@@ -25,7 +28,7 @@ export default function AdminEditNewsPage() {
     fetch(`/api/admin/news/${articleId}`)
       .then(async (res) => {
         if (!res.ok) {
-          throw new Error("Article not found.");
+          throw new Error(t("notFoundError"));
         }
         return res.json();
       })
@@ -40,22 +43,22 @@ export default function AdminEditNewsPage() {
         setLoading(false);
       })
       .catch((err) => {
-        setError(err.message || "Failed to load article.");
+        setError(err.message || t("loadError"));
         setLoading(false);
       });
-  }, [articleId]);
+  }, [articleId, t]);
 
   function handleImageFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      setError("Please select a valid image file (JPG, PNG, WebP).");
+      setError(t("invalidImageError"));
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      setError("Image size must be less than 5MB.");
+      setError(t("imageSizeError"));
       return;
     }
 
@@ -76,7 +79,7 @@ export default function AdminEditNewsPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim()) {
-      setError("Article title is required.");
+      setError(t("titleRequired"));
       return;
     }
 
@@ -98,13 +101,13 @@ export default function AdminEditNewsPage() {
 
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Failed to update article.");
+        throw new Error(data.error || t("saveError"));
       }
 
       router.push("/admin/news");
       router.refresh();
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "An unexpected error occurred.";
+      const message = err instanceof Error ? err.message : t("saveError");
       setError(message);
     } finally {
       setSubmitting(false);
@@ -115,7 +118,7 @@ export default function AdminEditNewsPage() {
     return (
       <div className={styles.editorContainer}>
         <div style={{ color: "#94a3b8", padding: "3rem", textAlign: "center" }}>
-          Loading article data...
+          {t("loading")}
         </div>
       </div>
     );
@@ -124,9 +127,9 @@ export default function AdminEditNewsPage() {
   return (
     <div className={styles.editorContainer}>
       <div className={styles.pageHeader}>
-        <h1>Edit News Article #{articleId}</h1>
+        <h1>{t("editArticle", { id: articleId })}</h1>
         <Link href="/admin/news" className={styles.btnCancel}>
-          ← Back to News
+          {t("backToNews")}
         </Link>
       </div>
 
@@ -136,11 +139,11 @@ export default function AdminEditNewsPage() {
         <div className={styles.fieldRow}>
           <div className={styles.fieldGroup}>
             <label>
-              Title <span className={styles.required}>*</span>
+              {t("articleTitle")} <span className={styles.required}>*</span>
             </label>
             <input
               type="text"
-              placeholder="Article title..."
+              placeholder={t("articleTitlePlaceholder")}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -149,37 +152,37 @@ export default function AdminEditNewsPage() {
 
           <div className={styles.fieldGroup}>
             <label>
-              Category <span className={styles.required}>*</span>
+              {t("category")} <span className={styles.required}>*</span>
             </label>
             <select value={category} onChange={(e) => setCategory(e.target.value)}>
-              <option value="tournament_news">Tournament News</option>
-              <option value="inspirational">Inspirational Stories</option>
-              <option value="knowledge_nutrition">Knowledge & Nutrition</option>
+              <option value="tournament_news">{t("categories.tournament_news")}</option>
+              <option value="inspirational">{t("categories.inspirational")}</option>
+              <option value="knowledge_nutrition">{t("categories.knowledge_nutrition")}</option>
             </select>
           </div>
         </div>
 
         <div className={styles.fieldGroup}>
-          <label>Summary / Excerpt</label>
+          <label>{t("summary")}</label>
           <input
             type="text"
-            placeholder="Brief 1-2 sentence summary..."
+            placeholder={t("summaryPlaceholder")}
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
           />
         </div>
 
         <div className={styles.fieldGroup}>
-          <label>Full Content</label>
+          <label>{t("fullContent")}</label>
           <textarea
-            placeholder="Write full article content here..."
+            placeholder={t("fullContentPlaceholder")}
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
         </div>
 
         <div className={styles.fieldGroup}>
-          <label>Article Image</label>
+          <label>{t("articleImage")}</label>
           <div className={styles.imageUploadSection}>
             {imageUrl ? (
               <div className={styles.imagePreviewWrapper}>
@@ -190,7 +193,7 @@ export default function AdminEditNewsPage() {
                   className={styles.removeImgBtn}
                   onClick={handleRemoveImage}
                 >
-                  Remove Image
+                  {t("removeImage")}
                 </button>
               </div>
             ) : (
@@ -202,7 +205,7 @@ export default function AdminEditNewsPage() {
                   style={{ marginBottom: "0.5rem" }}
                 />
                 <div style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
-                  Or enter image URL:
+                  {t("orImageUrl")}
                 </div>
                 <input
                   type="text"
@@ -218,10 +221,10 @@ export default function AdminEditNewsPage() {
 
         <div className={styles.actionsBar}>
           <Link href="/admin/news" className={styles.btnCancel}>
-            Cancel
+            {commonT("cancel")}
           </Link>
           <button type="submit" className={styles.btnSave} disabled={submitting}>
-            {submitting ? "Saving..." : "Save Changes"}
+            {submitting ? commonT("saving") : commonT("saveChanges")}
           </button>
         </div>
       </form>

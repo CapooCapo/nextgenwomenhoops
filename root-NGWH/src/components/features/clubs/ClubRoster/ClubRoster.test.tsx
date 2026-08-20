@@ -21,7 +21,7 @@ describe("ClubRoster", () => {
       ],
     });
     render(ui);
-    expect(screen.getByText("Player 1")).toBeInTheDocument();
-    expect(screen.getByText("Player 2")).toBeInTheDocument();
+    expect(screen.getAllByText("Player 1")[0]).toBeInTheDocument();
+    expect(screen.getAllByText("Player 2")[0]).toBeInTheDocument();
   });
 });

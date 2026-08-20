@@ -85,9 +85,24 @@ export async function ensureDatabaseSchema(): Promise<void> {
     `CREATE TABLE IF NOT EXISTS players_player (
       id SERIAL PRIMARY KEY,
       club_id INTEGER REFERENCES clubs_club(id) ON DELETE CASCADE,
-      name VARCHAR(255) NOT NULL
+      name VARCHAR(255) NOT NULL,
+      jersey_number VARCHAR(50),
+      position VARCHAR(100),
+      date_of_birth VARCHAR(50)
     );`,
     "players_player table"
+  );
+  await safeQuery(
+    `ALTER TABLE players_player ADD COLUMN IF NOT EXISTS jersey_number VARCHAR(50);`,
+    "players_player.jersey_number"
+  );
+  await safeQuery(
+    `ALTER TABLE players_player ADD COLUMN IF NOT EXISTS position VARCHAR(100);`,
+    "players_player.position"
+  );
+  await safeQuery(
+    `ALTER TABLE players_player ADD COLUMN IF NOT EXISTS date_of_birth VARCHAR(50);`,
+    "players_player.date_of_birth"
   );
 
   // 5. players_coachstaff
@@ -95,9 +110,19 @@ export async function ensureDatabaseSchema(): Promise<void> {
     `CREATE TABLE IF NOT EXISTS players_coachstaff (
       id SERIAL PRIMARY KEY,
       club_id INTEGER REFERENCES clubs_club(id) ON DELETE CASCADE,
-      name VARCHAR(255) NOT NULL
+      name VARCHAR(255) NOT NULL,
+      role VARCHAR(100),
+      description TEXT
     );`,
     "players_coachstaff table"
+  );
+  await safeQuery(
+    `ALTER TABLE players_coachstaff ADD COLUMN IF NOT EXISTS role VARCHAR(100);`,
+    "players_coachstaff.role"
+  );
+  await safeQuery(
+    `ALTER TABLE players_coachstaff ADD COLUMN IF NOT EXISTS description TEXT;`,
+    "players_coachstaff.description"
   );
 
   // 6. tournaments_tournament
@@ -222,5 +247,53 @@ export async function ensureDatabaseSchema(): Promise<void> {
       is_enabled BOOLEAN DEFAULT TRUE
     );`,
     "hero_slides table"
+  );
+
+  // 13. admin_users
+  await safeQuery(
+    `CREATE TABLE IF NOT EXISTS admin_users (
+      id SERIAL PRIMARY KEY,
+      username VARCHAR(100) UNIQUE NOT NULL,
+      password_hash TEXT NOT NULL,
+      role VARCHAR(50) NOT NULL DEFAULT 'subadmin',
+      status VARCHAR(50) NOT NULL DEFAULT 'active',
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );`,
+    "admin_users table"
+  );
+
+  // Migration: ensure u20_athlete_list is TEXT to support JSON arrays of up to 12 images
+  await safeQuery(
+    `ALTER TABLE clubs_club ALTER COLUMN u20_athlete_list TYPE TEXT;`,
+    "clubs_club.u20_athlete_list to TEXT"
+  );
+
+  // 14. PostgreSQL NOTIFY trigger for real-time match updates
+  await safeQuery(
+    `CREATE OR REPLACE FUNCTION notify_match_change() RETURNS trigger AS $$
+    BEGIN
+      PERFORM pg_notify('match_updates', json_build_object(
+        'operation', TG_OP,
+        'id', COALESCE(NEW.id, OLD.id)
+      )::text);
+      RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;`,
+    "notify_match_change procedure"
+  );
+
+  await safeQuery(
+    `DO $$
+    BEGIN
+      IF NOT EXISTS (
+        SELECT 1 FROM pg_trigger WHERE tgname = 'trg_matches_match_notify'
+      ) THEN
+        CREATE TRIGGER trg_matches_match_notify
+        AFTER INSERT OR UPDATE OR DELETE ON matches_match
+        FOR EACH ROW EXECUTE FUNCTION notify_match_change();
+      END IF;
+    END $$;`,
+    "trg_matches_match_notify trigger"
   );
 }

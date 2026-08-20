@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useAdminRole } from "@/hooks/useAdminRole";
 import styles from "../adminTables.module.scss";
 
 interface ClubItem {
@@ -16,6 +17,8 @@ interface ClubItem {
 
 export default function AdminClubsPage() {
   const t = useTranslations("admin.clubs");
+  const roleT = useTranslations("admin.roles");
+  const { isSubadmin } = useAdminRole();
   const [clubs, setClubs] = useState<ClubItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
@@ -72,6 +75,7 @@ export default function AdminClubsPage() {
   }
 
   async function toggleApproval(id: number, currentApproved: boolean) {
+    if (isSubadmin) return;
     try {
       const res = await fetch(`/api/admin/clubs/${id}`, {
         method: "PATCH",
@@ -79,7 +83,6 @@ export default function AdminClubsPage() {
         body: JSON.stringify({ is_approved: !currentApproved }),
       });
       if (res.ok) {
-        // Trigger refetch by re-setting page or search query
         setPage((p) => p);
         const url = `/api/admin/clubs?page=${page}&limit=${pageSize}${
           filter === "approved" ? "&approved=true" : filter === "pending" ? "&approved=false" : ""
@@ -98,7 +101,8 @@ export default function AdminClubsPage() {
   }
 
   async function handleDelete(id: number) {
-    if (!confirm("Are you sure you want to delete this club?")) return;
+    if (isSubadmin) return;
+    if (!confirm(t("deleteConfirm"))) return;
     try {
       const res = await fetch(`/api/admin/clubs/${id}`, {
         method: "DELETE",
@@ -128,6 +132,11 @@ export default function AdminClubsPage() {
     <div>
       <div className={styles.pageHeader}>
         <h1>{t("title")}</h1>
+        {isSubadmin && (
+          <span style={{ fontSize: "0.85rem", color: "#d97706", fontWeight: 600 }}>
+            {roleT("subadminNotice")}
+          </span>
+        )}
       </div>
 
       <div className={styles.filterBar}>
@@ -139,7 +148,7 @@ export default function AdminClubsPage() {
 
         <input
           type="text"
-          placeholder="Search by club name or region..."
+          placeholder={t("searchPlaceholder")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => {
@@ -147,26 +156,26 @@ export default function AdminClubsPage() {
           }}
         />
         <button type="button" onClick={handleSearchClick} className={styles.btnPrimary}>
-          Search
+          {t("searchButton")}
         </button>
       </div>
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <div className={styles.emptyState}>Loading clubs...</div>
+          <div className={styles.emptyState}>{t("loading")}</div>
         ) : clubs.length === 0 ? (
-          <div className={styles.emptyState}>No clubs found.</div>
+          <div className={styles.emptyState}>{t("empty")}</div>
         ) : (
           <>
             <table className={styles.table}>
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Club Name</th>
-                  <th>Region</th>
-                  <th>Representative</th>
-                  <th>Status</th>
-                  <th>Actions</th>
+                  <th>{t("tableHeaders.id")}</th>
+                  <th>{t("tableHeaders.name")}</th>
+                  <th>{t("tableHeaders.region")}</th>
+                  <th>{t("tableHeaders.representative")}</th>
+                  <th>{t("tableHeaders.status")}</th>
+                  <th>{t("tableHeaders.actions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -188,22 +197,26 @@ export default function AdminClubsPage() {
                       </span>
                     </td>
                     <td>
-                      <div className={styles.actionsCell}>
-                        <button
-                          type="button"
-                          onClick={() => toggleApproval(club.id, club.is_approved)}
-                          className={club.is_approved ? styles.btnSecondary : styles.btnSuccess}
-                        >
-                          {club.is_approved ? t("revoke") : t("approve")}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => handleDelete(club.id)}
-                          className={styles.btnDanger}
-                        >
-                          {t("delete")}
-                        </button>
-                      </div>
+                      {isSubadmin ? (
+                        <span style={{ fontSize: "0.8rem", color: "#94a3b8" }}>{roleT("readOnlyBadge")}</span>
+                      ) : (
+                        <div className={styles.actionsCell}>
+                          <button
+                            type="button"
+                            onClick={() => toggleApproval(club.id, club.is_approved)}
+                            className={club.is_approved ? styles.btnSecondary : styles.btnSuccess}
+                          >
+                            {club.is_approved ? t("revoke") : t("approve")}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(club.id)}
+                            className={styles.btnDanger}
+                          >
+                            {t("delete")}
+                          </button>
+                        </div>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -212,7 +225,7 @@ export default function AdminClubsPage() {
 
             <div className={styles.paginationContainer}>
               <div className={styles.paginationInfo}>
-                Showing page <strong>{page}</strong> of <strong>{totalPages}</strong> ({total} total clubs)
+                {t("pageInfo", { page, totalPages, total })}
               </div>
               <div className={styles.paginationControls}>
                 <button
@@ -220,14 +233,14 @@ export default function AdminClubsPage() {
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page <= 1}
                 >
-                  Previous
+                  {t("previous")}
                 </button>
                 <button
                   type="button"
                   onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                   disabled={page >= totalPages}
                 >
-                  Next
+                  {t("next")}
                 </button>
               </div>
             </div>

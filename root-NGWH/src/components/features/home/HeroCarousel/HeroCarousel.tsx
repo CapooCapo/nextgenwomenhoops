@@ -108,12 +108,18 @@ export function HeroCarousel({
         return;
       }
       if (index === activeIndex) {
-        video.currentTime = 0;
-        video.play().catch(() => {
-          // Autoplay can be rejected under rare browser-policy edge cases
-          // even when muted; the <video> element's own `poster` stays
-          // visible, so the Hero never goes blank either way.
-        });
+        video.muted = true;
+        try {
+          video.currentTime = 0;
+        } catch {
+          // Ignore if video metadata is not loaded yet
+        }
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Autoplay can be rejected under browser policy; poster stays visible
+          });
+        }
       } else {
         video.pause();
       }
@@ -130,6 +136,16 @@ export function HeroCarousel({
         {slides.map((slide, index) => {
           const isActive = index === activeIndex;
           const hasError = erroredSlides[index];
+          const isImage =
+            slide.videoSrc &&
+            /\.(jpg|jpeg|png|webp)($|\?)/i.test(slide.videoSrc);
+          const isEmbed =
+            !isImage &&
+            slide.videoSrc &&
+            (slide.videoSrc.includes("youtube.com/embed/") ||
+              slide.videoSrc.includes("player.vimeo.com/video/") ||
+              slide.videoSrc.includes("/embed/"));
+          const currentPoster = slide.posterSrc || posterSrc;
 
           return (
             <div
@@ -137,17 +153,32 @@ export function HeroCarousel({
               className={`${styles.slide} ${isActive ? styles.slideActive : ""}`}
               aria-hidden={!isActive}
             >
-              {hasError ? (
-                // No local video file exists at this slide's path yet
-                // (see src/config/heroSlides.ts) — this is the real,
-                // currently-active code path, not a simulated one.
+              {hasError || !slide.videoSrc ? (
                 <Image
-                  src={posterSrc}
+                  src={currentPoster}
                   alt={isActive ? posterAlt : ""}
                   fill
                   priority={index === 0}
                   sizes="100vw"
                   className={styles.media}
+                />
+              ) : isImage ? (
+                <Image
+                  src={slide.videoSrc}
+                  alt={slide.title || (isActive ? posterAlt : "")}
+                  fill
+                  priority={index === 0}
+                  sizes="100vw"
+                  className={styles.media}
+                  unoptimized={slide.videoSrc.startsWith("/media/")}
+                />
+              ) : isEmbed ? (
+                <iframe
+                  src={slide.videoSrc}
+                  className={styles.mediaIframe}
+                  allow="autoplay; fullscreen; picture-in-picture"
+                  title={slide.title || "Hero Video"}
+                  onError={() => handleVideoError(index)}
                 />
               ) : (
                 <video
@@ -156,7 +187,7 @@ export function HeroCarousel({
                   }}
                   className={styles.media}
                   src={slide.videoSrc}
-                  poster={posterSrc.src}
+                  poster={typeof currentPoster === "string" ? currentPoster : currentPoster.src}
                   muted
                   loop
                   playsInline

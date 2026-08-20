@@ -18,12 +18,17 @@ export interface PlayerRow {
   id: number;
   club_id: number;
   name: string;
+  jersey_number?: string | null;
+  position?: string | null;
+  date_of_birth?: string | null;
 }
 
 export interface CoachStaffRow {
   id: number;
   club_id: number;
   name: string;
+  role?: string | null;
+  description?: string | null;
 }
 
 export interface TournamentRow {

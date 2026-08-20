@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function AdminSeasonsPage() {
   const router = useRouter();
+  const t = useTranslations("admin.seasons");
 
   useEffect(() => {
     router.replace("/admin/matches");
@@ -12,7 +14,7 @@ export default function AdminSeasonsPage() {
 
   return (
     <div style={{ color: "#94a3b8", padding: "3rem", textAlign: "center" }}>
-      Redirecting to Match &amp; Season Management...
+      {t("redirecting")}
     </div>
   );
 }

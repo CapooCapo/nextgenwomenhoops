@@ -18,15 +18,15 @@ export async function POST(request: Request) {
       );
     }
 
-    const isValid = authenticateAdminCredentials(username, password);
-    if (!isValid) {
+    const authResult = await authenticateAdminCredentials(username, password);
+    if (!authResult.authenticated || !authResult.username || !authResult.role) {
       return NextResponse.json(
         { error: "Invalid username or password" },
         { status: 401 }
       );
     }
 
-    const token = createAdminToken(username);
+    const token = createAdminToken(authResult.username, authResult.role);
     const cookieStore = await cookies();
 
     cookieStore.set(ADMIN_COOKIE_NAME, token, {
@@ -37,8 +37,13 @@ export async function POST(request: Request) {
       maxAge: 24 * 60 * 60, // 24 hours
     });
 
-    return NextResponse.json({ success: true, user: username });
-  } catch {
+    return NextResponse.json({
+      success: true,
+      user: authResult.username,
+      role: authResult.role,
+    });
+  } catch (err) {
+    console.error("POST /api/admin/login error:", err);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

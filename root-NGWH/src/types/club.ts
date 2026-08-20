@@ -19,20 +19,51 @@ export interface Club {
 // roster/coaching-staff lists (names only, matching the implemented
 // Player/CoachStaff models).
 
+export interface AchievementItem {
+  title: string;
+  year?: number | string;
+  description?: string;
+}
+
 export interface ClubRosterMember {
-  id: number;
+  id?: number;
   name: string;
+  jersey_number?: string | null;
+  position?: string | null;
+  date_of_birth?: string | null;
+}
+
+export interface ClubCoachingStaffMember {
+  id?: number;
+  name: string;
+  role?: string | null;
+  description?: string | null;
+}
+
+export interface ClubContactInfo {
+  email?: string;
+  phone?: string;
+  website?: string;
+  address?: string;
+}
+
+export interface ClubSocialLinks {
+  facebook?: string;
+  instagram?: string;
+  tiktok?: string;
+  youtube?: string;
 }
 
 export interface ClubDetail extends Club {
-  /** Shape not confirmed (.ai/lld/clubs.md §12) — rendered defensively, no locale-switching. */
+  representative_name?: string;
+  is_approved?: boolean;
   contact_info: unknown;
-  /** Shape not confirmed (.ai/lld/clubs.md §12) — rendered defensively, no locale-switching. */
   social_links: unknown;
   capability_profile?: string | null;
   u20_athlete_list?: string | null;
+  u20_athlete_images?: string[];
   players: ClubRosterMember[];
-  coach_staff: ClubRosterMember[];
+  coach_staff: ClubCoachingStaffMember[];
   user_id?: number | null;
 }
 
@@ -60,6 +91,7 @@ export interface ClubRegistrationResult {
   logo: string | null;
   capability_profile: string | null;
   u20_athlete_list: string | null;
+  u20_athlete_images?: string[];
 }
 
 /** DRF's standard 400 validation-error shape: `{"<field>": ["message", ...]}`. */

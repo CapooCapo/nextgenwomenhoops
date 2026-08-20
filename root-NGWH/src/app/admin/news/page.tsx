@@ -15,6 +15,7 @@ interface ArticleItem {
 
 export default function AdminNewsPage() {
   const t = useTranslations("admin.news");
+  const commonT = useTranslations("admin.common");
   const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -54,7 +55,7 @@ export default function AdminNewsPage() {
   }, []);
 
   async function handleDeleteArticle(id: number) {
-    if (!confirm("Are you sure you want to delete this article?")) return;
+    if (!confirm(t("deleteConfirm"))) return;
     try {
       const res = await fetch(`/api/admin/news/${id}`, { method: "DELETE" });
       if (res.ok) {
@@ -70,25 +71,25 @@ export default function AdminNewsPage() {
       <div className={styles.pageHeader}>
         <h1>{t("title")}</h1>
         <Link href="/admin/news/new" className={styles.btnSuccess} style={{ textDecoration: "none", padding: "0.5rem 1rem", borderRadius: "6px" }}>
-          + Create News Article
+          {t("createArticle")}
         </Link>
       </div>
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <div className={styles.emptyState}>Loading news articles...</div>
+          <div className={styles.emptyState}>{t("loading")}</div>
         ) : articles.length === 0 ? (
-          <div className={styles.emptyState}>No news articles found. Click &quot;Create News Article&quot; above to create your first article.</div>
+          <div className={styles.emptyState}>{t("empty")}</div>
         ) : (
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Summary</th>
-                <th>Created At</th>
-                <th>Actions</th>
+                <th>{t("tableHeaders.id")}</th>
+                <th>{t("tableHeaders.title")}</th>
+                <th>{t("tableHeaders.category")}</th>
+                <th>{t("tableHeaders.summary")}</th>
+                <th>{t("tableHeaders.createdAt")}</th>
+                <th>{t("tableHeaders.actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -108,14 +109,14 @@ export default function AdminNewsPage() {
                         className={styles.btnSecondary}
                         style={{ textDecoration: "none", display: "inline-block" }}
                       >
-                        Edit
+                        {commonT("edit")}
                       </Link>
                       <button
                         type="button"
                         onClick={() => handleDeleteArticle(item.id)}
                         className={styles.btnDanger}
                       >
-                        Delete
+                        {commonT("delete")}
                       </button>
                     </div>
                   </td>

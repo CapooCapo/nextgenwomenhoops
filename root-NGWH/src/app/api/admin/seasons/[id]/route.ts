@@ -1,14 +1,17 @@
 import { NextResponse } from "next/server";
-import { requireAdminAuth } from "@/server/auth/adminAuth";
+import { requireAdminRole } from "@/server/auth/adminAuth";
 import { deleteSeason } from "@/server/repositories/adminTournamentsRepository";
 
 export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const isAuth = await requireAdminAuth();
-  if (!isAuth) {
+  const auth = await requireAdminRole("admin");
+  if (!auth.authenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!auth.allowed) {
+    return NextResponse.json({ error: "Forbidden: Admin role required" }, { status: 403 });
   }
 
   const { id } = await params;

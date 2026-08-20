@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher/LanguageSwitcher";
 import styles from "./login.module.scss";
 
 export default function AdminLoginPage() {
@@ -42,6 +43,9 @@ export default function AdminLoginPage() {
   return (
     <div className={styles.loginWrapper}>
       <div className={styles.loginCard}>
+        <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: "0.5rem" }}>
+          <LanguageSwitcher />
+        </div>
         <div className={styles.header}>
           <div className={styles.brand}>NextGen Women Hoops</div>
           <h1 className={styles.title}>{t("title")}</h1>

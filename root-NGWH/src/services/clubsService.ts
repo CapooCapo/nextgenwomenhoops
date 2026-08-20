@@ -96,12 +96,23 @@ export type RegisterClubResult =
  * `400` → DRF's own per-field validation messages; other HTTP statuses → log status,
  * network errors → networkError: true.
  */
-export async function registerClub(formData: FormData): Promise<RegisterClubResult> {
+export async function registerClub(
+  formData: FormData,
+  cookieHeader?: string
+): Promise<RegisterClubResult> {
   const url = buildUrl("/api/clubs");
 
   let response: Response;
   try {
-    response = await fetch(url, { method: "POST", body: formData });
+    const headers: Record<string, string> = {};
+    if (cookieHeader) {
+      headers["cookie"] = cookieHeader;
+    }
+    response = await fetch(url, {
+      method: "POST",
+      body: formData,
+      headers: Object.keys(headers).length > 0 ? headers : undefined,
+    });
   } catch (error) {
     console.error("registerClub fetch failed:", error);
     return { ok: false, networkError: true };

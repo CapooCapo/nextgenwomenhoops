@@ -57,6 +57,16 @@ $indicator-fill-duration: 7s;
   object-position: center;
 }
 
+.mediaIframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  object-fit: cover;
+  pointer-events: none;
+}
+
 .overlay {
   position: absolute;
   inset: 0;

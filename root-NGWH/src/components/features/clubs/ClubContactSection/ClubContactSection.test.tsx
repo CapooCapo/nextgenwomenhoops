@@ -22,7 +22,7 @@ describe("ClubContactSection", () => {
     render(ui);
     expect(screen.getByText("Phone: 123")).toBeInTheDocument();
     
-    const link = screen.getByRole("link", { name: "https://facebook.com" });
+    const link = screen.getByRole("link", { name: /https:\/\/facebook\.com/ });
     expect(link).toHaveAttribute("href", "https://facebook.com");
     expect(screen.getByText("Twitter")).toBeInTheDocument();
   });

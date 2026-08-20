@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { BRAND } from "../../../../config/brand";
-import { markRegistrationIntroSeenAction } from "../../../../app/club-registration/introActions";
+import { markRegistrationIntroSeenAction } from "@/app/(public)/club-registration/introActions";
 import styles from "./RegistrationIntro.module.scss";
 // If BRAND_ASSETS existed we would import it, but we'll use text for now to avoid errors if not set up
 

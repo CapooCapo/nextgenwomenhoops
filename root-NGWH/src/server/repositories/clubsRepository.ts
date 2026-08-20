@@ -123,7 +123,7 @@ export async function findPlayersByClubId(
   clubId: number
 ): Promise<PlayerRow[]> {
   return query<PlayerRow>(
-    `SELECT id, club_id, name
+    `SELECT id, club_id, name, jersey_number, position, date_of_birth
      FROM players_player
      WHERE club_id = $1
      ORDER BY id ASC`,
@@ -135,7 +135,7 @@ export async function findCoachStaffByClubId(
   clubId: number
 ): Promise<CoachStaffRow[]> {
   return query<CoachStaffRow>(
-    `SELECT id, club_id, name
+    `SELECT id, club_id, name, role, description
      FROM players_coachstaff
      WHERE club_id = $1
      ORDER BY id ASC`,
@@ -143,10 +143,70 @@ export async function findCoachStaffByClubId(
   );
 }
 
+export async function replaceClubPlayers(
+  clubId: number,
+  players: Array<{
+    name: string;
+    jersey_number?: string | null;
+    position?: string | null;
+    date_of_birth?: string | null;
+  }>
+): Promise<PlayerRow[]> {
+  await query(`DELETE FROM players_player WHERE club_id = $1`, [clubId]);
+
+  const inserted: PlayerRow[] = [];
+  for (const player of players) {
+    if (!player.name || !player.name.trim()) continue;
+    const rows = await query<PlayerRow>(
+      `INSERT INTO players_player (club_id, name, jersey_number, position, date_of_birth)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING id, club_id, name, jersey_number, position, date_of_birth`,
+      [
+        clubId,
+        player.name.trim(),
+        player.jersey_number || null,
+        player.position || null,
+        player.date_of_birth || null,
+      ]
+    );
+    if (rows[0]) inserted.push(rows[0]);
+  }
+  return inserted;
+}
+
+export async function replaceClubCoachStaff(
+  clubId: number,
+  staff: Array<{
+    name: string;
+    role?: string | null;
+    description?: string | null;
+  }>
+): Promise<CoachStaffRow[]> {
+  await query(`DELETE FROM players_coachstaff WHERE club_id = $1`, [clubId]);
+
+  const inserted: CoachStaffRow[] = [];
+  for (const member of staff) {
+    if (!member.name || !member.name.trim()) continue;
+    const rows = await query<CoachStaffRow>(
+      `INSERT INTO players_coachstaff (club_id, name, role, description)
+       VALUES ($1, $2, $3, $4)
+       RETURNING id, club_id, name, role, description`,
+      [
+        clubId,
+        member.name.trim(),
+        member.role || null,
+        member.description || null,
+      ]
+    );
+    if (rows[0]) inserted.push(rows[0]);
+  }
+  return inserted;
+}
+
 export async function createClub(
   params: CreateClubParams
 ): Promise<ClubRow> {
-  const isApproved = params.is_approved ?? true;
+  const isApproved = params.is_approved ?? false;
   const rows = await query<ClubRow>(
     `INSERT INTO clubs_club (name, province_region, representative_name, logo, capability_profile, u20_athlete_list, is_approved, user_id)
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)

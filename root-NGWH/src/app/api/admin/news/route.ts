@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { requireAdminAuth } from "@/server/auth/adminAuth";
+import { requireAdminRole } from "@/server/auth/adminAuth";
 import { findAllNews, createNewsArticle } from "@/server/repositories/adminContentRepository";
 
 export async function GET() {
-  const isAuth = await requireAdminAuth();
-  if (!isAuth) {
+  const auth = await requireAdminRole("admin", "subadmin");
+  if (!auth.authenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -13,9 +13,12 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const isAuth = await requireAdminAuth();
-  if (!isAuth) {
+  const auth = await requireAdminRole("admin");
+  if (!auth.authenticated) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  if (!auth.allowed) {
+    return NextResponse.json({ error: "Forbidden: Admin role required" }, { status: 403 });
   }
 
   try {

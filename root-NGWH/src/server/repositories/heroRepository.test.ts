@@ -3,6 +3,7 @@ import {
   findAllHeroSlides,
   createHeroSlide,
   deleteHeroSlide,
+  reorderHeroSlides,
 } from "./heroRepository";
 import { query } from "../db/client";
 
@@ -19,6 +20,7 @@ describe("heroRepository", () => {
   it("ensureHeroTable creates table and seeds slides if empty", async () => {
     (query as jest.MockedFunction<typeof query>).mockResolvedValueOnce([]); // create table
     (query as jest.MockedFunction<typeof query>).mockResolvedValueOnce([{ count: "0" }]); // count check
+    (query as jest.MockedFunction<typeof query>).mockResolvedValue([]); // inserts
 
     await ensureHeroTable();
     expect(query).toHaveBeenCalledWith(expect.stringContaining("CREATE TABLE IF NOT EXISTS hero_slides"));
@@ -56,5 +58,27 @@ describe("heroRepository", () => {
 
     const deleted = await deleteHeroSlide(1);
     expect(deleted).toBe(true);
+  });
+
+  it("reorderHeroSlides updates display orders in database", async () => {
+    (query as jest.MockedFunction<typeof query>).mockResolvedValueOnce([]); // create table
+    (query as jest.MockedFunction<typeof query>).mockResolvedValueOnce([{ count: "2" }]); // count check
+    (query as jest.MockedFunction<typeof query>).mockResolvedValue([]); // update 1
+    (query as jest.MockedFunction<typeof query>).mockResolvedValue([]); // update 2
+
+    const success = await reorderHeroSlides([
+      { id: 2, display_order: 1 },
+      { id: 1, display_order: 2 },
+    ]);
+
+    expect(success).toBe(true);
+    expect(query).toHaveBeenCalledWith(
+      expect.stringContaining("UPDATE hero_slides SET display_order = $1"),
+      [1, 2]
+    );
+    expect(query).toHaveBeenCalledWith(
+      expect.stringContaining("UPDATE hero_slides SET display_order = $1"),
+      [2, 1]
+    );
   });
 });

@@ -146,7 +146,7 @@ export default function AdminMatchesPage() {
     e.preventDefault();
     const yearNum = parseInt(newSeasonYear, 10);
     if (isNaN(yearNum) || yearNum < 2000 || yearNum > 2100) {
-      alert("Please enter a valid numeric year (e.g. 2026).");
+      alert(t("invalidYear"));
       return;
     }
 
@@ -174,11 +174,11 @@ export default function AdminMatchesPage() {
           }
         }
       } else {
-        alert("Failed to create season.");
+        alert(t("createError"));
       }
     } catch (err) {
       console.error(err);
-      alert("Error creating season.");
+      alert(t("createError"));
     } finally {
       setCreatingSeason(false);
     }
@@ -188,7 +188,7 @@ export default function AdminMatchesPage() {
     e.preventDefault();
     if (!seasonId || !homeClubId || !awayClubId || !scheduledAt) return;
     if (homeClubId === awayClubId) {
-      alert("Home and Away clubs must be different.");
+      alert(t("sameClubError"));
       return;
     }
 
@@ -217,7 +217,7 @@ export default function AdminMatchesPage() {
   }
 
   async function handleDeleteMatch(id: number) {
-    if (!confirm("Are you sure you want to delete this match?")) return;
+    if (!confirm(t("deleteConfirm"))) return;
     try {
       const res = await fetch(`/api/admin/matches/${id}`, { method: "DELETE" });
       if (res.ok) {
@@ -245,11 +245,11 @@ export default function AdminMatchesPage() {
           prev.map((m) => (m.id === id ? { ...m, ...updatedMatch } : m))
         );
       } else {
-        alert("Failed to update match.");
+        alert(t("updateError"));
       }
     } catch (err) {
       console.error(err);
-      alert("Error updating match.");
+      alert(t("updateError"));
     }
   }
 
@@ -264,7 +264,7 @@ export default function AdminMatchesPage() {
           onClick={() => setShowNewSeasonForm(!showNewSeasonForm)}
           className={styles.btnSecondary}
         >
-          {showNewSeasonForm ? "Cancel New Season" : "+ Create Season"}
+          {showNewSeasonForm ? t("cancelNewSeason") : t("createSeason")}
         </button>
       </div>
 
@@ -282,18 +282,18 @@ export default function AdminMatchesPage() {
           }}
         >
           <span style={{ color: "#ffffff", fontWeight: 600, fontSize: "0.9rem" }}>
-            Add New Season:
+            {t("addNewSeason")}
           </span>
           <input
             type="number"
-            placeholder="Year (e.g. 2026)"
+            placeholder={t("yearPlaceholder")}
             value={newSeasonYear}
             onChange={(e) => setNewSeasonYear(e.target.value)}
             required
             style={{ width: "160px" }}
           />
           <button type="submit" className={styles.btnSuccess} disabled={creatingSeason}>
-            {creatingSeason ? "Saving..." : "Save Season"}
+            {creatingSeason ? t("saving") : t("saveSeason")}
           </button>
         </form>
       )}
@@ -306,16 +306,16 @@ export default function AdminMatchesPage() {
       >
         <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", width: "100%" }}>
           <select value={seasonId} onChange={(e) => setSeasonId(Number(e.target.value))} required>
-            <option value="" disabled>Select Season</option>
+            <option value="" disabled>{t("selectSeason")}</option>
             {seasons.map((s) => (
               <option key={s.id} value={s.id}>
-                {s.year} Season
+                {t("seasonLabel", { year: s.year })}
               </option>
             ))}
           </select>
 
           <select value={homeClubId} onChange={(e) => setHomeClubId(Number(e.target.value))} required>
-            <option value="" disabled>Home Club</option>
+            <option value="" disabled>{t("homeClub")}</option>
             {clubs.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -324,7 +324,7 @@ export default function AdminMatchesPage() {
           </select>
 
           <select value={awayClubId} onChange={(e) => setAwayClubId(Number(e.target.value))} required>
-            <option value="" disabled>Away Club</option>
+            <option value="" disabled>{t("awayClub")}</option>
             {clubs.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -341,13 +341,13 @@ export default function AdminMatchesPage() {
 
           <input
             type="text"
-            placeholder="Venue Location"
+            placeholder={t("venueLocation")}
             value={venue}
             onChange={(e) => setVenue(e.target.value)}
           />
 
           <button type="submit" className={styles.btnSuccess}>
-            Create Match
+            {t("createMatch")}
           </button>
         </div>
       </form>
@@ -375,7 +375,7 @@ export default function AdminMatchesPage() {
             }}
           >
             <h2 style={{ fontSize: "1.25rem", margin: 0, fontWeight: 700 }}>
-              Live Scoreboard Control (Match #{activeMatch.id})
+              {t("controlPanelTitle", { id: activeMatch.id })}
             </h2>
             <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
               <span
@@ -392,7 +392,7 @@ export default function AdminMatchesPage() {
                   textTransform: "uppercase",
                 }}
               >
-                STATUS: {activeMatch.status}
+                {t("statusLabel", { status: activeMatch.status.toUpperCase() })}
               </span>
               {activeMatch.status !== "live" ? (
                 <button
@@ -401,7 +401,7 @@ export default function AdminMatchesPage() {
                   className={styles.btnSuccess}
                   style={{ fontWeight: 700, padding: "0.5rem 1rem" }}
                 >
-                  START MATCH
+                  {t("startMatch")}
                 </button>
               ) : (
                 <button
@@ -410,7 +410,7 @@ export default function AdminMatchesPage() {
                   className={styles.btnDanger}
                   style={{ fontWeight: 700, padding: "0.5rem 1rem" }}
                 >
-                  END MATCH
+                  {t("endMatch")}
                 </button>
               )}
             </div>
@@ -434,7 +434,7 @@ export default function AdminMatchesPage() {
               }}
             >
               <div style={{ fontWeight: 700, marginBottom: "0.75rem", color: "#f9a01b" }}>
-                HOME TEAM
+                {t("homeTeam")}
               </div>
               <div style={{ marginBottom: "0.75rem" }}>
                 <select
@@ -462,7 +462,7 @@ export default function AdminMatchesPage() {
               {/* HOME SCORE */}
               <div style={{ marginBottom: "1rem" }}>
                 <label style={{ fontSize: "0.85rem", color: "#94a3b8", display: "block" }}>
-                  SCORE
+                  {t("score")}
                 </label>
                 <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginTop: "0.25rem" }}>
                   <input
@@ -535,7 +535,7 @@ export default function AdminMatchesPage() {
               {/* HOME FOULS */}
               <div>
                 <label style={{ fontSize: "0.85rem", color: "#94a3b8", display: "block" }}>
-                  FOULS (0 - 5)
+                  {t("fouls")}
                 </label>
                 <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginTop: "0.25rem" }}>
                   <button
@@ -596,7 +596,7 @@ export default function AdminMatchesPage() {
               }}
             >
               <div style={{ fontWeight: 700, marginBottom: "0.75rem", color: "#f9a01b" }}>
-                AWAY TEAM
+                {t("awayTeam")}
               </div>
               <div style={{ marginBottom: "0.75rem" }}>
                 <select
@@ -624,7 +624,7 @@ export default function AdminMatchesPage() {
               {/* AWAY SCORE */}
               <div style={{ marginBottom: "1rem" }}>
                 <label style={{ fontSize: "0.85rem", color: "#94a3b8", display: "block" }}>
-                  SCORE
+                  {t("score")}
                 </label>
                 <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginTop: "0.25rem" }}>
                   <input
@@ -697,7 +697,7 @@ export default function AdminMatchesPage() {
               {/* AWAY FOULS */}
               <div>
                 <label style={{ fontSize: "0.85rem", color: "#94a3b8", display: "block" }}>
-                  FOULS (0 - 5)
+                  {t("fouls")}
                 </label>
                 <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", marginTop: "0.25rem" }}>
                   <button
@@ -764,11 +764,11 @@ export default function AdminMatchesPage() {
           >
             <div>
               <label style={{ fontSize: "0.85rem", color: "#94a3b8", display: "block" }}>
-                PERIOD
+                {t("period")}
               </label>
               <input
                 type="text"
-                placeholder="e.g. HIỆP 1, HIỆP 3, OT"
+                placeholder={t("periodPlaceholder")}
                 value={activeMatch.period ?? ""}
                 onChange={(e) =>
                   updateMatchData(activeMatch.id, { period: e.target.value })
@@ -786,11 +786,11 @@ export default function AdminMatchesPage() {
 
             <div>
               <label style={{ fontSize: "0.85rem", color: "#94a3b8", display: "block" }}>
-                TIMER
+                {t("timer")}
               </label>
               <input
                 type="text"
-                placeholder="e.g. 10:00, 05:42"
+                placeholder={t("timerPlaceholder")}
                 value={activeMatch.timer ?? ""}
                 onChange={(e) =>
                   updateMatchData(activeMatch.id, { timer: e.target.value })
@@ -808,7 +808,7 @@ export default function AdminMatchesPage() {
 
             <div>
               <label style={{ fontSize: "0.85rem", color: "#94a3b8", display: "block" }}>
-                STATUS
+                {t("tableHeaders.status")}
               </label>
               <select
                 value={activeMatch.status}
@@ -824,9 +824,9 @@ export default function AdminMatchesPage() {
                   fontSize: "0.9rem",
                 }}
               >
-                <option value="scheduled">scheduled</option>
-                <option value="live">live</option>
-                <option value="finished">finished</option>
+                <option value="scheduled">{t("statusScheduled")}</option>
+                <option value="live">{t("statusLive")}</option>
+                <option value="finished">{t("statusFinished")}</option>
               </select>
             </div>
           </div>
@@ -836,21 +836,21 @@ export default function AdminMatchesPage() {
       {/* MATCHES TABLE */}
       <div className={styles.tableContainer}>
         {loading ? (
-          <div className={styles.emptyState}>Loading matches...</div>
+          <div className={styles.emptyState}>{t("loading")}</div>
         ) : matches.length === 0 ? (
-          <div className={styles.emptyState}>No matches scheduled yet.</div>
+          <div className={styles.emptyState}>{t("empty")}</div>
         ) : (
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Home Club</th>
+                <th>{t("tableHeaders.id")}</th>
+                <th>{t("tableHeaders.homeClub")}</th>
                 <th>VS</th>
-                <th>Away Club</th>
-                <th>Score</th>
-                <th>Status</th>
-                <th>Date & Time</th>
-                <th>Actions</th>
+                <th>{t("tableHeaders.awayClub")}</th>
+                <th>{t("tableHeaders.score")}</th>
+                <th>{t("tableHeaders.status")}</th>
+                <th>{t("tableHeaders.scheduledAt")}</th>
+                <th>{t("tableHeaders.actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -884,7 +884,13 @@ export default function AdminMatchesPage() {
                           : ""
                       }`}
                     >
-                      {m.status}
+                      {m.status === "scheduled"
+                        ? t("statusScheduled")
+                        : m.status === "live"
+                        ? t("statusLive")
+                        : m.status === "finished"
+                        ? t("statusFinished")
+                        : m.status}
                     </span>
                   </td>
                   <td>{new Date(m.scheduled_at).toLocaleString()}</td>
@@ -896,14 +902,14 @@ export default function AdminMatchesPage() {
                         m.id === activeControlMatchId ? styles.btnPrimary : styles.btnSecondary
                       }
                     >
-                      {m.id === activeControlMatchId ? "Controlling" : "Control"}
+                      {m.id === activeControlMatchId ? t("controlling") : t("control")}
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDeleteMatch(m.id)}
                       className={styles.btnDanger}
                     >
-                      Delete
+                      {t("delete")}
                     </button>
                   </td>
                 </tr>

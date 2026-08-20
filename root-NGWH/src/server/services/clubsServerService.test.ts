@@ -1,5 +1,6 @@
 import {
   getApprovedClubDetail,
+  getClubDetailForView,
   getApprovedClubsList,
   registerNewClub,
   getUserClubsList,
@@ -67,16 +68,56 @@ describe("clubsServerService", () => {
     });
   });
 
-  describe("getApprovedClubDetail", () => {
-    it("returns null if club is not found or not approved", async () => {
-      (clubsRepository.findApprovedClubById as jest.Mock).mockResolvedValue(null);
+  describe("getApprovedClubDetail and getClubDetailForView", () => {
+    it("returns null if club is not found", async () => {
+      (clubsRepository.findClubById as jest.Mock).mockResolvedValue(null);
 
       const result = await getApprovedClubDetail(999);
       expect(result).toBeNull();
     });
 
-    it("returns detailed profile with nested players and coaching staff", async () => {
-      (clubsRepository.findApprovedClubById as jest.Mock).mockResolvedValue({
+    it("returns null for non-owner viewing pending club", async () => {
+      (clubsRepository.findClubById as jest.Mock).mockResolvedValue({
+        id: 1,
+        name: "Pending Club",
+        is_approved: false,
+        user_id: 10,
+      });
+
+      const nonOwnerView = await getApprovedClubDetail(1);
+      expect(nonOwnerView).toBeNull();
+    });
+
+    it("returns club detail for owner viewing own pending club", async () => {
+      (clubsRepository.findClubById as jest.Mock).mockResolvedValue({
+        id: 1,
+        name: "Pending Club",
+        logo: "/logo.png",
+        founding_year: 2020,
+        achievements: null,
+        province_region: "Hanoi",
+        contact_info: null,
+        social_links: null,
+        is_approved: false,
+        representative_name: "Rep Name",
+        capability_profile: null,
+        u20_athlete_list: null,
+        user_id: 10,
+      });
+      (clubsRepository.findPlayersByClubId as jest.Mock).mockResolvedValue([]);
+      (clubsRepository.findCoachStaffByClubId as jest.Mock).mockResolvedValue([]);
+
+      const ownerView = await getApprovedClubDetail(1); // without params, defaults to non-owner -> null
+      expect(ownerView).toBeNull();
+
+      const result = await getClubDetailForView(1, 10, false);
+      expect(result).not.toBeNull();
+      expect(result?.name).toBe("Pending Club");
+      expect(result?.is_approved).toBe(false);
+    });
+
+    it("returns detailed profile with nested players and coaching staff for approved club", async () => {
+      (clubsRepository.findClubById as jest.Mock).mockResolvedValue({
         id: 1,
         name: "Hoops Club",
         logo: "/logo.png",
@@ -110,9 +151,11 @@ describe("clubsServerService", () => {
         social_links: { facebook: "https://fb.com/hoops" },
         capability_profile: null,
         u20_athlete_list: null,
+        u20_athlete_images: [],
         players: [{ id: 10, name: "Player 1" }],
         coach_staff: [{ id: 20, name: "Coach 1" }],
         user_id: 10,
+        is_approved: true,
       });
     });
   });
@@ -161,6 +204,7 @@ describe("clubsServerService", () => {
         logo: null,
         capability_profile: null,
         u20_athlete_list: null,
+        u20_athlete_images: [],
       });
     });
   });

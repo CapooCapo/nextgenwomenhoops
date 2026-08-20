@@ -14,7 +14,7 @@ jest.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
 }));
 
-jest.mock("../../../../app/club-registration/actions", () => ({
+jest.mock("@/app/(public)/club-registration/actions", () => ({
   submitClubRegistrationAction: jest.fn(),
 }));
 

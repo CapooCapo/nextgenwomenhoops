@@ -15,6 +15,7 @@ interface ContactSubmission {
 
 export default function AdminContactPage() {
   const t = useTranslations("admin.contact");
+  const commonT = useTranslations("admin.common");
   const [submissions, setSubmissions] = useState<ContactSubmission[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -54,7 +55,7 @@ export default function AdminContactPage() {
   }, []);
 
   async function handleDeleteSubmission(id: number) {
-    if (!confirm("Are you sure you want to delete this submission?")) return;
+    if (!confirm(t("deleteConfirm"))) return;
     try {
       const res = await fetch(`/api/admin/contact/${id}`, { method: "DELETE" });
       if (res.ok) {
@@ -73,20 +74,20 @@ export default function AdminContactPage() {
 
       <div className={styles.tableContainer}>
         {loading ? (
-          <div className={styles.emptyState}>Loading contact submissions...</div>
+          <div className={styles.emptyState}>{t("loading")}</div>
         ) : submissions.length === 0 ? (
-          <div className={styles.emptyState}>No contact submissions recorded yet.</div>
+          <div className={styles.emptyState}>{t("empty")}</div>
         ) : (
           <table className={styles.table}>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Subject</th>
-                <th>Message</th>
-                <th>Received At</th>
-                <th>Actions</th>
+                <th>{t("tableHeaders.id")}</th>
+                <th>{t("tableHeaders.name")}</th>
+                <th>{t("tableHeaders.email")}</th>
+                <th>{t("tableHeaders.subject")}</th>
+                <th>{t("tableHeaders.message")}</th>
+                <th>{t("tableHeaders.receivedAt")}</th>
+                <th>{t("tableHeaders.actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -110,7 +111,7 @@ export default function AdminContactPage() {
                       onClick={() => handleDeleteSubmission(sub.id)}
                       className={styles.btnDanger}
                     >
-                      Delete
+                      {commonT("delete")}
                     </button>
                   </td>
                 </tr>
