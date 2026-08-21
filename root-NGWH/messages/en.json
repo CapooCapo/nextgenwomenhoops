@@ -183,7 +183,18 @@
       "empty": "No clubs found.",
       "error": "We couldn't load the club directory right now.",
       "previous": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "foundingYear": "Founding Year",
+      "noFoundingYear": "(none)",
+      "tableHeaders": {
+        "logo": "Logo",
+        "name": "Club",
+        "region": "Province / Region",
+        "foundingYear": "Founded",
+        "achievements": "Achievements",
+        "actions": "Action"
+      },
+      "viewDetails": "View Details"
     },
     "profile": {
       "error": "We couldn't load this club right now.",
@@ -613,6 +624,14 @@
       "control": "Control",
       "loading": "Loading matches...",
       "empty": "No matches scheduled yet.",
+      "createSeason": "+ Create Season",
+      "cancelNewSeason": "Cancel",
+      "addNewSeason": "Add New Season",
+      "yearPlaceholder": "Year (e.g. 2026)",
+      "saveSeason": "Save Season",
+      "saving": "Saving...",
+      "invalidYear": "Please enter a valid numeric year (e.g. 2026).",
+      "createError": "Failed to create season.",
       "tableHeaders": {
         "id": "ID",
         "homeClub": "Home Club",

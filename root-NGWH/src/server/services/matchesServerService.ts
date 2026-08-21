@@ -1,5 +1,5 @@
 import { findAllMatchesWithClubs } from "../repositories/matchesRepository";
-import { formatFileUrl } from "./clubsServerService";
+import { normalizeMediaField as formatFileUrl } from "./clubMediaService";
 
 export interface FormattedMatch {
   id: number;

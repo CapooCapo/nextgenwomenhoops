@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { requireAdminRole } from "@/server/auth/adminAuth";
 import { findAllClubsAdmin } from "@/server/repositories/adminClubsRepository";
+import {
+  normalizeMediaField,
+  normalizeMediaList,
+} from "@/server/services/clubMediaService";
 
 export async function GET(request: Request) {
   const auth = await requireAdminRole("admin", "subadmin");
@@ -28,5 +32,13 @@ export async function GET(request: Request) {
     pageSize: isNaN(pageSize) ? 20 : pageSize,
   });
 
-  return NextResponse.json(paginatedResult);
+  const clubs = paginatedResult.clubs.map((club) => ({
+    ...club,
+    logo: normalizeMediaField(club.logo),
+    capability_profile: normalizeMediaField(club.capability_profile),
+    u20_athlete_list: normalizeMediaField(club.u20_athlete_list),
+    u20_athlete_images: normalizeMediaList(club.u20_athlete_list),
+  }));
+
+  return NextResponse.json({ ...paginatedResult, clubs });
 }

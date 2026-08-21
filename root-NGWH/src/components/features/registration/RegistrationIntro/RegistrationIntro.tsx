@@ -28,7 +28,8 @@ export function RegistrationIntro({ onComplete }: RegistrationIntroProps) {
     }, duration);
 
     return () => clearTimeout(timer);
-  }, [onComplete]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!isVisible) return null;
 

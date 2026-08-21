@@ -19,5 +19,5 @@ root-NGWH/.swc/
 root-NGWH/*.tsbuildinfo
 
 # Local uploads & media
-media/
+/media/
 root-NGWH/media/

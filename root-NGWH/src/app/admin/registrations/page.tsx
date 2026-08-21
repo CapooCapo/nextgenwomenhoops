@@ -12,21 +12,7 @@ interface PendingRegistration {
   representative_name: string;
   capability_profile: string | null;
   u20_athlete_list: string | null;
-}
-
-function parseAthleteImages(raw: string | null): string[] {
-  if (!raw) return [];
-  if (raw.startsWith("[") && raw.endsWith("]")) {
-    try {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) {
-        return parsed.map((item) =>
-          String(item).startsWith("/") ? String(item) : `/media/${item}`
-        );
-      }
-    } catch {}
-  }
-  return [raw.startsWith("/") ? raw : `/media/${raw}`];
+  u20_athlete_images: string[];
 }
 
 export default function AdminRegistrationsPage() {
@@ -132,7 +118,7 @@ export default function AdminRegistrationsPage() {
             </thead>
             <tbody>
               {registrations.map((item) => {
-                const u20Images = parseAthleteImages(item.u20_athlete_list);
+                const u20Images = item.u20_athlete_images;
 
                 return (
                   <tr key={item.id}>
@@ -146,11 +132,7 @@ export default function AdminRegistrationsPage() {
                       <div style={{ marginBottom: "0.5rem" }}>
                         {item.capability_profile ? (
                           <a
-                            href={
-                              item.capability_profile.startsWith("/")
-                                ? item.capability_profile
-                                : `/media/${item.capability_profile}`
-                            }
+                            href={item.capability_profile}
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.docLink}

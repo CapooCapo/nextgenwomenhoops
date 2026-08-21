@@ -162,7 +162,7 @@ export function AdminUserManagementClient({
             />
           </div>
           <div className={styles.submitWrapper}>
-            <button type="submit" disabled={isSubmitting}>
+            <button type="submit" className={styles.submitBtn} disabled={isSubmitting}>
               {isSubmitting ? t("submitting") : t("submit")}
             </button>
           </div>

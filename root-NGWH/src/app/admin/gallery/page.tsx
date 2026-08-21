@@ -107,50 +107,68 @@ export default function AdminGalleryPage() {
         <h1>{t("title")}</h1>
       </div>
 
-      <form onSubmit={handleCreateItem} className={styles.filterBar} style={{ flexDirection: "column", alignItems: "flex-start", marginBottom: "2rem" }}>
-        <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", width: "100%" }}>
-          <input
-            type="text"
-            placeholder={t("itemTitlePlaceholder")}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            style={{ flex: 2 }}
-          />
+      <div className={styles.createCard}>
+        <h3>{t("addGalleryItem", { fallback: "+ Thêm Thư viện" })}</h3>
+        <form onSubmit={handleCreateItem} className={styles.createForm}>
+          <div className={styles.formGroup}>
+            <label htmlFor="gallery-title">{t("titlePlaceholder")}</label>
+            <input
+              id="gallery-title"
+              type="text"
+              placeholder={t("titlePlaceholder")}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </div>
 
-          <select value={category} onChange={(e) => setCategory(e.target.value)} style={{ flex: 1 }}>
-            <option value="media">{t("categories.media")}</option>
-            <option value="mvp">{t("categories.mvp")}</option>
-            <option value="behindScenes">{t("categories.behindScenes")}</option>
-          </select>
+          <div className={styles.formGroup} style={{ flex: "0 1 200px" }}>
+            <label htmlFor="gallery-category">{t("tableHeaders.category", { fallback: "Category" })}</label>
+            <select id="gallery-category" value={category} onChange={(e) => setCategory(e.target.value)}>
+              <option value="media">{t("categories.media")}</option>
+              <option value="mvp">{t("categories.mvp")}</option>
+              <option value="behindScenes">{t("categories.behindScenes")}</option>
+            </select>
+          </div>
 
-          <select value={mediaType} onChange={(e) => setMediaType(e.target.value)} style={{ flex: 1 }}>
-            <option value="image">{t("mediaTypes.image")}</option>
-            <option value="video">{t("mediaTypes.video")}</option>
-          </select>
-        </div>
+          <div className={styles.formGroup} style={{ flex: "0 1 150px" }}>
+            <label htmlFor="gallery-type">{t("tableHeaders.type", { fallback: "Type" })}</label>
+            <select id="gallery-type" value={mediaType} onChange={(e) => setMediaType(e.target.value)}>
+              <option value="image">{t("types.image", { fallback: "Image" })}</option>
+              <option value="video">{t("types.video", { fallback: "Video" })}</option>
+            </select>
+          </div>
 
-        <input
-          type="text"
-          placeholder={t("mediaUrlPlaceholder")}
-          value={mediaUrl}
-          onChange={(e) => setMediaUrl(e.target.value)}
-          required
-          style={{ width: "100%" }}
-        />
+          <div className={styles.formGroup}>
+            <label htmlFor="gallery-url">{t("mediaUrlPlaceholder")}</label>
+            <input
+              id="gallery-url"
+              type="text"
+              placeholder={t("mediaUrlPlaceholder")}
+              value={mediaUrl}
+              onChange={(e) => setMediaUrl(e.target.value)}
+              required
+            />
+          </div>
 
-        <input
-          type="text"
-          placeholder={t("captionPlaceholder")}
-          value={caption}
-          onChange={(e) => setCaption(e.target.value)}
-          style={{ width: "100%" }}
-        />
+          <div className={styles.formGroup}>
+            <label htmlFor="gallery-caption">{t("captionPlaceholder")}</label>
+            <input
+              id="gallery-caption"
+              type="text"
+              placeholder={t("captionPlaceholder")}
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+            />
+          </div>
 
-        <button type="submit" className={styles.btnSuccess} style={{ marginTop: "0.5rem" }}>
-          {t("addItem")}
-        </button>
-      </form>
+          <div className={styles.submitWrapper}>
+            <button type="submit" className={styles.btnSuccess}>
+              {t("addGalleryItem")}
+            </button>
+          </div>
+        </form>
+      </div>
 
       <div className={styles.tableContainer}>
         {loading ? (

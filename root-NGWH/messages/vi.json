@@ -183,7 +183,18 @@
       "empty": "Không tìm thấy câu lạc bộ nào.",
       "error": "Hiện chưa thể tải danh bạ câu lạc bộ.",
       "previous": "Trang trước",
-      "next": "Trang sau"
+      "next": "Trang sau",
+      "foundingYear": "Năm thành lập",
+      "noFoundingYear": "(không có)",
+      "tableHeaders": {
+        "logo": "Logo",
+        "name": "Câu lạc bộ",
+        "region": "Khu vực / Tỉnh thành",
+        "foundingYear": "Thành lập",
+        "achievements": "Thành tích",
+        "actions": "Hành động"
+      },
+      "viewDetails": "Xem chi tiết"
     },
     "profile": {
       "error": "Hiện chưa thể tải thông tin câu lạc bộ này.",
@@ -613,6 +624,14 @@
       "control": "Điều khiển",
       "loading": "Đang tải danh sách trận đấu...",
       "empty": "Chưa có trận đấu nào được lên lịch.",
+      "createSeason": "+ Tạo Mùa giải",
+      "cancelNewSeason": "Hủy",
+      "addNewSeason": "Thêm Mùa giải mới",
+      "yearPlaceholder": "Năm (vd. 2026)",
+      "saveSeason": "Lưu Mùa giải",
+      "saving": "Đang lưu...",
+      "invalidYear": "Vui lòng nhập năm hợp lệ (vd. 2026).",
+      "createError": "Không thể tạo mùa giải.",
       "tableHeaders": {
         "id": "ID",
         "homeClub": "Đội nhà",

@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { Club } from "../../../../types/club";
 import { Card } from "../../../ui/Card/Card";
 import styles from "./ClubCard.module.scss";
@@ -9,6 +10,8 @@ interface ClubCardProps {
 }
 
 export function ClubCard({ club }: ClubCardProps) {
+  const t = useTranslations("clubs.directory");
+
   return (
     <Link href={`/clubs/${club.id}`} className={styles.link}>
       <Card className={styles.card}>
@@ -22,23 +25,21 @@ export function ClubCard({ club }: ClubCardProps) {
           )}
         </div>
         <div className={styles.content}>
-          <h3 className={styles.name}>{club.name}</h3>
-          
-          <div className={styles.meta}>
-            <span className={styles.region}>{club.province_region}</span>
-            {club.founding_year && (
-              <>
-                <span className={styles.dot} aria-hidden="true">&bull;</span>
-                <span className={styles.year}>{club.founding_year}</span>
-              </>
-            )}
-          </div>
-          
-          {!!club.achievements && (
-            <p className={styles.achievements}>
-              {String(club.achievements)}
-            </p>
-          )}
+          <table className={styles.infoTable}>
+            <tbody>
+              <tr>
+                <td colSpan={2}>
+                  <h3 className={styles.name}>{club.name}</h3>
+                </td>
+              </tr>
+              <tr>
+                <td className={styles.tableLabel}>{t("foundingYear")}:</td>
+                <td className={styles.tableValue}>
+                  {club.founding_year ? club.founding_year : t("noFoundingYear")}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </Card>
     </Link>

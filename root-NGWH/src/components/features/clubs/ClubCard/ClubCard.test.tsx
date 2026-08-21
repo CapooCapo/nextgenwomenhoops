@@ -3,40 +3,42 @@ import { render, screen } from "@testing-library/react";
 import { ClubCard } from "./ClubCard";
 import { Club } from "../../../../types/club";
 
+// Mock next-intl useTranslations
+jest.mock("next-intl", () => ({
+  useTranslations: () => (key: string) => key,
+}));
+
+const baseClub: Club = {
+  id: 1,
+  name: "Team A",
+  logo: "/logo.png",
+  founding_year: 2020,
+  achievements: null,
+  province_region: "North",
+};
+
 describe("ClubCard", () => {
-  it("renders club data with logo", () => {
-    const club: Club = {
-      id: 1,
-      name: "Team A",
-      logo: "/logo.png",
-      founding_year: 2020,
-      achievements: "Champion 2021",
-      province_region: "North",
-    };
-    render(<ClubCard club={club} />);
-    
+  it("renders club data with logo and founding year", () => {
+    render(<ClubCard club={baseClub} />);
+
     expect(screen.getByRole("link")).toHaveAttribute("href", "/clubs/1");
     expect(screen.getByRole("heading", { name: "Team A" })).toBeInTheDocument();
     expect(screen.getByRole("img", { name: "Team A" })).toBeInTheDocument();
-    expect(screen.getByText("North")).toBeInTheDocument();
+    
+    // Check table data
+    expect(screen.getByText("foundingYear:")).toBeInTheDocument();
     expect(screen.getByText("2020")).toBeInTheDocument();
-    expect(screen.getByText("Champion 2021")).toBeInTheDocument();
   });
 
-  it("renders club data without logo", () => {
-    const club: Club = {
-      id: 2,
-      name: "Team B",
-      logo: null,
-      founding_year: null,
-      achievements: null,
-      province_region: "South",
-    };
+  it("renders fallback logo and noFoundingYear text when year is missing", () => {
+    const club: Club = { ...baseClub, id: 2, name: "Team B", logo: null, founding_year: null };
     render(<ClubCard club={club} />);
-    
-    expect(screen.getByText("T")).toBeInTheDocument(); // Initial for Team B
+
+    expect(screen.getByText("T")).toBeInTheDocument(); // fallback initial
     expect(screen.getByText("Team B")).toBeInTheDocument();
-    expect(screen.getByText("South")).toBeInTheDocument();
-    expect(screen.queryByText("2020")).not.toBeInTheDocument();
+    
+    // Check table data for missing year
+    expect(screen.getByText("foundingYear:")).toBeInTheDocument();
+    expect(screen.getByText("noFoundingYear")).toBeInTheDocument();
   });
 });

@@ -9,50 +9,17 @@ import {
   replaceClubPlayers,
   replaceClubCoachStaff,
 } from "../repositories/clubsRepository";
-import {
-  insertClubMedia,
-  deleteClubMediaByType,
-} from "../repositories/clubMediaRepository";
+import { deleteClubMediaByType } from "../repositories/clubMediaRepository";
 import {
   validateClubRegistration,
   validateU20AthleteFiles,
 } from "../validation/clubValidation";
+import { validateClubMediaFile } from "../validation/clubMediaValidation";
 import {
-  validateClubMediaFile,
-  validateFileBufferSignature,
-} from "../validation/clubMediaValidation";
-
-export function formatFileUrl(filePath: string | null): string | null {
-  if (!filePath) return null;
-  if (
-    filePath.startsWith("http://") ||
-    filePath.startsWith("https://") ||
-    filePath.startsWith("/media/") ||
-    filePath.startsWith("/") ||
-    filePath.startsWith("[")
-  ) {
-    return filePath;
-  }
-  return `/media/${filePath}`;
-}
-
-export function parseU20AthleteImages(rawList: string | null): string[] {
-  if (!rawList) return [];
-  if (rawList.startsWith("[") && rawList.endsWith("]")) {
-    try {
-      const parsed = JSON.parse(rawList);
-      if (Array.isArray(parsed)) {
-        return parsed
-          .map((item) => formatFileUrl(String(item)))
-          .filter((url): url is string => !!url);
-      }
-    } catch {
-      // Fallback
-    }
-  }
-  const formatted = formatFileUrl(rawList);
-  return formatted ? [formatted] : [];
-}
+  uploadMedia,
+  normalizeMediaField,
+  normalizeMediaList,
+} from "./clubMediaService";
 
 export interface GetApprovedClubsOptions {
   provinceRegion?: string;
@@ -73,7 +40,7 @@ export async function getApprovedClubsList(
     data: clubs.map((club) => ({
       id: club.id,
       name: club.name,
-      logo: formatFileUrl(club.logo),
+      logo: normalizeMediaField(club.logo),
       founding_year: club.founding_year,
       achievements: club.achievements,
       province_region: club.province_region,
@@ -111,15 +78,15 @@ export async function getClubDetailForView(id: number, currentUserId?: number, i
     id: club.id,
     name: club.name,
     representative_name: club.representative_name,
-    logo: formatFileUrl(club.logo),
+    logo: normalizeMediaField(club.logo),
     founding_year: club.founding_year,
     achievements: club.achievements,
     province_region: club.province_region,
     contact_info: club.contact_info,
     social_links: club.social_links,
-    capability_profile: formatFileUrl(club.capability_profile),
-    u20_athlete_list: formatFileUrl(club.u20_athlete_list),
-    u20_athlete_images: parseU20AthleteImages(club.u20_athlete_list),
+    capability_profile: normalizeMediaField(club.capability_profile),
+    u20_athlete_list: normalizeMediaField(club.u20_athlete_list),
+    u20_athlete_images: normalizeMediaList(club.u20_athlete_list),
     players: players.map((p) => ({
       id: p.id,
       name: p.name,
@@ -136,55 +103,6 @@ export async function getClubDetailForView(id: number, currentUserId?: number, i
     user_id: club.user_id || null,
     is_approved: club.is_approved,
   };
-}
-
-async function saveClubMediaToDb(
-  file: File,
-  clubId: number,
-  mediaType: "logo" | "capability_profile" | "u20_athlete"
-): Promise<{ ok: boolean; url?: string; error?: string }> {
-  if (!file || !(file instanceof File) || file.size === 0 || !file.name) {
-    return { ok: false };
-  }
-
-  // Infer MIME type if missing or generic (e.g. application/octet-stream)
-  let effectiveMime = (file.type || "").toLowerCase().trim();
-  if (!effectiveMime || effectiveMime === "application/octet-stream") {
-    const ext = file.name.split(".").pop()?.toLowerCase();
-    if (ext === "png") effectiveMime = "image/png";
-    else if (ext === "jpg" || ext === "jpeg") effectiveMime = "image/jpeg";
-    else if (ext === "webp") effectiveMime = "image/webp";
-    else if (ext === "pdf") effectiveMime = "application/pdf";
-  }
-
-  const fileToValidate = effectiveMime !== file.type
-    ? new File([file], file.name, { type: effectiveMime })
-    : file;
-
-  const validation = validateClubMediaFile(fileToValidate);
-  if (!validation.isValid) {
-    return { ok: false, error: validation.error };
-  }
-
-  const arrayBuffer = await file.arrayBuffer();
-  const buffer = Buffer.from(arrayBuffer);
-
-  const isSignatureValid = validateFileBufferSignature(buffer, effectiveMime);
-  if (!isSignatureValid && process.env.NODE_ENV !== "test") {
-    return { ok: false, error: "Unsupported file type." };
-  }
-
-  const inserted = await insertClubMedia({
-    club_id: clubId,
-    media_type: mediaType,
-    filename: file.name,
-    mime_type: effectiveMime || "application/octet-stream",
-    size_bytes: file.size,
-    data: buffer,
-  });
-
-  const mediaUrl = `/media/clubs/${clubId}/${mediaType}/${inserted.id}`;
-  return { ok: true, url: mediaUrl };
 }
 
 export async function registerNewClub(formData: FormData, userId?: number) {
@@ -269,19 +187,19 @@ export async function registerNewClub(formData: FormData, userId?: number) {
   let athPath: string | null = null;
 
   if (logoFile && logoFile instanceof File && logoFile.size > 0) {
-    const saved = await saveClubMediaToDb(logoFile, createdClub.id, "logo");
+    const saved = await uploadMedia(createdClub.id, "logo", logoFile);
     if (saved.ok && saved.url) logoPath = saved.url;
   }
 
   if (capabilityFile && capabilityFile instanceof File && capabilityFile.size > 0) {
-    const saved = await saveClubMediaToDb(capabilityFile, createdClub.id, "capability_profile");
+    const saved = await uploadMedia(createdClub.id, "capability_profile", capabilityFile);
     if (saved.ok && saved.url) capPath = saved.url;
   }
 
   if (athleteFiles.length > 0) {
     const savedPaths: string[] = [];
     for (const file of athleteFiles.slice(0, 12)) {
-      const saved = await saveClubMediaToDb(file, createdClub.id, "u20_athlete");
+      const saved = await uploadMedia(createdClub.id, "u20_athlete", file);
       if (saved.ok && saved.url) savedPaths.push(saved.url);
     }
     if (savedPaths.length > 0) {
@@ -305,10 +223,10 @@ export async function registerNewClub(formData: FormData, userId?: number) {
       name: createdClub.name,
       province_region: createdClub.province_region,
       representative_name: createdClub.representative_name,
-      logo: formatFileUrl(logoPath),
-      capability_profile: formatFileUrl(capPath),
-      u20_athlete_list: formatFileUrl(athPath),
-      u20_athlete_images: parseU20AthleteImages(athPath),
+      logo: normalizeMediaField(logoPath),
+      capability_profile: normalizeMediaField(capPath),
+      u20_athlete_list: normalizeMediaField(athPath),
+      u20_athlete_images: normalizeMediaList(athPath),
     },
   };
 }
@@ -318,15 +236,15 @@ export async function getUserClubsList(userId: number) {
   return clubs.map((club) => ({
     id: club.id,
     name: club.name,
-    logo: formatFileUrl(club.logo),
+    logo: normalizeMediaField(club.logo),
     founding_year: club.founding_year,
     achievements: club.achievements,
     province_region: club.province_region,
     is_approved: club.is_approved,
     representative_name: club.representative_name,
-    capability_profile: formatFileUrl(club.capability_profile),
-    u20_athlete_list: formatFileUrl(club.u20_athlete_list),
-    u20_athlete_images: parseU20AthleteImages(club.u20_athlete_list),
+    capability_profile: normalizeMediaField(club.capability_profile),
+    u20_athlete_list: normalizeMediaField(club.u20_athlete_list),
+    u20_athlete_images: normalizeMediaList(club.u20_athlete_list),
     user_id: club.user_id,
   }));
 }
@@ -398,7 +316,7 @@ export async function updateOwnerClub(
 
   if (logoFile && logoFile instanceof File && logoFile.size > 0) {
     await deleteClubMediaByType(clubId, "logo");
-    const saved = await saveClubMediaToDb(logoFile, clubId, "logo");
+    const saved = await uploadMedia(clubId, "logo", logoFile);
     if (saved.ok && saved.url) {
       logoPath = saved.url;
     }
@@ -406,7 +324,7 @@ export async function updateOwnerClub(
 
   if (capabilityFile && capabilityFile instanceof File && capabilityFile.size > 0) {
     await deleteClubMediaByType(clubId, "capability_profile");
-    const saved = await saveClubMediaToDb(capabilityFile, clubId, "capability_profile");
+    const saved = await uploadMedia(clubId, "capability_profile", capabilityFile);
     if (saved.ok && saved.url) {
       capPath = saved.url;
     }
@@ -416,7 +334,7 @@ export async function updateOwnerClub(
     await deleteClubMediaByType(clubId, "u20_athlete");
     const savedPaths: string[] = [];
     for (const file of athleteFiles.slice(0, 12)) {
-      const saved = await saveClubMediaToDb(file, clubId, "u20_athlete");
+      const saved = await uploadMedia(clubId, "u20_athlete", file);
       if (saved.ok && saved.url) savedPaths.push(saved.url);
     }
     if (savedPaths.length > 0) {
@@ -530,10 +448,10 @@ export async function updateOwnerClub(
       province_region: updated.province_region,
       representative_name: updated.representative_name,
       founding_year: updated.founding_year,
-      logo: formatFileUrl(updated.logo),
-      capability_profile: formatFileUrl(updated.capability_profile),
-      u20_athlete_list: formatFileUrl(updated.u20_athlete_list),
-      u20_athlete_images: parseU20AthleteImages(updated.u20_athlete_list),
+      logo: normalizeMediaField(updated.logo),
+      capability_profile: normalizeMediaField(updated.capability_profile),
+      u20_athlete_list: normalizeMediaField(updated.u20_athlete_list),
+      u20_athlete_images: normalizeMediaList(updated.u20_athlete_list),
       achievements: updated.achievements,
       contact_info: updated.contact_info,
       social_links: updated.social_links,

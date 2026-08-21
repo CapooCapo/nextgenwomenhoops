@@ -269,33 +269,29 @@ export default function AdminMatchesPage() {
       </div>
 
       {showNewSeasonForm && (
-        <form
-          onSubmit={handleCreateSeasonInline}
-          className={styles.filterBar}
-          style={{
-            marginBottom: "1.5rem",
-            padding: "1rem",
-            background: "#0f172a",
-            borderRadius: "8px",
-            border: "1px solid #334155",
-            alignItems: "center",
-          }}
-        >
-          <span style={{ color: "#ffffff", fontWeight: 600, fontSize: "0.9rem" }}>
-            {t("addNewSeason")}
-          </span>
-          <input
-            type="number"
-            placeholder={t("yearPlaceholder")}
-            value={newSeasonYear}
-            onChange={(e) => setNewSeasonYear(e.target.value)}
-            required
-            style={{ width: "160px" }}
-          />
-          <button type="submit" className={styles.btnSuccess} disabled={creatingSeason}>
-            {creatingSeason ? t("saving") : t("saveSeason")}
-          </button>
-        </form>
+        <div className={styles.createCard}>
+          <h3>{t("addNewSeason")}</h3>
+          <form onSubmit={handleCreateSeasonInline} className={styles.createForm}>
+            <div className={styles.formGroup}>
+              <label htmlFor="new-season-year">{t("yearPlaceholder")}</label>
+              <input
+                id="new-season-year"
+                type="number"
+                placeholder={t("yearPlaceholder")}
+                value={newSeasonYear}
+                onChange={(e) => setNewSeasonYear(e.target.value)}
+                min={2000}
+                max={2100}
+                required
+              />
+            </div>
+            <div className={styles.submitWrapper}>
+              <button type="submit" className={styles.btnSuccess} disabled={creatingSeason}>
+                {creatingSeason ? t("saving") : t("saveSeason")}
+              </button>
+            </div>
+          </form>
+        </div>
       )}
 
       {/* MATCH CREATION FORM */}

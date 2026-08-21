@@ -7,10 +7,6 @@ jest.mock("next-intl/server", () => ({
   getTranslations: jest.fn().mockResolvedValue((key: string) => key),
 }));
 
-jest.mock("../ClubCard/ClubCard", () => ({
-  ClubCard: ({ club }: { club: any }) => <div data-testid="club-card">{club.name}</div>,
-}));
-
 describe("ClubDirectoryList", () => {
   it("renders empty state", async () => {
     const ui = await ClubDirectoryList({ clubs: [] });
@@ -18,16 +14,27 @@ describe("ClubDirectoryList", () => {
     expect(screen.getByText("empty")).toBeInTheDocument();
   });
 
-  it("renders grid of clubs", async () => {
+  it("renders table of clubs", async () => {
     const ui = await ClubDirectoryList({
       clubs: [
-        { id: 1, name: "Club A" } as any,
-        { id: 2, name: "Club B" } as any,
+        { id: 1, name: "Club A", logo: null, founding_year: 2020, achievements: null, province_region: "North" } as any,
+        { id: 2, name: "Club B", logo: "/logo.png", founding_year: null, achievements: null, province_region: "South" } as any,
       ],
     });
     render(ui);
-    expect(screen.getAllByTestId("club-card")).toHaveLength(2);
+    
+    // Check that table headers are rendered
+    expect(screen.getByText("tableHeaders.name")).toBeInTheDocument();
+    
+    // Check that club names are in the document
     expect(screen.getByText("Club A")).toBeInTheDocument();
     expect(screen.getByText("Club B")).toBeInTheDocument();
+    
+    // Check that region is rendered
+    expect(screen.getByText("North")).toBeInTheDocument();
+    
+    // Check that fallback is used when no founding year
+    const fallbacks = screen.getAllByText("-");
+    expect(fallbacks.length).toBeGreaterThan(0);
   });
 });

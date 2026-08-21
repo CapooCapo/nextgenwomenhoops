@@ -4,6 +4,7 @@ import Link from "next/link";
 import { getUserSession } from "@/server/auth/userAuth";
 import { findClubByUserId, findUserById } from "@/server/repositories/userRepository";
 import { findPlayersByClubId, findCoachStaffByClubId } from "@/server/repositories/clubsRepository";
+import { normalizeMediaField } from "@/server/services/clubMediaService";
 import styles from "./clubDashboard.module.scss";
 
 export default async function ClubDashboardPage() {
@@ -82,7 +83,7 @@ export default async function ClubDashboardPage() {
               <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
                 {club.capability_profile ? (
                   <a
-                    href={club.capability_profile.startsWith("/") ? club.capability_profile : `/media/${club.capability_profile}`}
+                    href={normalizeMediaField(club.capability_profile) ?? undefined}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.docLink}
@@ -94,7 +95,7 @@ export default async function ClubDashboardPage() {
                 )}
                 {club.u20_athlete_list ? (
                   <a
-                    href={club.u20_athlete_list.startsWith("/") ? club.u20_athlete_list : `/media/${club.u20_athlete_list}`}
+                    href={normalizeMediaField(club.u20_athlete_list) ?? undefined}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={styles.docLink}
