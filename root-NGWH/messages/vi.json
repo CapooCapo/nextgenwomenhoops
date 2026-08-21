@@ -83,16 +83,75 @@
     }
   },
   "about": {
+    "hero": {
+      "subtitle": "VỀ NGWH",
+      "title": "Tầm nhìn & Sứ mệnh"
+    },
     "brandStory": {
       "heading": "Tầm nhìn & Sứ mệnh",
+      "visionText": "Một tương lai nơi bóng rổ nữ nhận được sự công nhận, hỗ trợ và cơ hội xứng đáng. NGWH hướng tới việc tạo dựng con đường phát triển vững chắc cho các vận động viên trẻ, đặc biệt là lứa tuổi U20, thông qua việc kết nối thi đấu, đào tạo và cộng đồng.",
+      "visionAlt": "Hình ảnh các vận động viên bóng rổ nữ trẻ đứng cùng nhau trên sân thi đấu",
+      "missionHeading": "Sứ mệnh của chúng tôi",
+      "missionPoints": [
+        "Cung cấp giải đấu thi đấu có hệ thống cho vận động viên bóng rổ nữ trẻ",
+        "Tạo cơ hội cho các vận động viên U20 tích lũy kinh nghiệm thi đấu thực chiến",
+        "Hỗ trợ các câu lạc bộ, huấn luyện viên và vận động viên thông qua hệ sinh thái giải đấu kết nối",
+        "Thúc đẩy môi trường thi đấu công bằng và chuyên nghiệp",
+        "Tạo dựng những kết nối có ý nghĩa trong cộng đồng bóng rổ nữ",
+        "Truyền cảm hứng cho nhiều người chơi trẻ tham gia môn thể thao này"
+      ],
       "body": "Tầm nhìn của chúng tôi là một tương lai nơi bóng rổ nữ được tôn vinh, hỗ trợ và có cùng vị thế như bất kỳ môn thể thao nào khác. NextGen Women Hoops ra đời để hiện thực hóa tầm nhìn đó — tạo ra con đường để các vận động viên U20 phát triển kỹ năng, xây dựng những kết nối lâu dài và truyền cảm hứng cho thế hệ cầu thủ và người hâm mộ tiếp theo."
     },
     "tournamentSystem": {
       "heading": "Hệ thống giải đấu",
+      "intro": "Các giải đấu của NGWH được thiết kế quanh một khung khổ thi đấu đồng bộ bao gồm:",
+      "tournamentAlt": "Vận động viên bóng rổ nữ thi đấu trong giải đấu trong nhà",
+      "developmentAlt": "Cầu thủ trẻ luyện tập cùng huấn luyện viên",
+      "principles": {
+        "competition": {
+          "title": "Thi đấu",
+          "desc": "Cấu trúc giải đấu, lịch thi đấu, thông tin trận đấu và quy định thi đấu rõ ràng."
+        },
+        "officiating": {
+          "title": "Công tác Trọng tài",
+          "desc": "Quy trình điều hành trận đấu chặt chẽ nhằm đảm bảo tính công bằng và nhất quán."
+        },
+        "athleteDevelopment": {
+          "title": "Phát triển Vận động viên",
+          "desc": "Thi đấu được coi là một phần của quá trình phát triển vận động viên, giúp cầu thủ trẻ tích lũy kinh nghiệm qua các trận đấu có ý nghĩa."
+        },
+        "matchOperations": {
+          "title": "Vận hành Trận đấu",
+          "desc": "Vận hành giải đấu bao gồm lịch thi đấu, kết quả, bảng xếp hạng, thông tin trận đấu và cập nhật trực tiếp qua nền tảng NGWH."
+        }
+      },
+      "disclaimer": "Các chứng nhận chuyên môn, quan hệ đối tác kỹ thuật và liên kết chính thức sẽ được công bố khi có xác nhận chính thức.",
       "body": "Mỗi giải đấu chúng tôi tổ chức đều tuân theo các tiêu chuẩn kỹ thuật và trọng tài được công nhận, mang lại sự tin tưởng cho vận động viên, huấn luyện viên và người hâm mộ vào một cuộc thi công bằng, chuyên nghiệp. Các chứng nhận và quan hệ đối tác cụ thể sẽ được cập nhật tại đây khi được xác nhận."
     },
     "partners": {
       "heading": "Ban tổ chức & Đối tác",
+      "intro": "NGWH hội tụ những nhân sự hoạt động trong các lĩnh vực quản lý giải đấu, huấn luyện, phát triển vận động viên, vận hành sự kiện, truyền thông và phát triển cộng đồng bóng rổ.",
+      "operationsAlt": "Ban tổ chức chuẩn bị cho sự kiện bóng rổ nữ",
+      "communityAlt": "Cộng đồng bóng rổ nữ hội tụ trên sân thi đấu",
+      "roles": {
+        "competitionOps": {
+          "title": "Vận hành Giải đấu",
+          "desc": "Lập lịch thi đấu, điều phối trận đấu và quản trị chuyên môn."
+        },
+        "athleteDev": {
+          "title": "Phát triển Vận động viên",
+          "desc": "Tạo dựng cơ hội cho các vận động viên trẻ thi đấu, học hỏi và hoàn thiện bản thân."
+        },
+        "eventOps": {
+          "title": "Vận hành Sự kiện",
+          "desc": "Điều phối địa điểm, vận hành ngày thi đấu và hậu cần giải đấu."
+        },
+        "mediaCommunity": {
+          "title": "Truyền thông & Cộng đồng",
+          "desc": "Truyền tải câu chuyện, đưa tin giải đấu, nhiếp ảnh, nội dung số và kết nối cộng đồng."
+        }
+      },
+      "note": "Các tổ chức đối tác và thành viên ban tổ chức sẽ được niêm yết tại đây khi sự hợp tác được xác nhận chính thức.",
       "empty": "Ban tổ chức và các đối tác sẽ sớm được công bố.",
       "error": "Hiện chưa thể tải mục này."
     }

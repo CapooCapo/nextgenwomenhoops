@@ -11,6 +11,7 @@ describe("TournamentSystemSection", () => {
     const ui = await TournamentSystemSection();
     render(ui);
     expect(screen.getByRole("heading", { name: "heading" })).toBeInTheDocument();
-    expect(screen.getByText("body")).toBeInTheDocument();
+    expect(screen.getByText("intro")).toBeInTheDocument();
+    expect(screen.getByText("disclaimer")).toBeInTheDocument();
   });
 });

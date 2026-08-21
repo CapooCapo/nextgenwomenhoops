@@ -28,7 +28,8 @@ export function formatFileUrl(filePath: string | null): string | null {
     filePath.startsWith("http://") ||
     filePath.startsWith("https://") ||
     filePath.startsWith("/media/") ||
-    filePath.startsWith("/")
+    filePath.startsWith("/") ||
+    filePath.startsWith("[")
   ) {
     return filePath;
   }
@@ -146,7 +147,21 @@ async function saveClubMediaToDb(
     return { ok: false };
   }
 
-  const validation = validateClubMediaFile(file);
+  // Infer MIME type if missing or generic (e.g. application/octet-stream)
+  let effectiveMime = (file.type || "").toLowerCase().trim();
+  if (!effectiveMime || effectiveMime === "application/octet-stream") {
+    const ext = file.name.split(".").pop()?.toLowerCase();
+    if (ext === "png") effectiveMime = "image/png";
+    else if (ext === "jpg" || ext === "jpeg") effectiveMime = "image/jpeg";
+    else if (ext === "webp") effectiveMime = "image/webp";
+    else if (ext === "pdf") effectiveMime = "application/pdf";
+  }
+
+  const fileToValidate = effectiveMime !== file.type
+    ? new File([file], file.name, { type: effectiveMime })
+    : file;
+
+  const validation = validateClubMediaFile(fileToValidate);
   if (!validation.isValid) {
     return { ok: false, error: validation.error };
   }
@@ -154,7 +169,7 @@ async function saveClubMediaToDb(
   const arrayBuffer = await file.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
 
-  const isSignatureValid = validateFileBufferSignature(buffer, file.type);
+  const isSignatureValid = validateFileBufferSignature(buffer, effectiveMime);
   if (!isSignatureValid && process.env.NODE_ENV !== "test") {
     return { ok: false, error: "Unsupported file type." };
   }
@@ -163,7 +178,7 @@ async function saveClubMediaToDb(
     club_id: clubId,
     media_type: mediaType,
     filename: file.name,
-    mime_type: file.type || "application/octet-stream",
+    mime_type: effectiveMime || "application/octet-stream",
     size_bytes: file.size,
     data: buffer,
   });
@@ -384,13 +399,17 @@ export async function updateOwnerClub(
   if (logoFile && logoFile instanceof File && logoFile.size > 0) {
     await deleteClubMediaByType(clubId, "logo");
     const saved = await saveClubMediaToDb(logoFile, clubId, "logo");
-    if (saved.ok && saved.url) logoPath = saved.url;
+    if (saved.ok && saved.url) {
+      logoPath = saved.url;
+    }
   }
 
   if (capabilityFile && capabilityFile instanceof File && capabilityFile.size > 0) {
     await deleteClubMediaByType(clubId, "capability_profile");
     const saved = await saveClubMediaToDb(capabilityFile, clubId, "capability_profile");
-    if (saved.ok && saved.url) capPath = saved.url;
+    if (saved.ok && saved.url) {
+      capPath = saved.url;
+    }
   }
 
   if (athleteFiles.length > 0) {

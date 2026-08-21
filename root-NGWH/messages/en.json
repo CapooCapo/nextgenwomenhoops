@@ -83,16 +83,75 @@
     }
   },
   "about": {
+    "hero": {
+      "subtitle": "ABOUT NGWH",
+      "title": "Our Vision & Mission"
+    },
     "brandStory": {
       "heading": "Our Vision & Mission",
+      "visionText": "A future where women's basketball receives the recognition, support, and opportunities it deserves. NGWH works to create a stronger pathway for young athletes, particularly U20 players, by connecting competition, development, and community.",
+      "visionAlt": "Young women's basketball players standing together on an indoor court",
+      "missionHeading": "Our Mission",
+      "missionPoints": [
+        "Provide structured competition for young women's basketball players",
+        "Create opportunities for U20 athletes to gain competitive experience",
+        "Support clubs, coaches, and athletes through a connected tournament ecosystem",
+        "Promote fair and professional competition",
+        "Create meaningful connections across the women's basketball community",
+        "Inspire more young players to participate in the sport"
+      ],
       "body": "Our vision is a future where women's basketball is celebrated, supported, and given the same stage as any other sport. NextGen Women Hoops exists to make that vision real — creating a pathway for U20 athletes to develop their skills, build lasting connections, and inspire the next generation of players and fans."
     },
     "tournamentSystem": {
       "heading": "Tournament System",
+      "intro": "NGWH tournaments are designed around a consistent competition framework covering:",
+      "tournamentAlt": "Women's basketball players competing in an indoor tournament",
+      "developmentAlt": "Young basketball players training with their coach",
+      "principles": {
+        "competition": {
+          "title": "Competition",
+          "desc": "Clear tournament structures, schedules, match information, and competition rules."
+        },
+        "officiating": {
+          "title": "Officiating",
+          "desc": "A structured officiating process designed to support fair and consistent games."
+        },
+        "athleteDevelopment": {
+          "title": "Athlete Development",
+          "desc": "Competition is treated as part of athlete development, giving young players opportunities to gain experience in meaningful games."
+        },
+        "matchOperations": {
+          "title": "Match Operations",
+          "desc": "Tournament operations cover fixtures, results, standings, match information, and live updates through the NGWH platform."
+        }
+      },
+      "disclaimer": "Specific certifications, technical partnerships, and official affiliations will be published when formally confirmed.",
       "body": "Every tournament we run follows recognized technical and officiating standards, giving players, coaches, and fans confidence in fair, professional competition. Specific certifications and partnerships will be detailed here as they're confirmed."
     },
     "partners": {
       "heading": "Organizing Committee & Partners",
+      "intro": "NGWH brings together people working across competition management, coaching, athlete development, event operations, media, and basketball community development.",
+      "operationsAlt": "Tournament staff preparing a women's basketball event",
+      "communityAlt": "Women's basketball community members gathered around a basketball court",
+      "roles": {
+        "competitionOps": {
+          "title": "Competition Operations",
+          "desc": "Tournament scheduling, match coordination, and competition administration."
+        },
+        "athleteDev": {
+          "title": "Athlete Development",
+          "desc": "Supporting opportunities for young athletes to compete, learn, and develop."
+        },
+        "eventOps": {
+          "title": "Event Operations",
+          "desc": "Venue coordination, match-day operations, and tournament logistics."
+        },
+        "mediaCommunity": {
+          "title": "Media & Community",
+          "desc": "Storytelling, tournament coverage, photography, digital content, and community engagement."
+        }
+      },
+      "note": "Partner organizations and committee members will be listed here as collaborations are formally confirmed.",
       "empty": "Our organizing committee and partners will be announced soon.",
       "error": "We couldn't load this section right now."
     }

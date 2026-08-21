@@ -2,28 +2,33 @@
 @use "../../../../styles/mixins" as *;
 
 .section {
+  padding-top: $space-8;
   padding-bottom: $space-8;
+  background-color: $color-neutral-100;
 
   @include breakpoint-desktop {
+    padding-top: $space-16;
     padding-bottom: $space-16;
   }
 }
 
-.content {
+.header {
+  text-align: center;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 0 auto $space-8 auto;
+
+  @include breakpoint-desktop {
+    margin-bottom: $space-12;
+  }
 }
 
 .heading {
   @include section-heading;
-  &::before {
-    display: none;
-  }
-  padding-left: 0;
   text-align: center;
+  margin-bottom: $space-3;
 }
 
-.body {
+.intro {
   font-size: $font-size-base;
   line-height: $line-height-base;
   color: $color-neutral-700;
@@ -32,4 +37,107 @@
   @include breakpoint-tablet {
     font-size: $font-size-lg;
   }
+}
+
+.visualsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-6;
+  margin-bottom: $space-8;
+
+  @include breakpoint-tablet {
+    grid-template-columns: 1fr 1fr;
+    gap: $space-8;
+  }
+
+  @include breakpoint-desktop {
+    margin-bottom: $space-12;
+  }
+}
+
+.imageCard {
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-sm;
+  aspect-ratio: 16 / 10;
+  background-color: $color-neutral-300;
+
+  .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform $transition-base;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-6;
+
+  @include breakpoint-tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include breakpoint-desktop {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.card {
+  background-color: $color-neutral-0;
+  border-radius: $border-radius-lg;
+  padding: $space-6;
+  border: 1px solid $color-neutral-300;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  box-shadow: $shadow-sm;
+  transition: transform $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
+
+.iconWrapper {
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: $space-1;
+}
+
+.cardTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-neutral-900;
+  margin: 0;
+}
+
+.cardDesc {
+  font-size: $font-size-sm;
+  line-height: $line-height-base;
+  color: $color-neutral-700;
+  margin: 0;
+}
+
+.disclaimerBox {
+  margin-top: $space-8;
+  padding: $space-4 $space-6;
+  background-color: rgba($color-brand-primary, 0.08);
+  border-radius: $border-radius-md;
+  border-left: 3px solid $color-brand-primary;
+  text-align: center;
+}
+
+.disclaimerText {
+  font-size: $font-size-sm;
+  color: $color-neutral-700;
+  font-style: italic;
+  margin: 0;
 }

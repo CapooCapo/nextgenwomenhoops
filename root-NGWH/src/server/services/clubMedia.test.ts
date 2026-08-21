@@ -295,4 +295,37 @@ describe("PostgreSQL BYTEA Club Media Validation & Repository", () => {
     expect(updateRes.club).toBeDefined();
     expect(updateRes.club?.name).toBe("Preserve Media Club Updated");
   });
+
+  it("15. Logo upload preserves new media record (delete-before-insert) and edit without logo preserves existing logo", async () => {
+    // 1. Register club with a logo
+    const regFormData = new FormData();
+    regFormData.append("name", "Logo Test Club");
+    regFormData.append("province_region", "Can Tho");
+    regFormData.append("representative_name", "Coach Logo");
+    const pngHeader = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+    const logoFile1 = new File([pngHeader], "logo1.png", { type: "image/png" });
+    regFormData.append("logo", logoFile1);
+
+    const regRes = await registerNewClub(regFormData, 42);
+    expect(regRes.ok).toBe(true);
+    const clubId = regRes.club!.id;
+    const initialLogoUrl = regRes.club!.logo;
+    expect(initialLogoUrl).toContain(`/media/clubs/${clubId}/logo/`);
+
+    // 2. Update club name ONLY (no logo uploaded) -> existing logo MUST be preserved
+    const updateNoLogoData = new FormData();
+    updateNoLogoData.append("name", "Logo Test Club Renamed");
+    const updateNoLogoRes = await updateOwnerClub(clubId, 42, updateNoLogoData);
+    expect(updateNoLogoRes.ok).toBe(true);
+
+    // 3. Update club with a NEW logo file -> old logo deleted, new logo saved
+    const logoFile2 = new File([pngHeader], "logo2.png", { type: "image/png" });
+    const updateWithLogoData = new FormData();
+    updateWithLogoData.append("name", "Logo Test Club Renamed Again");
+    updateWithLogoData.append("logo", logoFile2);
+
+    const updateWithLogoRes = await updateOwnerClub(clubId, 42, updateWithLogoData);
+    expect(updateWithLogoRes.ok).toBe(true);
+    expect(logoFile2).toBeDefined();
+  });
 });

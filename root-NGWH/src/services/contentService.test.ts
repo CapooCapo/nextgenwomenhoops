@@ -123,20 +123,26 @@ describe("contentService", () => {
   });
 
   describe("getChampionshipPhotos", () => {
-    it("returns an empty array when no photo is confirmed", () => {
-      expect(getChampionshipPhotos()).toEqual([]);
+    it("returns championship photos fixture", () => {
+      const photos = getChampionshipPhotos();
+      expect(photos.length).toBe(4);
+      expect(photos[0].src).toContain("/assets/gallery/championship/");
     });
   });
 
   describe("getMvpSpotlight", () => {
-    it("returns null when no MVP record is confirmed", () => {
-      expect(getMvpSpotlight()).toBeNull();
+    it("returns mvp spotlight record", () => {
+      const mvp = getMvpSpotlight();
+      expect(mvp).not.toBeNull();
+      expect(mvp?.playerName.en).toBe("Aisha Williams");
     });
   });
 
   describe("getBehindScenesStories", () => {
-    it("returns an empty array when no story is confirmed", () => {
-      expect(getBehindScenesStories()).toEqual([]);
+    it("returns behind-the-scenes stories fixture", () => {
+      const stories = getBehindScenesStories();
+      expect(stories.length).toBe(4);
+      expect(stories[0].photo?.src).toContain("/assets/gallery/behind-the-scenes/");
     });
   });
 });

@@ -6,19 +6,68 @@
   padding-bottom: $space-8;
 
   @include breakpoint-desktop {
-    padding-top: $space-16;
-    padding-bottom: $space-16;
+    padding-top: $space-12;
+    padding-bottom: $space-12;
   }
 }
 
-.content {
-  max-width: 800px;
-  margin: 0 auto;
+.header {
+  text-align: center;
+  margin-bottom: $space-8;
+
+  @include breakpoint-desktop {
+    margin-bottom: $space-12;
+  }
+}
+
+.subtitle {
+  display: inline-block;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $color-brand-primary;
+  margin-bottom: $space-2;
 }
 
 .heading {
   @include page-title;
   text-align: center;
+  margin: 0;
+}
+
+.visionGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-6;
+  align-items: center;
+  margin-bottom: $space-12;
+
+  @include breakpoint-desktop {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.visionCard {
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+  background-color: $color-neutral-100;
+  border-left: 4px solid $color-brand-primary;
+  border-radius: $border-radius-lg;
+  padding: $space-6;
+}
+
+.visionText {
+  font-size: $font-size-lg;
+  line-height: $line-height-base;
+  font-weight: $font-weight-semibold;
+  color: $color-neutral-900;
+  margin: 0;
+
+  @include breakpoint-desktop {
+    font-size: $font-size-xl;
+  }
 }
 
 .body {
@@ -26,8 +75,93 @@
   line-height: $line-height-base;
   color: $color-neutral-700;
   margin: 0;
+}
+
+.imageWrapper {
+  position: relative;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+  aspect-ratio: 16 / 10;
+  background-color: $color-neutral-300;
+
+  .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform $transition-base;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+  }
+}
+
+.missionSection {
+  margin-top: $space-12;
+}
+
+.missionHeading {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $color-neutral-900;
+  text-align: center;
+  margin-bottom: $space-8;
+
+  @include breakpoint-desktop {
+    font-size: $font-size-3xl;
+  }
+}
+
+.missionGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $space-4;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 
   @include breakpoint-tablet {
-    font-size: $font-size-lg;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-6;
   }
+
+  @include breakpoint-desktop {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.missionCard {
+  background-color: $color-neutral-0;
+  border: 1px solid $color-neutral-300;
+  border-radius: $border-radius-lg;
+  padding: $space-6;
+  display: flex;
+  flex-direction: column;
+  gap: $space-3;
+  box-shadow: $shadow-sm;
+  transition: transform $transition-base, box-shadow $transition-base;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-md;
+  }
+}
+
+.missionNumber {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: $color-brand-primary;
+  background-color: rgba($color-brand-primary, 0.1);
+  padding: $space-1 $space-3;
+  border-radius: $border-radius-full;
+  width: fit-content;
+}
+
+.missionText {
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $color-neutral-900;
+  margin: 0;
 }

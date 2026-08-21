@@ -77,16 +77,16 @@ export function EditClubForm({ club }: { club: ClubData }) {
     email: initialContact.email || "",
     phone: initialContact.phone || "",
     website: initialContact.website || "",
-    address: initialContact.address || "",
+    address: initialContact.address || initialContact.raw_string || "",
   });
 
   // 5. Social Links
   const initialSocial = formatSocialLinks(club.social_links);
   const [socialLinks, setSocialLinks] = useState<ClubSocialLinks>({
-    facebook: initialSocial.facebook || "",
-    instagram: initialSocial.instagram || "",
-    tiktok: initialSocial.tiktok || "",
-    youtube: initialSocial.youtube || "",
+    facebook: initialSocial.facebook || (initialSocial.legacyList?.find((l) => l.includes("facebook")) || ""),
+    instagram: initialSocial.instagram || (initialSocial.legacyList?.find((l) => l.includes("instagram")) || ""),
+    tiktok: initialSocial.tiktok || (initialSocial.legacyList?.find((l) => l.includes("tiktok")) || ""),
+    youtube: initialSocial.youtube || (initialSocial.legacyList?.find((l) => l.includes("youtube")) || ""),
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -105,60 +105,54 @@ export function EditClubForm({ club }: { club: ClubData }) {
     field: keyof AchievementItem,
     value: string
   ) => {
-    const next = [...achievements];
-    next[index] = { ...next[index], [field]: value };
-    setAchievements(next);
+    const updated = [...achievements];
+    updated[index] = { ...updated[index], [field]: value };
+    setAchievements(updated);
   };
 
   const handleRemoveAchievement = (index: number) => {
     setAchievements(achievements.filter((_, i) => i !== index));
   };
 
-  // Compact Roster Handlers
+  // Roster Editor Handlers
   const handleStartAddPlayer = () => {
+    setActivePlayerData({ name: "", jersey_number: "", position: "", date_of_birth: "" });
     setEditingPlayerIndex(null);
-    setActivePlayerData({
-      name: "",
-      jersey_number: "",
-      position: "",
-      date_of_birth: "",
-    });
     setIsAddingPlayer(true);
   };
 
   const handleStartEditPlayer = (index: number) => {
-    setIsAddingPlayer(false);
-    setEditingPlayerIndex(index);
     setActivePlayerData({ ...players[index] });
-  };
-
-  const handleSavePlayerEditor = () => {
-    if (!activePlayerData.name.trim()) return;
-
-    if (isAddingPlayer) {
-      setPlayers([...players, activePlayerData]);
-      setIsAddingPlayer(false);
-    } else if (editingPlayerIndex !== null) {
-      const next = [...players];
-      next[editingPlayerIndex] = activePlayerData;
-      setPlayers(next);
-      setEditingPlayerIndex(null);
-    }
+    setEditingPlayerIndex(index);
+    setIsAddingPlayer(false);
   };
 
   const handleCancelPlayerEditor = () => {
     setIsAddingPlayer(false);
     setEditingPlayerIndex(null);
+    setActivePlayerData({ name: "", jersey_number: "", position: "", date_of_birth: "" });
+  };
+
+  const handleSavePlayerEditor = () => {
+    if (!activePlayerData.name.trim()) return;
+    if (editingPlayerIndex !== null) {
+      const updated = [...players];
+      updated[editingPlayerIndex] = activePlayerData;
+      setPlayers(updated);
+    } else {
+      setPlayers([...players, activePlayerData]);
+    }
+    handleCancelPlayerEditor();
   };
 
   const handleRemovePlayer = (index: number) => {
-    if (editingPlayerIndex === index) {
-      setEditingPlayerIndex(null);
-    }
     setPlayers(players.filter((_, i) => i !== index));
+    if (editingPlayerIndex === index) {
+      handleCancelPlayerEditor();
+    }
   };
 
-  // Coaching Staff handlers
+  // Coaching Staff Handlers
   const handleAddCoach = () => {
     setCoachStaff([...coachStaff, { name: "", role: "", description: "" }]);
   };
@@ -168,9 +162,9 @@ export function EditClubForm({ club }: { club: ClubData }) {
     field: keyof ClubCoachingStaffMember,
     value: string
   ) => {
-    const next = [...coachStaff];
-    next[index] = { ...next[index], [field]: value };
-    setCoachStaff(next);
+    const updated = [...coachStaff];
+    updated[index] = { ...updated[index], [field]: value };
+    setCoachStaff(updated);
   };
 
   const handleRemoveCoach = (index: number) => {
@@ -187,9 +181,19 @@ export function EditClubForm({ club }: { club: ClubData }) {
       const formElement = e.currentTarget;
       const formData = new FormData(formElement);
 
+      // Auto-flush any pending active player editor into players state
+      const finalPlayers = [...players];
+      if (activePlayerData.name.trim()) {
+        if (editingPlayerIndex !== null) {
+          finalPlayers[editingPlayerIndex] = activePlayerData;
+        } else if (isAddingPlayer) {
+          finalPlayers.push(activePlayerData);
+        }
+      }
+
       // Serialize dynamic state collections to FormData
       formData.set("achievements", JSON.stringify(achievements.filter((a) => a.title.trim())));
-      formData.set("players", JSON.stringify(players.filter((p) => p.name.trim())));
+      formData.set("players", JSON.stringify(finalPlayers.filter((p) => p.name.trim())));
       formData.set("coach_staff", JSON.stringify(coachStaff.filter((c) => c.name.trim())));
       formData.set("contact_info", JSON.stringify(contactInfo));
       formData.set("social_links", JSON.stringify(socialLinks));

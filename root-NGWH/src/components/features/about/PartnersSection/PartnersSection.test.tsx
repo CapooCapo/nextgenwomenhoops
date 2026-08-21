@@ -14,14 +14,16 @@ jest.mock("../PartnerCard/PartnerCard", () => ({
 jest.mock("../../../../services/contentService");
 
 describe("PartnersSection", () => {
-  it("renders empty state", async () => {
+  it("renders section with role cards and note", async () => {
     (contentService.getPartners as jest.Mock).mockReturnValue([]);
     const ui = await PartnersSection();
     render(ui);
-    expect(screen.getByText("empty")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "heading" })).toBeInTheDocument();
+    expect(screen.getByText("intro")).toBeInTheDocument();
+    expect(screen.getByText("note")).toBeInTheDocument();
   });
 
-  it("renders partners grid", async () => {
+  it("renders partners grid when partners are returned", async () => {
     (contentService.getPartners as jest.Mock).mockReturnValue([
       { name: { en: "Partner 1" } },
       { name: { en: "Partner 2" } },
