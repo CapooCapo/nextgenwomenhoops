@@ -205,7 +205,7 @@ export function EditClubForm({ club }: { club: ClubData }) {
         setErrorMsg(data.detail || t("messages.error"));
       } else {
         setSuccessMsg(t("messages.success"));
-        router.refresh();
+        window.location.href = `/clubs/${club.id}`;
       }
     } catch {
       setErrorMsg(t("messages.genericError"));

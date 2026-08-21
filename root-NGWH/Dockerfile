@@ -25,6 +25,7 @@ ENV NODE_ENV=production
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
+RUN cp -r public .next/standalone/public || true
 
 # --- runner: minimal production image (Next.js standalone output only) ---
 FROM node:22-alpine AS runner

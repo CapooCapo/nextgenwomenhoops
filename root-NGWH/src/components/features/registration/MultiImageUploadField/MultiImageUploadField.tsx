@@ -27,6 +27,19 @@ export function MultiImageUploadField({
   const [localError, setLocalError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const syncFileInputFiles = (files: File[]) => {
+    if (!fileInputRef.current) return;
+    try {
+      const dt = new DataTransfer();
+      for (const file of files) {
+        dt.items.add(file);
+      }
+      fileInputRef.current.files = dt.files;
+    } catch {
+      // Fallback
+    }
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLocalError(null);
     const files = Array.from(e.target.files || []);
@@ -45,28 +58,29 @@ export function MultiImageUploadField({
         setLocalError(`Tệp "${file.name}" không phải là định dạng hình ảnh hợp lệ.`);
         return;
       }
-      if (file.size > 5 * 1024 * 1024) {
-        setLocalError(`Hình ảnh "${file.name}" vượt quá kích thước tối đa 5MB.`);
+      if (file.size > 20 * 1024 * 1024) {
+        setLocalError(`Hình ảnh "${file.name}" vượt quá kích thước tối đa 20MB.`);
         return;
       }
       validFiles.push(file);
       newPreviews.push(URL.createObjectURL(file));
     }
 
-    setSelectedFiles((prev) => [...prev, ...validFiles]);
+    const updatedFiles = [...selectedFiles, ...validFiles];
+    setSelectedFiles(updatedFiles);
     setPreviews((prev) => [...prev, ...newPreviews]);
-
-    // Reset input value so same files can be re-added if removed
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    syncFileInputFiles(updatedFiles);
   };
 
   const handleRemove = (index: number) => {
-    URL.revokeObjectURL(previews[index]);
-    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
+    if (previews[index]) {
+      URL.revokeObjectURL(previews[index]);
+    }
+    const updatedFiles = selectedFiles.filter((_, i) => i !== index);
+    setSelectedFiles(updatedFiles);
     setPreviews((prev) => prev.filter((_, i) => i !== index));
     setLocalError(null);
+    syncFileInputFiles(updatedFiles);
   };
 
   const displayError = error || localError;

@@ -269,6 +269,32 @@ export async function ensureDatabaseSchema(): Promise<void> {
     "clubs_club.u20_athlete_list to TEXT"
   );
 
+  // 14. club_media
+  await safeQuery(
+    `CREATE TABLE IF NOT EXISTS club_media (
+      id SERIAL PRIMARY KEY,
+      club_id INTEGER NOT NULL REFERENCES clubs_club(id) ON DELETE CASCADE,
+      media_type VARCHAR(50) NOT NULL,
+      filename VARCHAR(255) NOT NULL,
+      mime_type VARCHAR(100) NOT NULL,
+      size_bytes INTEGER NOT NULL,
+      data BYTEA NOT NULL,
+      created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    );`,
+    "club_media table"
+  );
+
+  await safeQuery(
+    `CREATE INDEX IF NOT EXISTS idx_club_media_club_id ON club_media(club_id);`,
+    "idx_club_media_club_id index"
+  );
+
+  await safeQuery(
+    `CREATE INDEX IF NOT EXISTS idx_club_media_media_type ON club_media(media_type);`,
+    "idx_club_media_media_type index"
+  );
+
   // 14. PostgreSQL NOTIFY trigger for real-time match updates
   await safeQuery(
     `CREATE OR REPLACE FUNCTION notify_match_change() RETURNS trigger AS $$

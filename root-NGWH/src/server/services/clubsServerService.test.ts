@@ -143,6 +143,7 @@ describe("clubsServerService", () => {
       expect(result).toEqual({
         id: 1,
         name: "Hoops Club",
+        representative_name: "Rep Name",
         logo: "/logo.png",
         founding_year: 2020,
         achievements: null,

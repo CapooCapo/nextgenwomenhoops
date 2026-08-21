@@ -1,154 +1,66 @@
 /**
  * @jest-environment node
  */
-import { POST } from "./route";
+import { GET, POST } from "./route";
 import { PATCH, DELETE } from "./[id]/route";
-import { NextRequest } from "next/server";
 import { requireAdminRole } from "@/server/auth/adminAuth";
-import {
-  createHeroSlide,
-  updateHeroSlide,
-  deleteHeroSlide,
-  findEnabledHeroSlides,
-} from "@/server/repositories/heroRepository";
 import { getPublicHeroSlides } from "@/server/services/heroServerService";
-import { revalidatePath } from "next/cache";
-
-jest.mock("next/cache", () => ({
-  revalidatePath: jest.fn(),
-}));
+import { HERO_VIDEO_SLIDES } from "@/config/heroSlides";
 
 jest.mock("@/server/auth/adminAuth", () => ({
   requireAdminRole: jest.fn(),
 }));
 
-jest.mock("@/server/repositories/heroRepository", () => ({
-  findAllHeroSlides: jest.fn(),
-  findEnabledHeroSlides: jest.fn(),
-  createHeroSlide: jest.fn(),
-  updateHeroSlide: jest.fn(),
-  deleteHeroSlide: jest.fn(),
-}));
-
-describe("Hero Section Admin-to-Public Synchronization", () => {
+describe("Static Hero Architecture & API Endpoints Protection", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (requireAdminRole as jest.Mock).mockResolvedValue({ authenticated: true, allowed: true, role: "admin" });
   });
 
-  it("POST /api/admin/hero creates slide in DB and triggers revalidatePath('/')", async () => {
-    const mockCreated = {
-      id: 1,
-      slide_id: "hero-1",
-      title: "New Hero Title",
-      video_src: "https://example.com/video.mp4",
-      is_enabled: true,
-    };
-    (createHeroSlide as jest.Mock).mockResolvedValue(mockCreated);
-
-    const req = new NextRequest("http://localhost/api/admin/hero", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        slide_id: "hero-1",
-        title: "New Hero Title",
-        video_src: "https://example.com/video.mp4",
-      }),
-    });
-
-    const res = await POST(req);
-    const json = await res.json();
-
-    expect(res.status).toBe(201);
-    expect(json.slide).toEqual(mockCreated);
-    expect(createHeroSlide).toHaveBeenCalledWith(
-      expect.objectContaining({
-        slide_id: "hero-1",
-        title: "New Hero Title",
-        video_src: "https://example.com/video.mp4",
-      })
-    );
-    expect(revalidatePath).toHaveBeenCalledWith("/");
-    expect(revalidatePath).toHaveBeenCalledWith("/admin/homepage/hero");
+  it("1. Public getPublicHeroSlides reads from static HERO_VIDEO_SLIDES configuration", async () => {
+    const slides = await getPublicHeroSlides();
+    expect(slides).toEqual(HERO_VIDEO_SLIDES);
+    expect(slides.length).toBeGreaterThan(0);
   });
 
-  it("PATCH /api/admin/hero/[id] updates slide in DB and triggers revalidatePath('/')", async () => {
-    const mockUpdated = {
-      id: 1,
-      slide_id: "hero-1",
-      title: "Updated Hero Title",
-      video_src: "https://example.com/video.mp4",
-      is_enabled: true,
-    };
-    (updateHeroSlide as jest.Mock).mockResolvedValue(mockUpdated);
+  it("2. Hero image & video static paths resolve correctly in configuration", async () => {
+    const slides = await getPublicHeroSlides();
+    const posterSlide = slides.find((s) => s.posterSrc?.startsWith("/assets/hero/"));
+    expect(posterSlide).toBeDefined();
+    expect(posterSlide?.posterSrc).toBe("/assets/hero/hero-poster.png");
+  });
 
-    const req = new NextRequest("http://localhost/api/admin/hero/1", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        title: "Updated Hero Title",
-      }),
-    });
-
-    const params = Promise.resolve({ id: "1" });
-    const res = await PATCH(req, { params });
+  it("3. GET /api/admin/hero returns static slides configuration for admin", async () => {
+    const res = await GET();
     const json = await res.json();
-
     expect(res.status).toBe(200);
-    expect(json.slide).toEqual(mockUpdated);
-    expect(updateHeroSlide).toHaveBeenCalledWith(1, expect.objectContaining({ title: "Updated Hero Title" }));
-    expect(revalidatePath).toHaveBeenCalledWith("/");
-    expect(revalidatePath).toHaveBeenCalledWith("/admin/homepage/hero");
+    expect(json.slides).toEqual(HERO_VIDEO_SLIDES);
   });
 
-  it("DELETE /api/admin/hero/[id] deletes slide from DB and triggers revalidatePath('/')", async () => {
-    (deleteHeroSlide as jest.Mock).mockResolvedValue(true);
-
-    const req = new NextRequest("http://localhost/api/admin/hero/1", {
-      method: "DELETE",
-    });
-
-    const params = Promise.resolve({ id: "1" });
-    const res = await DELETE(req, { params });
+  it("4. POST /api/admin/hero returns 405 Method Not Allowed", async () => {
+    const res = await POST();
     const json = await res.json();
-
-    expect(res.status).toBe(200);
-    expect(json.success).toBe(true);
-    expect(deleteHeroSlide).toHaveBeenCalledWith(1);
-    expect(revalidatePath).toHaveBeenCalledWith("/");
-    expect(revalidatePath).toHaveBeenCalledWith("/admin/homepage/hero");
+    expect(res.status).toBe(405);
+    expect(json.error).toBe("Hero section is static and managed via source code.");
   });
 
-  it("Public getPublicHeroSlides reads updated slides from same database source", async () => {
-    const mockSlidesFromDB = [
-      {
-        id: 1,
-        slide_id: "hero-updated",
-        title: "Updated Hero Title",
-        description: "Fresh description",
-        video_src: "/media/hero/uuid/video.mp4",
-        poster_src: "/media/hero/uuid/poster.jpg",
-        cta_label: "Explore",
-        cta_link: "/tournaments",
-        display_order: 1,
-        is_enabled: true,
-      },
-    ];
-    (findEnabledHeroSlides as jest.Mock).mockResolvedValue(mockSlidesFromDB);
+  it("5. PATCH /api/admin/hero/[id] returns 405 Method Not Allowed", async () => {
+    const res = await PATCH();
+    const json = await res.json();
+    expect(res.status).toBe(405);
+    expect(json.error).toBe("Hero section is static and managed via source code.");
+  });
 
-    const publicSlides = await getPublicHeroSlides();
+  it("6. DELETE /api/admin/hero/[id] returns 405 Method Not Allowed", async () => {
+    const res = await DELETE();
+    const json = await res.json();
+    expect(res.status).toBe(405);
+    expect(json.error).toBe("Hero section is static and managed via source code.");
+  });
 
-    expect(findEnabledHeroSlides).toHaveBeenCalled();
-    expect(publicSlides).toEqual([
-      {
-        id: "hero-updated",
-        title: "Updated Hero Title",
-        description: "Fresh description",
-        videoSrc: "/media/hero/uuid/video.mp4",
-        posterSrc: "/media/hero/uuid/poster.jpg",
-        ctaLabel: "Explore",
-        ctaLink: "/tournaments",
-      },
-    ]);
+  it("7. Unauthenticated mutation calls return 401 Unauthorized", async () => {
+    (requireAdminRole as jest.Mock).mockResolvedValueOnce({ authenticated: false });
+    const res = await POST();
+    expect(res.status).toBe(401);
   });
 });

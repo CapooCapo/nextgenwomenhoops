@@ -1,22 +1,9 @@
 import { HERO_VIDEO_SLIDES, HeroVideoSlide } from "@/config/heroSlides";
-import { findEnabledHeroSlides } from "@/server/repositories/heroRepository";
 
+/**
+ * Returns static Hero slides for the public website.
+ * Hero section is static and governed by source assets.
+ */
 export async function getPublicHeroSlides(): Promise<HeroVideoSlide[]> {
-  try {
-    const slides = await findEnabledHeroSlides();
-    if (slides && slides.length > 0) {
-      return slides.map((s) => ({
-        id: s.slide_id,
-        videoSrc: s.video_src,
-        posterSrc: s.poster_src || undefined,
-        title: s.title || undefined,
-        description: s.description || undefined,
-        ctaLabel: s.cta_label || undefined,
-        ctaLink: s.cta_link || undefined,
-      }));
-    }
-  } catch {
-    // DB query failed or table uninitialized, fallback to static config
-  }
   return HERO_VIDEO_SLIDES;
 }

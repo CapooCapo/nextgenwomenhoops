@@ -8,19 +8,37 @@ export interface HeroVideoSlide {
   ctaLink?: string;
 }
 
+/**
+ * Static Hero Section Slide Configuration.
+ * Hero assets are source-controlled static assets living exclusively under public/assets/hero/.
+ * External URLs, YouTube embeds, and database-driven media are strictly prohibited.
+ */
 export const HERO_VIDEO_SLIDES: HeroVideoSlide[] = [
   {
-    id: "nba-lakers-girls",
-    videoSrc:
-      "https://www.nba.com/lakers/videos/can-a-world-champion-gymnast-learn-a-lakers-girls-routine?playlistId=1091479",
-    title: "Can a World Champion Gymnast Learn a Lakers Girls Routine?",
+    id: "hero-featured-video-1",
+    videoSrc: "/assets/hero/hero-video.mp4",
+    posterSrc: "/assets/hero/hero-poster.png",
+    title: "Where Tomorrow's Legends Rise",
+    description: "NextGen Women Hoops is a U20 female basketball platform dedicated to discovering, developing, and elevating young talents.",
+    ctaLabel: "Explore Tournaments",
+    ctaLink: "/tournaments",
   },
-  // Female basketball team + coach on an indoor court
-  { id: "team-huddle", videoSrc: "/videos/hero/team-huddle.mp4" },
-  // Female basketball players training / running a drill
-  { id: "training-drill", videoSrc: "/videos/hero/training-drill.mp4" },
-  // Female player dribbling the ball
-  { id: "dribbling", videoSrc: "/videos/hero/dribbling.mp4" },
-  // Female athletes celebrating on court
-  { id: "celebration", videoSrc: "/videos/hero/celebration.mp4" },
+  {
+    id: "hero-featured-video-2",
+    videoSrc: "/assets/hero/hero-video-2.mp4",
+    posterSrc: "/assets/hero/hero-poster.png",
+    title: "Precision & Speed",
+    description: "Showcasing world-class skills, execution, and determination on the court.",
+    ctaLabel: "View Roster",
+    ctaLink: "/clubs",
+  },
+  {
+    id: "hero-featured-video-3",
+    videoSrc: "/assets/hero/hero-video-3.mp4",
+    posterSrc: "/assets/hero/hero-poster.png",
+    title: "Passion & Intensity",
+    description: "Uniting top U20 athletes across regional and national stages.",
+    ctaLabel: "Check Schedule",
+    ctaLink: "/tournaments",
+  },
 ];

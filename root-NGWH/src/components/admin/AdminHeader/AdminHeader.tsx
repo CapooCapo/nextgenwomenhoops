@@ -35,7 +35,6 @@ export function AdminHeader() {
     { href: "/admin/news", label: t("news") },
     { href: "/admin/gallery", label: t("gallery") },
     { href: "/admin/contact", label: t("contact") },
-    { href: "/admin/homepage/hero", label: t("hero") },
   ];
 
   if (role === "admin") {

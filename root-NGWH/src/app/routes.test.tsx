@@ -94,6 +94,15 @@ jest.mock("@/services/clubsService", () => ({
   }),
 }));
 
+jest.mock("@/services/contentService", () => ({
+  getHotNews: jest.fn().mockResolvedValue([]),
+  getDefendingChampion: jest.fn().mockReturnValue(null),
+}));
+
+jest.mock("@/server/services/matchesServerService", () => ({
+  getHomepageLiveScoreboardMatch: jest.fn().mockResolvedValue(null),
+}));
+
 // RegistrationForm submits via this Server Action; mocked here for the
 // same reason — a routing-shell smoke test, not a network integration
 // test.
