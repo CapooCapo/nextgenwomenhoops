@@ -9,6 +9,7 @@ export async function generateMetadata() {
   const t = await getTranslations("account");
   return {
     title: `${t("title")} | NextGen Women Hoops`,
+    robots: { index: false, follow: false },
   };
 }
 

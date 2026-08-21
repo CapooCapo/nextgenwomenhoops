@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type {
   BehindScenesStory,
   Champion,
@@ -80,8 +81,14 @@ export async function getNewsByCategory(category: NewsCategory): Promise<NewsArt
   }
 }
 
-/** News detail route lookup. */
-export async function getArticleBySlug(slug: string): Promise<NewsArticle | undefined> {
+/**
+ * News detail route lookup. Wrapped in React `cache()` so a single
+ * request (e.g. `generateMetadata` + the page body both looking up the
+ * same slug) only hits the database once.
+ */
+export const getArticleBySlug = cache(async function getArticleBySlug(
+  slug: string
+): Promise<NewsArticle | undefined> {
   try {
     const dbRow = await findNewsBySlugOrId(slug);
     if (dbRow) {
@@ -93,7 +100,7 @@ export async function getArticleBySlug(slug: string): Promise<NewsArticle | unde
     }
   }
   return NEWS_FIXTURES.find((article) => article.slug === slug || article.id === slug);
-}
+});
 
 /** REQ-ABOUT-003: empty until a real committee/partner entry exists. */
 export function getPartners(): Partner[] {

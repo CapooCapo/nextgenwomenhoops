@@ -31,6 +31,20 @@
     "news": { "title": "Tin tức" },
     "contact": { "title": "Liên hệ" }
   },
+  "seo": {
+    "clubs": {
+      "description": "Khám phá các câu lạc bộ bóng rổ đã được phê duyệt trong hệ thống NextGen Women Hoops, có thể tìm kiếm theo tên hoặc khu vực/tỉnh thành."
+    },
+    "news": {
+      "description": "Cập nhật tin tức giải đấu, những câu chuyện truyền cảm hứng và kiến thức, dinh dưỡng mới nhất từ NextGen Women Hoops."
+    },
+    "gallery": {
+      "description": "Xem hình ảnh, khoảnh khắc MVP và những câu chuyện phía sau hậu trường của các giải đấu NextGen Women Hoops."
+    },
+    "tournaments": {
+      "description": "Xem lịch thi đấu và lưu trữ các mùa giải của NextGen Women Hoops."
+    }
+  },
   "home": {
     "hero": {
       "imageAlt": "Ảnh hành động giải đấu",

@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 import { getClubMediaById } from "@/server/repositories/clubMediaRepository";
+import { findClubById } from "@/server/repositories/clubsRepository";
+import { getUserSession } from "@/server/auth/userAuth";
+import { getAdminSession } from "@/server/auth/adminAuth";
 
 const MIME_TYPES: Record<string, string> = {
   ".png": "image/png",
@@ -37,14 +40,42 @@ export async function GET(
       if (!isNaN(mediaId) && mediaId > 0) {
         const clubId = Number(pathSegments[1]);
         const mediaType = pathSegments[2];
+
+        // clubId must be a real, positive club identifier — never bypass
+        // the club/media match check below via a non-numeric segment.
+        if (isNaN(clubId) || clubId <= 0) {
+          return new NextResponse("Not Found", { status: 404 });
+        }
+
         const media = await getClubMediaById(mediaId);
 
         if (
           media &&
           media.data &&
-          (isNaN(clubId) || media.club_id === clubId) &&
-          (!mediaType || media.media_type === mediaType)
+          media.club_id === clubId &&
+          media.media_type === mediaType
         ) {
+          const club = await findClubById(clubId);
+          if (!club) {
+            return new NextResponse("Not Found", { status: 404 });
+          }
+
+          if (!club.is_approved) {
+            const [userSession, adminSession] = await Promise.all([
+              getUserSession(),
+              getAdminSession(),
+            ]);
+            const isOwner = Boolean(
+              userSession.authenticated &&
+                userSession.user &&
+                club.user_id === userSession.user.id
+            );
+            const isAdminReader = adminSession.authenticated;
+            if (!isOwner && !isAdminReader) {
+              return new NextResponse("Not Found", { status: 404 });
+            }
+          }
+
           const buffer = Buffer.isBuffer(media.data)
             ? media.data
             : Buffer.from(media.data);
@@ -66,10 +97,10 @@ export async function GET(
           });
         }
 
-        // If numeric mediaId requested under /media/clubs/... but not in DB, return 404
-        if (!isNaN(clubId)) {
-          return new NextResponse("Not Found", { status: 404 });
-        }
+        // Numeric mediaId requested under /media/clubs/... but not found,
+        // or it belongs to a different club/media type — return 404
+        // either way, without revealing which.
+        return new NextResponse("Not Found", { status: 404 });
       }
     }
 
@@ -102,11 +133,42 @@ export async function GET(
     const rangeHeader = request.headers.get("range");
 
     if (rangeHeader && rangeHeader.startsWith("bytes=")) {
-      const parts = rangeHeader.replace(/bytes=/, "").split("-");
-      const start = parseInt(parts[0], 10) || 0;
-      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+      const rangeSpec = rangeHeader.slice("bytes=".length);
+      const dashIndex = rangeSpec.indexOf("-");
+      const startPart = dashIndex >= 0 ? rangeSpec.slice(0, dashIndex) : rangeSpec;
+      const endPart = dashIndex >= 0 ? rangeSpec.slice(dashIndex + 1) : "";
 
-      if (start >= fileSize || end >= fileSize || start > end) {
+      let start: number;
+      let end: number;
+
+      if (startPart === "") {
+        // Suffix byte range (bytes=-N): the last N bytes of the resource.
+        // If N exceeds the file size, the entire file is used (RFC 7233 §2.1).
+        const suffixLength = parseInt(endPart, 10);
+        if (isNaN(suffixLength) || suffixLength <= 0) {
+          return new NextResponse(null, {
+            status: 416,
+            headers: {
+              "Content-Range": `bytes */${fileSize}`,
+              "Accept-Ranges": "bytes",
+            },
+          });
+        }
+        start = Math.max(fileSize - suffixLength, 0);
+        end = fileSize - 1;
+      } else {
+        start = parseInt(startPart, 10);
+        end = endPart ? parseInt(endPart, 10) : fileSize - 1;
+      }
+
+      if (
+        isNaN(start) ||
+        isNaN(end) ||
+        start < 0 ||
+        start >= fileSize ||
+        end >= fileSize ||
+        start > end
+      ) {
         return new NextResponse(null, {
           status: 416,
           headers: {
@@ -116,7 +178,6 @@ export async function GET(
         });
       }
 
-      const chunkSize = end - start + 1;
       const fileBuffer = await fs.readFile(/*turbopackIgnore: true*/ resolvedPath);
       const chunk = fileBuffer.subarray(start, end + 1);
       const chunkUint8 = new Uint8Array(

@@ -10,6 +10,7 @@ import styles from "./editClub.module.scss";
 export const metadata = {
   title: "NextGen Women Hoops | Edit Club",
   description: "Update club profile information",
+  robots: { index: false, follow: false },
 };
 
 export default async function EditClubPage({

@@ -11,6 +11,7 @@ export async function generateMetadata() {
   return {
     title: `${t("title")} | NextGen Women Hoops`,
     description: t("subtitle"),
+    robots: { index: false, follow: false },
   };
 }
 

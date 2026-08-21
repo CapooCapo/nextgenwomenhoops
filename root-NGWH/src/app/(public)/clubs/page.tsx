@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Container } from "@/components/ui/Container/Container";
 import { ErrorMessage } from "@/components/ui/ErrorMessage/ErrorMessage";
@@ -10,6 +11,21 @@ import styles from "./page.module.scss";
 
 interface ClubsPageProps {
   searchParams: Promise<{ region?: string; search?: string; page?: string }>;
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations();
+  const title = t("pages.clubs.title");
+  const description = t("seo.clubs.description");
+
+  return {
+    title,
+    description,
+    // Always canonicalize to the unfiltered directory — region/search/page
+    // query params must not produce distinct canonical URLs.
+    alternates: { canonical: "/clubs" },
+    openGraph: { title, description, url: "/clubs", type: "website" },
+  };
 }
 
 export default async function ClubsPage({ searchParams }: ClubsPageProps) {

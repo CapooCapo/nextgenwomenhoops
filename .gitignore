@@ -21,3 +21,5 @@ root-NGWH/*.tsbuildinfo
 # Local uploads & media
 /media/
 root-NGWH/media/
+
+CLAUDE.md

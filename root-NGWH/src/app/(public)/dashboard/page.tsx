@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import React from "react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -6,6 +7,10 @@ import { findClubByUserId, findUserById } from "@/server/repositories/userReposi
 import { findPlayersByClubId, findCoachStaffByClubId } from "@/server/repositories/clubsRepository";
 import { normalizeMediaField } from "@/server/services/clubMediaService";
 import styles from "./clubDashboard.module.scss";
+
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default async function ClubDashboardPage() {
   const session = await getUserSession();

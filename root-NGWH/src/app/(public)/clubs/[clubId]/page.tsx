@@ -1,7 +1,9 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { getUserSession } from "@/server/auth/userAuth";
+import { BRAND } from "@/config/brand";
 import { Container } from "@/components/ui/Container/Container";
 import { ErrorMessage } from "@/components/ui/ErrorMessage/ErrorMessage";
 import { ClubProfileHeader } from "@/components/features/clubs/ClubProfileHeader/ClubProfileHeader";
@@ -9,12 +11,51 @@ import { ClubAchievements } from "@/components/features/clubs/ClubAchievements/C
 import { ClubRoster } from "@/components/features/clubs/ClubRoster/ClubRoster";
 import { ClubCoachingStaff } from "@/components/features/clubs/ClubCoachingStaff/ClubCoachingStaff";
 import { ClubContactSection } from "@/components/features/clubs/ClubContactSection/ClubContactSection";
-import { getClubDetailForView } from "@/server/services/clubsServerService";
+import {
+  getApprovedClubDetail,
+  getClubDetailForView,
+} from "@/server/services/clubsServerService";
 import type { ClubDetail } from "@/types/club";
 import styles from "./page.module.scss";
 
 interface ClubProfilePageProps {
   params: Promise<{ clubId: string }>;
+}
+
+export async function generateMetadata({
+  params,
+}: ClubProfilePageProps): Promise<Metadata> {
+  const { clubId } = await params;
+  const numericId = parseInt(clubId, 10);
+  if (isNaN(numericId)) {
+    return { robots: { index: false, follow: false } };
+  }
+
+  // Public/approved-only lookup — never surfaces a pending club's data to
+  // crawlers or in shared-link previews, matching the approval workflow.
+  const club = await getApprovedClubDetail(numericId).catch(() => null);
+  if (!club) {
+    return { robots: { index: false, follow: false } };
+  }
+
+  const title = club.name;
+  const description = club.province_region
+    ? `${club.name} — a ${BRAND.name} member club based in ${club.province_region}.`
+    : `${club.name} — a ${BRAND.name} member club.`;
+  const canonical = `/clubs/${club.id}`;
+
+  return {
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      type: "profile",
+      ...(club.logo ? { images: [club.logo] } : {}),
+    },
+  };
 }
 
 export default async function ClubProfilePage({ params }: ClubProfilePageProps) {

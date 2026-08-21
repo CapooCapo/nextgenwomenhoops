@@ -5,8 +5,16 @@ import { GET } from "./[...path]/route";
 import { NextRequest } from "next/server";
 import { Stats } from "fs";
 import fsPromises from "fs/promises";
+import * as clubMediaRepository from "@/server/repositories/clubMediaRepository";
+import * as clubsRepository from "@/server/repositories/clubsRepository";
+import * as userAuth from "@/server/auth/userAuth";
+import * as adminAuth from "@/server/auth/adminAuth";
 
 jest.mock("fs/promises");
+jest.mock("@/server/repositories/clubMediaRepository");
+jest.mock("@/server/repositories/clubsRepository");
+jest.mock("@/server/auth/userAuth");
+jest.mock("@/server/auth/adminAuth");
 
 describe("Media Route Security, MEDIA_ROOT Resolution, and Range Requests", () => {
   const originalMediaRoot = process.env.MEDIA_ROOT;
@@ -157,5 +165,170 @@ describe("Media Route Security, MEDIA_ROOT Resolution, and Range Requests", () =
 
     const res = await GET(req, props);
     expect(res.status).toBe(404);
+  });
+
+  describe("Range header parsing (legacy filesystem branch)", () => {
+    const fakeVideoData = Buffer.from("0123456789abcdef"); // 16 bytes
+
+    function mockFile() {
+      (fsPromises.stat as jest.MockedFunction<typeof fsPromises.stat>).mockResolvedValueOnce({
+        isDirectory: () => false,
+        size: fakeVideoData.length,
+      } as unknown as Stats);
+      (fsPromises.readFile as jest.MockedFunction<typeof fsPromises.readFile>).mockResolvedValueOnce(
+        fakeVideoData
+      );
+    }
+
+    async function requestWithRange(range: string) {
+      mockFile();
+      const req = new NextRequest("http://localhost:3000/media/hero/test_video.mp4", {
+        headers: { range },
+      });
+      const props = { params: Promise.resolve({ path: ["hero", "test_video.mp4"] }) };
+      return GET(req, props);
+    }
+
+    it("bytes=500- style (open-ended): returns from start through end of file", async () => {
+      const res = await requestWithRange("bytes=10-");
+      expect(res.status).toBe(206);
+      expect(res.headers.get("Content-Range")).toBe("bytes 10-15/16");
+      expect(res.headers.get("Content-Length")).toBe("6");
+      const body = await res.arrayBuffer();
+      expect(Buffer.from(body).toString()).toBe("abcdef");
+    });
+
+    it("bytes=-N (suffix range): returns the final N bytes, not bytes 0-N", async () => {
+      const res = await requestWithRange("bytes=-5");
+      expect(res.status).toBe(206);
+      expect(res.headers.get("Content-Range")).toBe("bytes 11-15/16");
+      expect(res.headers.get("Content-Length")).toBe("5");
+      const body = await res.arrayBuffer();
+      expect(Buffer.from(body).toString()).toBe("bcdef");
+    });
+
+    it("bytes=-N where N exceeds the file size: returns the entire file", async () => {
+      const res = await requestWithRange("bytes=-500");
+      expect(res.status).toBe(206);
+      expect(res.headers.get("Content-Range")).toBe("bytes 0-15/16");
+      const body = await res.arrayBuffer();
+      expect(Buffer.from(body).toString()).toBe(fakeVideoData.toString());
+    });
+
+    it("bytes=-0 (zero-length suffix): unsatisfiable, returns 416", async () => {
+      mockFile();
+      const req = new NextRequest("http://localhost:3000/media/hero/test_video.mp4", {
+        headers: { range: "bytes=-0" },
+      });
+      const props = { params: Promise.resolve({ path: ["hero", "test_video.mp4"] }) };
+      const res = await GET(req, props);
+      expect(res.status).toBe(416);
+    });
+
+    it("malformed range (non-numeric): returns 416 instead of a corrupted slice", async () => {
+      mockFile();
+      const req = new NextRequest("http://localhost:3000/media/hero/test_video.mp4", {
+        headers: { range: "bytes=abc-def" },
+      });
+      const props = { params: Promise.resolve({ path: ["hero", "test_video.mp4"] }) };
+      const res = await GET(req, props);
+      expect(res.status).toBe(416);
+    });
+
+    it("bytes=500-999 explicit range still works (regression check)", async () => {
+      const res = await requestWithRange("bytes=0-4");
+      expect(res.status).toBe(206);
+      expect(res.headers.get("Content-Range")).toBe("bytes 0-4/16");
+      const body = await res.arrayBuffer();
+      expect(Buffer.from(body).toString()).toBe("01234");
+    });
+  });
+
+  describe("Club media authorization (BYTEA branch)", () => {
+    const mockGetClubMediaById = clubMediaRepository.getClubMediaById as jest.Mock;
+    const mockFindClubById = clubsRepository.findClubById as jest.Mock;
+    const mockGetUserSession = userAuth.getUserSession as jest.Mock;
+    const mockGetAdminSession = adminAuth.getAdminSession as jest.Mock;
+
+    const fakeMedia = {
+      id: 3,
+      club_id: 2,
+      media_type: "logo",
+      mime_type: "image/png",
+      data: Buffer.from("fake logo bytes"),
+    };
+
+    function req() {
+      const request = new NextRequest("http://localhost:3000/media/clubs/2/logo/3");
+      const props = { params: Promise.resolve({ path: ["clubs", "2", "logo", "3"] }) };
+      return GET(request, props);
+    }
+
+    beforeEach(() => {
+      mockGetClubMediaById.mockResolvedValue(fakeMedia);
+      mockGetUserSession.mockResolvedValue({ authenticated: false, user: null });
+      mockGetAdminSession.mockResolvedValue({ authenticated: false, username: null, role: null });
+    });
+
+    it("approved club + unauthenticated request -> allowed", async () => {
+      mockFindClubById.mockResolvedValue({ id: 2, user_id: 10, is_approved: true });
+      const res = await req();
+      expect(res.status).toBe(200);
+    });
+
+    it("pending club + owner -> allowed", async () => {
+      mockFindClubById.mockResolvedValue({ id: 2, user_id: 10, is_approved: false });
+      mockGetUserSession.mockResolvedValue({ authenticated: true, user: { id: 10, email: "a@b.com", role: "club_user" } });
+      const res = await req();
+      expect(res.status).toBe(200);
+    });
+
+    it("pending club + unrelated authenticated user -> denied", async () => {
+      mockFindClubById.mockResolvedValue({ id: 2, user_id: 10, is_approved: false });
+      mockGetUserSession.mockResolvedValue({ authenticated: true, user: { id: 99, email: "x@y.com", role: "club_user" } });
+      const res = await req();
+      expect(res.status).toBe(404);
+    });
+
+    it("pending club + unauthenticated request -> denied", async () => {
+      mockFindClubById.mockResolvedValue({ id: 2, user_id: 10, is_approved: false });
+      const res = await req();
+      expect(res.status).toBe(404);
+    });
+
+    it("pending club + admin -> allowed", async () => {
+      mockFindClubById.mockResolvedValue({ id: 2, user_id: 10, is_approved: false });
+      mockGetAdminSession.mockResolvedValue({ authenticated: true, username: "admin", role: "admin" });
+      const res = await req();
+      expect(res.status).toBe(200);
+    });
+
+    it("pending club + subadmin -> allowed (matches existing admin-read policy)", async () => {
+      mockFindClubById.mockResolvedValue({ id: 2, user_id: 10, is_approved: false });
+      mockGetAdminSession.mockResolvedValue({ authenticated: true, username: "sub", role: "subadmin" });
+      const res = await req();
+      expect(res.status).toBe(200);
+    });
+
+    it("mediaId belonging to another club -> not found, without revealing it exists", async () => {
+      mockGetClubMediaById.mockResolvedValue({ ...fakeMedia, club_id: 999 });
+      const res = await req();
+      expect(res.status).toBe(404);
+      expect(mockFindClubById).not.toHaveBeenCalled();
+    });
+
+    it("mediaType mismatch -> not found", async () => {
+      mockGetClubMediaById.mockResolvedValue({ ...fakeMedia, media_type: "capability_profile" });
+      const res = await req();
+      expect(res.status).toBe(404);
+    });
+
+    it("non-numeric clubId segment can no longer bypass the club-match check", async () => {
+      const request = new NextRequest("http://localhost:3000/media/clubs/abc/logo/3");
+      const props = { params: Promise.resolve({ path: ["clubs", "abc", "logo", "3"] }) };
+      const res = await GET(request, props);
+      expect(res.status).toBe(404);
+      expect(mockGetClubMediaById).not.toHaveBeenCalled();
+    });
   });
 });

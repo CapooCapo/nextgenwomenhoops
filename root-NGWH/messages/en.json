@@ -31,6 +31,20 @@
     "news": { "title": "News & Media" },
     "contact": { "title": "Contact" }
   },
+  "seo": {
+    "clubs": {
+      "description": "Browse approved basketball clubs registered with NextGen Women Hoops, searchable by name and province or region."
+    },
+    "news": {
+      "description": "Read the latest tournament news, inspirational stories, and knowledge & nutrition articles from NextGen Women Hoops."
+    },
+    "gallery": {
+      "description": "Browse photos, MVP spotlights, and behind-the-scenes stories from NextGen Women Hoops tournaments."
+    },
+    "tournaments": {
+      "description": "View NextGen Women Hoops tournament schedules and browse archives of past seasons."
+    }
+  },
   "home": {
     "hero": {
       "imageAlt": "Tournament action photo",
